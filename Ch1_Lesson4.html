@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصنع الأعداد | تكوين الأعداد وتحليلها - الصف الثالث</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF6ED; --card:#FFFFFF; --ink:#20302E; --muted:#6B7A78;
+  --border:#E9DFC9; --radius:20px; --radius-sm:12px;
+  --teal:#0D9488; --teal-light:#14B8A6; --teal-pale:#E4F7F3;
+  --coral:#F2542D; --coral-pale:#FDEBE5; --coral-line:#F7B9A4;
+  --amber:#EFA827; --amber-pale:#FDF1DC; --amber-line:#F5D18C;
+  --plum:#7C5CBF; --plum-pale:#F0EBFA; --plum-line:#D2C2EE;
+  --shadow:0 3px 18px rgba(32,48,46,.08); --shadow-lg:0 10px 34px rgba(32,48,46,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;direction:rtl}
+h1,h2,h3,.disp{font-family:'Baloo Bhaijaan 2','Tajawal',sans-serif}
+
+/* HERO — factory conveyor theme */
+.hero{background:linear-gradient(160deg,#0D3B36 0%,#0D9488 65%,#14B8A6 100%);color:#fff;padding:2.6rem 1.5rem 5.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-90px;left:-70px;width:280px;height:280px;background:rgba(242,84,45,.15);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-110px;right:-60px;width:340px;height:340px;background:rgba(255,255,255,.07);border-radius:50%}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#FCE7DD;font-size:.82rem;font-weight:700;padding:5px 20px;border-radius:50px;margin-bottom:1rem;position:relative;z-index:1}
+.hero h1{font-size:2.3rem;font-weight:800;position:relative;z-index:1;line-height:1.25;margin-bottom:.6rem}
+.hero p{font-size:1.02rem;opacity:.88;position:relative;z-index:1;max-width:520px;margin:0 auto}
+.conveyor{position:relative;z-index:1;margin-top:1.8rem;display:flex;justify-content:center;align-items:flex-end;gap:.7rem}
+.cv-block{border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.8rem;box-shadow:0 4px 10px rgba(0,0,0,.18);animation:cvfloat 2.6s ease-in-out infinite}
+.cv-h{width:52px;height:52px;background:var(--coral);animation-delay:0s}
+.cv-t{width:52px;height:32px;background:var(--amber);animation-delay:.25s}
+.cv-o{width:52px;height:22px;background:var(--plum);animation-delay:.5s}
+.cv-eq{color:#fce7dd;font-size:1.6rem;font-weight:800;align-self:center}
+.cv-result{align-self:center;background:#fff;color:#0D3B36;border-radius:12px;padding:10px 22px;font-size:1.5rem;font-weight:800;direction:ltr;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+@keyframes cvfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(prefers-reduced-motion:reduce){.cv-block{animation:none}}
+
+/* NAV */
+.nav{display:flex;justify-content:center;gap:.4rem;padding:1rem;background:#fff;border-bottom:2px solid var(--border);flex-wrap:wrap;position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-top:-2.2rem;border-radius:20px 20px 0 0;max-width:960px;margin-inline:auto;position:relative}
+.nav-sticky{position:sticky;top:0;z-index:200}
+.tab{background:none;border:2px solid var(--border);border-radius:50px;padding:8px 18px;font-family:'Tajawal',sans-serif;font-size:.87rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s}
+.tab:hover{border-color:var(--teal-light);color:var(--teal);background:var(--teal-pale)}
+.tab.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* LAYOUT */
+.main{max-width:920px;margin:0 auto;padding:2rem 1rem 5rem}
+.sec{display:none}.sec.active{display:block;animation:fadein .35s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);padding:1.6rem;box-shadow:var(--shadow);margin-bottom:1.4rem;border:1px solid var(--border)}
+.card-title{font-family:'Baloo Bhaijaan 2';font-size:1.15rem;font-weight:700;color:var(--teal);margin-bottom:1rem;display:flex;align-items:center;gap:9px}
+.icon-box{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.ib-teal{background:var(--teal-pale)}.ib-coral{background:var(--coral-pale)}.ib-amber{background:var(--amber-pale)}.ib-plum{background:var(--plum-pale)}
+
+/* INFO BOXES */
+.info{border-radius:12px;padding:.9rem 1.1rem;margin:.8rem 0;display:flex;gap:10px;align-items:flex-start}
+.info.tip{background:var(--amber-pale);border:1.5px solid var(--amber-line)}
+.info.note{background:var(--teal-pale);border:1.5px solid #9FDDD3}
+.info.ex{background:var(--plum-pale);border:1.5px solid var(--plum-line)}
+.info.warn{background:var(--coral-pale);border:1.5px solid var(--coral-line)}
+.info-ico{font-size:1.2rem;flex-shrink:0;margin-top:1px}
+.info-txt{font-size:.92rem;line-height:1.75}.info-txt strong{font-weight:800}
+
+/* PLACE VALUE TABLE */
+.pv-table{display:flex;border-radius:14px;overflow:hidden;border:2px solid var(--border);margin:1rem 0;direction:ltr}
+.pv-col{flex:1;text-align:center;padding:12px 6px;border-right:2px solid var(--border)}
+.pv-col:last-child{border-right:none}
+.pv-col.h{background:var(--coral-pale)}.pv-col.t{background:var(--amber-pale)}.pv-col.o{background:var(--plum-pale)}
+.pv-col .pv-name{font-size:.72rem;font-weight:800;direction:rtl;color:var(--muted);margin-bottom:4px}
+.pv-col .pv-dig{font-size:2rem;font-weight:800}
+.pv-col.h .pv-dig{color:var(--coral)}.pv-col.t .pv-dig{color:#B9820F}.pv-col.o .pv-dig{color:var(--plum)}
+.pv-col .pv-val{font-size:.68rem;color:var(--muted);margin-top:2px;direction:rtl}
+
+/* BLOCKS VISUAL */
+.blocks-wrap{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:flex-end;margin:1rem 0;padding:1rem;background:#FAFAF6;border-radius:14px;border:1px dashed var(--border)}
+.blocks-group{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.blocks-row{display:flex;gap:5px;flex-wrap:wrap;max-width:220px;justify-content:center}
+.block-h{width:42px;height:42px;border-radius:6px;background:var(--coral);background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px);background-size:14px 14px;box-shadow:0 2px 5px rgba(0,0,0,.15)}
+.block-t{width:12px;height:42px;border-radius:4px;background:var(--amber);background-image:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px);background-size:100% 14px;box-shadow:0 2px 5px rgba(0,0,0,.12)}
+.block-o{width:14px;height:14px;border-radius:3px;background:var(--plum);box-shadow:0 2px 4px rgba(0,0,0,.12)}
+.blocks-label{font-size:.72rem;font-weight:800;color:var(--muted)}
+
+/* BUILDER */
+.builder-box{background:linear-gradient(135deg,var(--teal-pale),#EAF9F0);border-radius:var(--radius);padding:1.6rem;border:2px solid #9FDDD3}
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.2rem}
+.counter{background:#fff;border-radius:14px;padding:1rem;text-align:center;border:2px solid var(--border)}
+.counter.h{border-color:var(--coral-line)}.counter.t{border-color:var(--amber-line)}.counter.o{border-color:var(--plum-line)}
+.counter-label{font-size:.8rem;font-weight:800;margin-bottom:.5rem}
+.counter.h .counter-label{color:var(--coral)}.counter.t .counter-label{color:#B9820F}.counter.o .counter-label{color:var(--plum)}
+.counter-ctrl{display:flex;align-items:center;justify-content:center;gap:.6rem}
+.ctr-btn{width:34px;height:34px;border-radius:50%;border:none;font-size:1.1rem;font-weight:800;cursor:pointer;color:#fff;transition:transform .15s}
+.ctr-btn:hover{transform:scale(1.08)}
+.counter.h .ctr-btn{background:var(--coral)}.counter.t .ctr-btn{background:var(--amber)}.counter.o .ctr-btn{background:var(--plum)}
+.counter-val{font-size:1.7rem;font-weight:800;min-width:34px;direction:ltr}
+.builder-result{background:#fff;border-radius:16px;padding:1.3rem;text-align:center;margin-top:1rem}
+.builder-num{font-size:2.6rem;font-weight:800;color:var(--teal);direction:ltr;font-family:'Baloo Bhaijaan 2'}
+.builder-expanded{font-size:1.1rem;color:var(--ink);direction:ltr;margin-top:.3rem;font-weight:700}
+.builder-words{font-size:1rem;color:var(--muted);margin-top:.5rem;font-weight:700}
+
+/* QUESTION ENGINE (shared by practice + quiz) */
+.prog-bar{height:7px;background:var(--border);border-radius:50px;overflow:hidden;margin-bottom:.5rem}
+.prog-fill{height:100%;background:var(--teal);transition:width .3s}
+.q-count{font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:.6rem}
+.q-question{font-size:1.05rem;font-weight:800;margin-bottom:1rem;line-height:1.6}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+@media(max-width:520px){.q-opts{grid-template-columns:1fr}}
+.q-opt{background:#fff;border:2px solid var(--border);border-radius:12px;padding:.8rem 1rem;font-family:'Tajawal';font-size:.95rem;font-weight:700;cursor:pointer;direction:ltr;text-align:center;transition:all .15s;color:var(--ink)}
+.q-opt:hover:not(.disabled){border-color:var(--teal-light);background:var(--teal-pale)}
+.q-opt.correct{background:#DCFCE7;border-color:#22C55E;color:#166534}
+.q-opt.wrong{background:var(--coral-pale);border-color:var(--coral);color:#9A2E17}
+.q-opt.disabled{cursor:default}
+.q-fb{margin-top:1rem;font-size:.92rem;font-weight:700;padding:.8rem 1rem;border-radius:12px;display:none;line-height:1.6}
+.q-fb.show{display:block}
+.q-fb.ok{background:#DCFCE7;color:#166534}
+.q-fb.fail{background:var(--coral-pale);color:#9A2E17}
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--teal);color:#fff;border:none;border-radius:50px;padding:11px 26px;font-family:'Tajawal';font-size:.96rem;font-weight:800;cursor:pointer;transition:all .2s}
+.btn:hover{background:#0B7A70;transform:translateY(-2px);box-shadow:0 5px 16px rgba(13,148,136,.3)}
+.btn.sm{padding:8px 20px;font-size:.88rem}
+.btn.amber{background:var(--coral)}.btn.amber:hover{background:#D6431F}
+.btn.ghost{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.btn.ghost:hover{background:var(--teal-pale);color:var(--teal)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.score-wrap{text-align:center;padding:1rem}
+.score-ring{width:130px;height:130px;border-radius:50%;background:conic-gradient(var(--teal) 0deg,var(--teal) 360deg);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;position:relative}
+.score-ring::before{content:'';position:absolute;width:104px;height:104px;background:#fff;border-radius:50%}
+.sr-num,.sr-lbl{position:relative;z-index:1}
+.sr-num{font-size:1.5rem;font-weight:800;color:var(--ink);font-family:'Baloo Bhaijaan 2'}
+.sr-lbl{font-size:.8rem;color:var(--muted);position:absolute;bottom:26px}
+.stars-row{font-size:1.5rem;letter-spacing:3px;margin-bottom:.6rem}
+.score-msg{font-size:1.05rem;font-weight:700;margin-bottom:1rem}
+
+/* GAME */
+.game-box{background:linear-gradient(135deg,var(--plum-pale),#F5F0FC);border-radius:var(--radius);padding:1.6rem;border:2px solid var(--plum-line);text-align:center}
+.game-stats{display:flex;justify-content:center;gap:1.6rem;margin-bottom:1rem;flex-wrap:wrap}
+.gstat{background:#fff;border-radius:12px;padding:.6rem 1.2rem;min-width:90px}
+.gstat b{display:block;font-size:1.4rem;color:var(--teal);font-family:'Baloo Bhaijaan 2'}
+.gstat span{font-size:.72rem;color:var(--muted);font-weight:700}
+.game-target{font-size:1.05rem;font-weight:800;margin-bottom:1rem}
+.game-target b{color:var(--coral);font-size:1.6rem;direction:ltr;display:inline-block}
+.game-msg{min-height:28px;font-weight:800;margin-top:.7rem}
+.game-msg.ok{color:#166534}.game-msg.fail{color:#9A2E17}
+
+.tab-inner-nav{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.subtab{background:#fff;border:2px solid var(--border);border-radius:50px;padding:6px 16px;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--muted)}
+.subtab.active{background:var(--plum);color:#fff;border-color:var(--plum)}
+.subsec{display:none}.subsec.active{display:block}
+
+footer{text-align:center;padding:1.5rem;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-badge">📦 الصف الثالث الابتدائي • الرياضيات</span>
+  <h1>مصنع الأعداد<br>تكوين الأعداد وتحليلها</h1>
+  <p>هيا نبني الأعداد من قطع المئات والعشرات والآحاد، ثم نفكّكها إلى مكوّناتها من جديد!</p>
+  <div class="conveyor">
+    <div class="cv-block cv-h">100</div>
+    <div class="cv-block cv-t">10</div>
+    <div class="cv-block cv-o">1</div>
+    <div class="cv-eq">=</div>
+    <div class="cv-result">111</div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="tab active" onclick="goTab('lesson',this)">📖 الشرح</button>
+  <button class="tab" onclick="goTab('builder',this)">🏗️ اصنع العدد</button>
+  <button class="tab" onclick="goTab('practice',this)">✏️ تدريبات موسّعة</button>
+  <button class="tab" onclick="goTab('games',this)">🎮 الألعاب</button>
+  <button class="tab" onclick="goTab('quiz',this)">🏁 الاختبار الختامي</button>
+</nav>
+
+<div class="main">
+
+<!-- ============ LESSON ============ -->
+<section id="lesson" class="sec active">
+
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-teal">💡</span> ما معنى تكوين العدد وتحليله؟</div>
+    <p style="line-height:1.9;font-size:.97rem">
+      <strong>تكوين العدد</strong> يعني بناء عدد جديد من أجزائه (المئات والعشرات والآحاد)، مثل تجميع قطع في مصنع لإنتاج عدد واحد.
+      أما <strong>تحليل العدد</strong> فهو العكس تمامًا: نأخذ عددًا جاهزًا ونفكّكه لنعرف كم فيه من مئات وعشرات وآحاد.
+    </p>
+    <div class="info note">
+      <div class="info-ico">🧩</div>
+      <div class="info-txt">كل رقم في العدد له <strong>منزلة</strong> (مكانة) تحدّد قيمته الحقيقية. نفس الرقم "3" قد يساوي 3 أو 30 أو 300 حسب مكانه!</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-coral">🔢</span> المنازل العددية الثلاث</div>
+    <p style="font-size:.93rem;color:var(--muted);margin-bottom:.8rem">مثال: العدد <b style="direction:ltr;display:inline-block;color:var(--ink)">428</b></p>
+    <div class="pv-table">
+      <div class="pv-col h"><div class="pv-name">مئات</div><div class="pv-dig">4</div><div class="pv-val">= 400</div></div>
+      <div class="pv-col t"><div class="pv-name">عشرات</div><div class="pv-dig">2</div><div class="pv-val">= 20</div></div>
+      <div class="pv-col o"><div class="pv-name">آحاد</div><div class="pv-dig">8</div><div class="pv-val">= 8</div></div>
+    </div>
+    <div class="blocks-wrap">
+      <div class="blocks-group">
+        <div class="blocks-row">
+          <div class="block-h"></div><div class="block-h"></div><div class="block-h"></div><div class="block-h"></div>
+        </div>
+        <div class="blocks-label">4 مئات</div>
+      </div>
+      <div class="blocks-group">
+        <div class="blocks-row">
+          <div class="block-t"></div><div class="block-t"></div>
+        </div>
+        <div class="blocks-label">2 عشرات</div>
+      </div>
+      <div class="blocks-group">
+        <div class="blocks-row">
+          <div class="block-o"></div><div class="block-o"></div><div class="block-o"></div><div class="block-o"></div>
+          <div class="block-o"></div><div class="block-o"></div><div class="block-o"></div><div class="block-o"></div>
+        </div>
+        <div class="blocks-label">8 آحاد</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-amber">🏗️</span> من الأجزاء إلى العدد (التكوين)</div>
+    <p style="line-height:1.9;font-size:.97rem">عندما نعرف عدد المئات والعشرات والآحاد، نجمعها معًا لنكوّن العدد:</p>
+    <div class="info ex">
+      <div class="info-ico">✅</div>
+      <div class="info-txt" style="direction:ltr;text-align:right">300 + 50 + 7 = <strong>357</strong> ← <span style="direction:rtl">3 مئات و5 عشرات و7 آحاد</span></div>
+    </div>
+    <div class="info ex">
+      <div class="info-ico">✅</div>
+      <div class="info-txt" style="direction:ltr;text-align:right">600 + 9 = <strong>609</strong> ← <span style="direction:rtl">6 مئات و0 عشرات و9 آحاد (لا نكتب عشرات صفر)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-plum">🔍</span> من العدد إلى الأجزاء (التحليل)</div>
+    <p style="line-height:1.9;font-size:.97rem">وعندما يكون لدينا عدد جاهز، نحلّله بالنظر إلى منزلة كل رقم:</p>
+    <div class="info ex">
+      <div class="info-ico">✅</div>
+      <div class="info-txt" style="direction:ltr;text-align:right">264 = 200 + 60 + 4</div>
+    </div>
+    <div class="info ex">
+      <div class="info-ico">✅</div>
+      <div class="info-txt" style="direction:ltr;text-align:right">503 = 500 + 3 <span style="direction:rtl">(العشرات صفر فلا تظهر في التحليل)</span></div>
+    </div>
+    <div class="info warn">
+      <div class="info-ico">⚠️</div>
+      <div class="info-txt"><strong>احذر:</strong> عند التحليل لا نكتب أي منزلة قيمتها صفر. العدد 780 = 700 + 80 فقط (وليس 700+80+0).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-teal">🔤</span> كتابة العدد بالحروف</div>
+    <p style="line-height:1.9;font-size:.97rem">يمكننا أيضًا كتابة العدد بالكلمات بدلًا من الأرقام:</p>
+    <div class="info note">
+      <div class="info-ico">📝</div>
+      <div class="info-txt">245 = <strong>مئتان وخمسة وأربعون</strong> &nbsp;|&nbsp; 108 = <strong>مئة وثمانية</strong> &nbsp;|&nbsp; 630 = <strong>ستمئة وثلاثون</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-coral">🏆</span> تكوين أكبر وأصغر عدد من أرقام معطاة</div>
+    <p style="line-height:1.9;font-size:.97rem">إذا أعطيت ثلاثة أرقام مختلفة، يمكنك ترتيبها لتكوين أكبر عدد أو أصغر عدد:</p>
+    <div class="info ex">
+      <div class="info-ico">✅</div>
+      <div class="info-txt">الأرقام: 5، 1، 8 ← أكبر عدد = <strong style="direction:ltr;display:inline-block">851</strong> (رتّب من الأكبر للأصغر) — أصغر عدد = <strong style="direction:ltr;display:inline-block">158</strong> (رتّب من الأصغر للأكبر)</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============ BUILDER ============ -->
+<section id="builder" class="sec">
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-teal">🏗️</span> اصنع عددك بنفسك!</div>
+    <p style="font-size:.93rem;color:var(--muted);margin-bottom:1rem">اضغط + أو − لإضافة أو إزالة قطع المئات والعشرات والآحاد، وشاهد العدد يتكوّن أمامك.</p>
+    <div class="builder-box">
+      <div class="counters">
+        <div class="counter h">
+          <div class="counter-label">🟧 مئات</div>
+          <div class="counter-ctrl"><button class="ctr-btn" onclick="chH(-1)">−</button><span class="counter-val" id="valH">3</span><button class="ctr-btn" onclick="chH(1)">+</button></div>
+        </div>
+        <div class="counter t">
+          <div class="counter-label">🟨 عشرات</div>
+          <div class="counter-ctrl"><button class="ctr-btn" onclick="chT(-1)">−</button><span class="counter-val" id="valT">4</span><button class="ctr-btn" onclick="chT(1)">+</button></div>
+        </div>
+        <div class="counter o">
+          <div class="counter-label">🟪 آحاد</div>
+          <div class="counter-ctrl"><button class="ctr-btn" onclick="chO(-1)">−</button><span class="counter-val" id="valO">2</span><button class="ctr-btn" onclick="chO(1)">+</button></div>
+        </div>
+      </div>
+      <div id="blocksVisual" class="blocks-wrap"></div>
+      <div class="builder-result">
+        <div class="builder-num" id="bldNum">342</div>
+        <div class="builder-expanded" id="bldExp">300 + 40 + 2</div>
+        <div class="builder-words" id="bldWords">ثلاثمئة واثنان وأربعون</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<section id="practice" class="sec">
+  <div class="tab-inner-nav">
+    <button class="subtab active" onclick="goSub('psA',this)">🔍 حلّل العدد</button>
+    <button class="subtab" onclick="goSub('psB',this)">🏗️ كوّن العدد</button>
+    <button class="subtab" onclick="goSub('psC',this)">📍 القيمة المكانية</button>
+    <button class="subtab" onclick="goSub('psD',this)">🏆 أكبر وأصغر عدد</button>
+  </div>
+
+  <div id="psA" class="subsec active card">
+    <div class="card-title"><span class="icon-box ib-coral">🔍</span> المجموعة أ: حلّل العدد إلى الصيغة التفصيلية</div>
+    <div id="engA"></div>
+  </div>
+  <div id="psB" class="subsec card">
+    <div class="card-title"><span class="icon-box ib-amber">🏗️</span> المجموعة ب: كوّن العدد من أجزائه</div>
+    <div id="engB"></div>
+  </div>
+  <div id="psC" class="subsec card">
+    <div class="card-title"><span class="icon-box ib-plum">📍</span> المجموعة ج: حدّد القيمة المكانية</div>
+    <div id="engC"></div>
+  </div>
+  <div id="psD" class="subsec card">
+    <div class="card-title"><span class="icon-box ib-teal">🏆</span> المجموعة د: أكبر وأصغر عدد</div>
+    <div id="engD"></div>
+  </div>
+</section>
+
+<!-- ============ GAMES ============ -->
+<section id="games" class="sec">
+  <div class="tab-inner-nav">
+    <button class="subtab active" onclick="goSub('gm1',this)">🏗️ ابنِ العدد المستهدف</button>
+    <button class="subtab" onclick="goSub('gm2',this)">⚡ التحدي السريع</button>
+  </div>
+
+  <div id="gm1" class="subsec active card">
+    <div class="card-title"><span class="icon-box ib-coral">🏗️</span> لعبة: ابنِ العدد المستهدف</div>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.8rem">اضبط المئات والعشرات والآحاد لتصنع العدد الظاهر أمامك، ثم اضغط "تحقّق".</p>
+    <div class="game-box">
+      <div class="game-stats">
+        <div class="gstat"><b id="g1score">0</b><span>النقاط</span></div>
+        <div class="gstat"><b id="g1round">1/8</b><span>الجولة</span></div>
+        <div class="gstat"><b id="g1streak">0</b><span>متتالية</span></div>
+      </div>
+      <div class="game-target">العدد المطلوب: <b id="g1target">—</b></div>
+      <div class="counters" style="margin-bottom:0">
+        <div class="counter h">
+          <div class="counter-label">🟧 مئات</div>
+          <div class="counter-ctrl"><button class="ctr-btn" onclick="g1ch('h',-1)">−</button><span class="counter-val" id="g1H">0</span><button class="ctr-btn" onclick="g1ch('h',1)">+</button></div>
+        </div>
+        <div class="counter t">
+          <div class="counter-label">🟨 عشرات</div>
+          <div class="counter-ctrl"><button class="ctr-btn" onclick="g1ch('t',-1)">−</button><span class="counter-val" id="g1T">0</span><button class="ctr-btn" onclick="g1ch('t',1)">+</button></div>
+        </div>
+        <div class="counter o">
+          <div class="counter-label">🟪 آحاد</div>
+          <div class="counter-ctrl"><button class="ctr-btn" onclick="g1ch('o',-1)">−</button><span class="counter-val" id="g1O">0</span><button class="ctr-btn" onclick="g1ch('o',1)">+</button></div>
+        </div>
+      </div>
+      <div style="font-size:1.5rem;font-weight:800;margin-top:.8rem;direction:ltr;color:var(--teal)" id="g1current">0</div>
+      <div style="margin-top:1rem"><button class="btn amber" onclick="g1check()">✅ تحقّق</button> <button class="btn ghost" id="g1startBtn" onclick="g1start()">▶️ ابدأ اللعبة</button></div>
+      <div class="game-msg" id="g1msg"></div>
+    </div>
+  </div>
+
+  <div id="gm2" class="subsec card">
+    <div class="card-title"><span class="icon-box ib-plum">⚡</span> لعبة: التحدي السريع</div>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.8rem">أجب بسرعة عن 10 أسئلة متنوّعة في التكوين والتحليل والقيمة المكانية!</p>
+    <div class="game-box">
+      <div class="game-stats">
+        <div class="gstat"><b id="g2score">0</b><span>النقاط</span></div>
+        <div class="gstat"><b id="g2q">0/10</b><span>السؤال</span></div>
+        <div class="gstat"><b id="g2streak">0</b><span>متتالية</span></div>
+      </div>
+      <div id="g2display" style="font-weight:800;font-size:1.05rem;min-height:60px">اضغط "ابدأ اللعبة" للبدء!</div>
+      <div class="q-opts" id="g2opts" style="margin-top:1rem"></div>
+      <div style="margin-top:1rem"><button class="btn amber" id="g2startBtn" onclick="g2start()">▶️ ابدأ اللعبة</button></div>
+      <div id="g2end"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="sec">
+  <div class="card">
+    <div class="card-title"><span class="icon-box ib-teal">🏁</span> الاختبار الختامي — 15 سؤالًا</div>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:1rem">اختبر فهمك الكامل لدرس تكوين الأعداد وتحليلها!</p>
+    <div id="engQuiz"></div>
+  </div>
+</section>
+
+</div>
+
+<footer>مصنع الأعداد 🏗️ — درس تكوين الأعداد وتحليلها — الصف الثالث الابتدائي</footer>
+
+<script>
+// ============ NAV ============
+function goTab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav .tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goSub(id,btn){
+  const parent=btn.closest('.main').querySelector('.sec.active');
+  parent.querySelectorAll('.subsec').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.parentElement.querySelectorAll('.subtab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ============ NUMBER TO ARABIC WORDS (0-999) ============
+const onesW=['','واحد','اثنان','ثلاثة','أربعة','خمسة','ستة','سبعة','ثمانية','تسعة'];
+const teensW=['عشرة','أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'];
+const tensW=['','عشرة','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
+const hundredsW=['','مئة','مئتان','ثلاثمئة','أربعمئة','خمسمئة','ستمئة','سبعمئة','ثمانمئة','تسعمئة'];
+function numToWords(n){
+  if(n===0) return 'صفر';
+  const h=Math.floor(n/100), rem=n%100;
+  const parts=[];
+  if(h>0) parts.push(hundredsW[h]);
+  if(rem>0){
+    if(rem<10) parts.push(onesW[rem]);
+    else if(rem<20) parts.push(teensW[rem-10]);
+    else{
+      const t=Math.floor(rem/10), o=rem%10;
+      if(o===0) parts.push(tensW[t]);
+      else parts.push(onesW[o]+' و'+tensW[t]);
+    }
+  }
+  return parts.join(' و');
+}
+function expandedForm(h,t,o){
+  const parts=[];
+  if(h>0) parts.push((h*100));
+  if(t>0) parts.push((t*10));
+  if(o>0) parts.push(o);
+  if(parts.length===0) return '0';
+  return parts.join(' + ');
+}
+function blocksHTML(h,t,o){
+  let html='';
+  if(h>0){
+    let row='';
+    for(let i=0;i<h;i++) row+='<div class="block-h"></div>';
+    html+=`<div class="blocks-group"><div class="blocks-row">${row}</div><div class="blocks-label">${h} مئات</div></div>`;
+  }
+  if(t>0){
+    let row='';
+    for(let i=0;i<t;i++) row+='<div class="block-t"></div>';
+    html+=`<div class="blocks-group"><div class="blocks-row">${row}</div><div class="blocks-label">${t} عشرات</div></div>`;
+  }
+  if(o>0){
+    let row='';
+    for(let i=0;i<o;i++) row+='<div class="block-o"></div>';
+    html+=`<div class="blocks-group"><div class="blocks-row">${row}</div><div class="blocks-label">${o} آحاد</div></div>`;
+  }
+  if(!html) html='<div class="blocks-label">اضبط القيم لتظهر القطع هنا</div>';
+  return html;
+}
+
+// ============ BUILDER TAB ============
+let bH=3,bT=4,bO=2;
+function chH(d){bH=Math.min(9,Math.max(0,bH+d));renderBuilder();}
+function chT(d){bT=Math.min(9,Math.max(0,bT+d));renderBuilder();}
+function chO(d){bO=Math.min(9,Math.max(0,bO+d));renderBuilder();}
+function renderBuilder(){
+  document.getElementById('valH').textContent=bH;
+  document.getElementById('valT').textContent=bT;
+  document.getElementById('valO').textContent=bO;
+  const num=bH*100+bT*10+bO;
+  document.getElementById('bldNum').textContent=num;
+  document.getElementById('bldExp').textContent=expandedForm(bH,bT,bO)===num.toString()?num.toString():expandedForm(bH,bT,bO);
+  document.getElementById('bldWords').textContent=numToWords(num);
+  document.getElementById('blocksVisual').innerHTML=blocksHTML(bH,bT,bO);
+}
+
+// ============ GENERIC QUIZ/PRACTICE ENGINE ============
+function buildEngine(containerId, questions){
+  const el=document.getElementById(containerId);
+  const state={cur:0,score:0};
+  function render(){
+    if(state.cur>=questions.length){renderEnd();return;}
+    const q=questions[state.cur];
+    const shuffled=[...q.opts].sort(()=>Math.random()-.5);
+    el.innerHTML=`
+      <div class="prog-bar"><div class="prog-fill" style="width:${(state.cur/questions.length*100)}%"></div></div>
+      <div class="q-count">${state.cur+1} / ${questions.length}</div>
+      <div class="q-question">${q.q}</div>
+      <div class="q-opts"></div>
+      <div class="q-fb"></div>
+      <div class="q-nextwrap" style="display:none;margin-top:.8rem"><button class="btn sm">التالي ←</button></div>
+    `;
+    const wrap=el.querySelector('.q-opts');
+    shuffled.forEach(o=>{
+      const b=document.createElement('button');
+      b.className='q-opt'; b.textContent=o; b.style.direction='ltr';
+      b.addEventListener('click',()=>{
+        if(b.classList.contains('locked'))return;
+        el.querySelectorAll('.q-opt').forEach(x=>{
+          x.classList.add('disabled','locked');
+          if(x.textContent===q.a) x.classList.add('correct');
+          else if(x===b) x.classList.add('wrong');
+        });
+        const fb=el.querySelector('.q-fb');
+        if(o===q.a){state.score++; fb.textContent='✅ صحيح! '+q.ex; fb.className='q-fb show ok';}
+        else{fb.textContent='❌ الإجابة الصحيحة: '+q.a+' — '+q.ex; fb.className='q-fb show fail';}
+        el.querySelector('.q-nextwrap').style.display='block';
+      });
+      wrap.appendChild(b);
+    });
+    el.querySelector('.q-nextwrap button').addEventListener('click',()=>{state.cur++;render();});
+  }
+  function renderEnd(){
+    const pct=Math.round(state.score/questions.length*100);
+    let msg,stars;
+    if(pct>=90){msg='ممتاز جدًا! أنت متقن لهذا الجزء 🌟';stars='⭐⭐⭐⭐⭐';}
+    else if(pct>=70){msg='جيد جدًا! أداء رائع';stars='⭐⭐⭐⭐';}
+    else if(pct>=50){msg='جيد! راجع بعض النقاط';stars='⭐⭐⭐';}
+    else{msg='يحتاج مراجعة، عد إلى الشرح وحاول مجددًا';stars='⭐⭐';}
+    el.innerHTML=`<div class="score-wrap">
+      <div class="score-ring"><div class="sr-num">${state.score}/${questions.length}</div><div class="sr-lbl">${pct}%</div></div>
+      <div class="stars-row">${stars}</div>
+      <p class="score-msg">${msg}</p>
+      <button class="btn amber" id="rst-${containerId}">🔄 أعد المحاولة</button>
+    </div>`;
+    document.getElementById('rst-'+containerId).addEventListener('click',()=>{state.cur=0;state.score=0;render();});
+  }
+  render();
+}
+
+// Practice Set A — decompose to expanded form
+const setA=[
+  {q:'حلّل العدد 356 إلى صيغته التفصيلية:',opts:['300+50+6','300+56','356+0','300+5+6'],a:'300+50+6',ex:'3 مئات = 300، 5 عشرات = 50، 6 آحاد = 6'},
+  {q:'حلّل العدد 208:',opts:['200+0+8','200+8','20+8','208+0'],a:'200+8',ex:'العشرات صفر فلا تُكتب، فتصبح الصيغة 200+8'},
+  {q:'حلّل العدد 470:',opts:['400+70','400+7+0','400+70+0','47+0'],a:'400+70',ex:'4 مئات = 400، 7 عشرات = 70، الآحاد صفر فلا تُكتب'},
+  {q:'حلّل العدد 999:',opts:['900+90+9','990+9','900+99','9+9+9'],a:'900+90+9',ex:'9 مئات = 900، 9 عشرات = 90، 9 آحاد = 9'},
+  {q:'حلّل العدد 605:',opts:['600+5','600+0+5','60+5','605+0'],a:'600+5',ex:'6 مئات = 600، العشرات صفر فلا تُكتب، 5 آحاد = 5'},
+  {q:'حلّل العدد 340:',opts:['300+40','300+4+0','34+0','300+40+0'],a:'300+40',ex:'3 مئات = 300، 4 عشرات = 40، الآحاد صفر فلا تُكتب'},
+];
+
+// Practice Set B — compose from parts/words
+const setB=[
+  {q:'كوّن العدد من: 500 + 30 + 2',opts:['532','523','352','325'],a:'532',ex:'500+30+2 = 532'},
+  {q:'كوّن العدد من: 100 + 8',opts:['108','180','18','801'],a:'108',ex:'100+8 = 108 (العشرات صفر)'},
+  {q:'كوّن العدد من: 700 + 90',opts:['790','709','970','79'],a:'790',ex:'700+90 = 790 (الآحاد صفر)'},
+  {q:'ما العدد الذي يُكتب بالحروف: "أربعمئة وستة وعشرون"؟',opts:['426','462','246','624'],a:'426',ex:'أربعمئة = 400، ستة وعشرون = 26 ← 400+26 = 426'},
+  {q:'كوّن العدد من: 60 + 3',opts:['63','603','630','36'],a:'63',ex:'لا مئات هنا: 60+3 = 63'},
+  {q:'ما العدد الذي يُكتب بالحروف: "مئتان وخمسة"؟',opts:['205','250','25','520'],a:'205',ex:'مئتان = 200، خمسة = 5 ← 200+5 = 205'},
+];
+
+// Practice Set C — place value identification
+const setC=[
+  {q:'في العدد 253، ما قيمة الرقم 5؟',opts:['50','5','500','15'],a:'50',ex:'الرقم 5 في منزلة العشرات، فقيمته 5×10 = 50'},
+  {q:'في العدد 738، ما قيمة الرقم 7؟',opts:['700','70','7','17'],a:'700',ex:'الرقم 7 في منزلة المئات، فقيمته 7×100 = 700'},
+  {q:'في العدد 916، ما قيمة الرقم 6؟',opts:['6','60','600','16'],a:'6',ex:'الرقم 6 في منزلة الآحاد، فقيمته 6 فقط'},
+  {q:'في العدد 184، ما قيمة الرقم 1؟',opts:['100','1','10','110'],a:'100',ex:'الرقم 1 في منزلة المئات، فقيمته 1×100 = 100'},
+  {q:'في العدد 645، ما قيمة الرقم 4؟',opts:['40','4','400','14'],a:'40',ex:'الرقم 4 في منزلة العشرات، فقيمته 4×10 = 40'},
+  {q:'في العدد 372، كم عدد المئات فيه؟',opts:['3','7','2','300'],a:'3',ex:'الرقم في أقصى اليسار (منزلة المئات) هو 3'},
+];
+
+// Practice Set D — largest/smallest number
+const setD=[
+  {q:'الأرقام 3، 7، 1 — ما أكبر عدد يمكن تكوينه؟',opts:['731','713','371','173'],a:'731',ex:'رتّب الأرقام من الأكبر إلى الأصغر: 7 ثم 3 ثم 1 ← 731'},
+  {q:'الأرقام 3، 7، 1 — ما أصغر عدد يمكن تكوينه؟',opts:['137','173','317','371'],a:'137',ex:'رتّب الأرقام من الأصغر إلى الأكبر: 1 ثم 3 ثم 7 ← 137'},
+  {q:'الأرقام 5، 0، 9 — ما أكبر عدد يمكن تكوينه؟',opts:['950','905','590','509'],a:'950',ex:'رتّب من الأكبر للأصغر: 9، 5، 0 ← 950'},
+  {q:'الأرقام 5، 0، 9 — ما أصغر عدد ثلاثي يمكن تكوينه (بدون أن يبدأ بصفر)؟',opts:['059','095','509','590'],a:'509',ex:'لا يمكن أن يبدأ العدد بصفر، لذا نضع أصغر رقم غير صفري أولًا: 5، ثم 0، ثم 9 ← 509'},
+  {q:'الأرقام 2، 2، 8 — ما أكبر عدد يمكن تكوينه؟',opts:['822','282','228','882'],a:'822',ex:'رتّب من الأكبر للأصغر: 8، 2، 2 ← 822'},
+  {q:'الأرقام 4، 6، 0 — ما أصغر عدد ثلاثي يمكن تكوينه (بدون أن يبدأ بصفر)؟',opts:['406','046','460','604'],a:'406',ex:'أصغر رقم غير صفري هو 4، ثم الصفر، ثم 6 ← 406'},
+];
+
+// Final quiz — 15 questions mixing everything
+const quizQs=[
+  {q:'ما الصيغة التفصيلية للعدد 347؟',opts:['300+40+7','300+47','340+7','300+4+7'],a:'300+40+7',ex:'3 مئات=300، 4 عشرات=40، 7 آحاد=7'},
+  {q:'ما العدد الناتج عن: 500 + 3 + 60؟',opts:['563','530','506','536'],a:'563',ex:'500+60+3 = 563'},
+  {q:'في العدد 472، ما قيمة الرقم 7؟',opts:['70','7','700','17'],a:'70',ex:'الرقم 7 في منزلة العشرات فقيمته 70'},
+  {q:'كيف نكتب 600 + 50؟',opts:['650','605','560','506'],a:'650',ex:'600+50 = 650 (الآحاد صفر)'},
+  {q:'العدد 85 مئة و... لا، صحح: كم عدد المئات في 854؟',opts:['8','5','4','85'],a:'8',ex:'الرقم في منزلة المئات هو 8'},
+  {q:'أيّ صيغة تفصيلية صحيحة للعدد 200,070؟ (فكر بعدد من 3 أرقام: 207)',opts:['200+7','200+70','20+7','200+0+7'],a:'200+7',ex:'2 مئات=200، العشرات صفر فلا تُكتب، 7 آحاد=7'},
+  {q:'ما ناتج: 400 + 20 + 6؟',opts:['426','462','246','264'],a:'426',ex:'400+20+6 = 426'},
+  {q:'من الحروف إلى الأرقام: "مئة وستة وثلاثون"',opts:['136','163','361','613'],a:'136',ex:'مئة=100، ستة وثلاثون=36 ← 100+36=136'},
+  {q:'كم عدد حدود الصيغة التفصيلية للعدد 405؟',opts:['3','2','4','5'],a:'2',ex:'4 مئات=400، العشرات صفر تُهمل، 5 آحاد=5 ← حدّان فقط: 400+5'},
+  {q:'ما الصيغة التفصيلية للعدد 900,009 (فكّر بعدد من 3 أرقام: 909)؟',opts:['900+9','900+0+9','90+9','9+9'],a:'900+9',ex:'9 مئات=900، العشرات صفر تُهمل، 9 آحاد=9'},
+  {q:'الأرقام 6، 2، 9 — ما أكبر عدد يمكن تكوينه؟',opts:['962','926','629','296'],a:'962',ex:'رتّب من الأكبر للأصغر: 9، 6، 2 ← 962'},
+  {q:'الأرقام 6، 2، 9 — ما أصغر عدد يمكن تكوينه؟',opts:['269','296','629','692'],a:'269',ex:'رتّب من الأصغر للأكبر: 2، 6، 9 ← 269'},
+  {q:'أيٌّ من التالية خاطئ في الصيغة التفصيلية؟',opts:['300+5+80','200+0+50','400+3+200+4','100+20+6'],a:'200+0+50',ex:'لا نكتب الصفر في الصيغة التفصيلية. الصواب: 200+50 فقط'},
+  {q:'في العدد 630، كم عدد العشرات؟',opts:['3','6','0','63'],a:'3',ex:'الرقم في منزلة العشرات هو 3'},
+  {q:'ما العدد المكوَّن من 7 مئات و0 عشرات و4 آحاد؟',opts:['704','740','407','470'],a:'704',ex:'700+0+4 = 704'},
+];
+
+buildEngine('engA', setA);
+buildEngine('engB', setB);
+buildEngine('engC', setC);
+buildEngine('engD', setD);
+buildEngine('engQuiz', quizQs);
+
+// ============ GAME 1: BUILD THE TARGET NUMBER ============
+const g1targets=[135,208,470,362,509,714,60,926];
+let g1H=0,g1T=0,g1O=0,g1idx=0,g1score=0,g1streak=0,g1playing=false;
+function g1ch(kind,d){
+  if(!g1playing)return;
+  if(kind==='h') g1H=Math.min(9,Math.max(0,g1H+d));
+  if(kind==='t') g1T=Math.min(9,Math.max(0,g1T+d));
+  if(kind==='o') g1O=Math.min(9,Math.max(0,g1O+d));
+  document.getElementById('g1H').textContent=g1H;
+  document.getElementById('g1T').textContent=g1T;
+  document.getElementById('g1O').textContent=g1O;
+  document.getElementById('g1current').textContent=g1H*100+g1T*10+g1O;
+}
+function g1start(){
+  g1idx=0;g1score=0;g1streak=0;g1playing=true;
+  document.getElementById('g1startBtn').textContent='🔄 إعادة البدء';
+  g1showRound();
+}
+function g1showRound(){
+  document.getElementById('g1msg').textContent='';
+  document.getElementById('g1msg').className='game-msg';
+  if(g1idx>=g1targets.length){
+    document.getElementById('g1target').textContent='🏆 انتهت اللعبة!';
+    document.getElementById('g1msg').textContent=`نتيجتك النهائية: ${g1score} نقطة`;
+    document.getElementById('g1msg').className='game-msg ok';
+    g1playing=false;
+    return;
+  }
+  document.getElementById('g1target').textContent=g1targets[g1idx];
+  document.getElementById('g1round').textContent=(g1idx+1)+'/'+g1targets.length;
+  document.getElementById('g1score').textContent=g1score;
+  document.getElementById('g1streak').textContent=g1streak;
+  g1H=0;g1T=0;g1O=0;
+  document.getElementById('g1H').textContent=0;
+  document.getElementById('g1T').textContent=0;
+  document.getElementById('g1O').textContent=0;
+  document.getElementById('g1current').textContent=0;
+}
+function g1check(){
+  if(!g1playing)return;
+  const built=g1H*100+g1T*10+g1O;
+  const target=g1targets[g1idx];
+  const msg=document.getElementById('g1msg');
+  if(built===target){
+    g1score+=10;g1streak++;
+    msg.textContent='✅ رائع! أحسنت البناء!';
+    msg.className='game-msg ok';
+    setTimeout(()=>{g1idx++;g1showRound();},900);
+  }else{
+    g1streak=0;
+    msg.textContent=`❌ ليس بعد، عدد لديك ${built}، حاول مجددًا`;
+    msg.className='game-msg fail';
+  }
+  document.getElementById('g1score').textContent=g1score;
+  document.getElementById('g1streak').textContent=g1streak;
+}
+
+// ============ GAME 2: QUICK CHALLENGE ============
+const g2bank=[
+  {q:'حلّل العدد 462 إلى صيغته التفصيلية',opts:['400+60+2','400+62','40+60+2','462+0'],a:'400+60+2'},
+  {q:'كوّن العدد من: 700+8',opts:['708','780','78','870'],a:'708'},
+  {q:'في العدد 351، ما قيمة الرقم 3؟',opts:['300','3','30','13'],a:'300'},
+  {q:'الأرقام 4،9،1 — أكبر عدد؟',opts:['941','914','491','149'],a:'941'},
+  {q:'حلّل العدد 800+5 (فكّر بالعدد 805) — كم عدد حدوده؟',opts:['2','3','4','1'],a:'2'},
+  {q:'كوّن العدد من: 100+90+5',opts:['195','159','915','591'],a:'195'},
+  {q:'في العدد 706، ما قيمة الرقم 0؟',opts:['0','60','6','600'],a:'0'},
+  {q:'الأرقام 4،9،1 — أصغر عدد؟',opts:['149','194','419','491'],a:'149'},
+  {q:'حلّل العدد 590',opts:['500+90','500+9+0','59+0','500+90+0'],a:'500+90'},
+  {q:'كوّن العدد من: 300+7',opts:['307','370','37','703'],a:'307'},
+  {q:'في العدد 218، ما قيمة الرقم 1؟',opts:['10','1','100','11'],a:'10'},
+  {q:'حلّل العدد 940',opts:['900+40','900+4+0','94+0','900+40+0'],a:'900+40'},
+];
+let g2score=0,g2q=0,g2streak=0,g2idx=0,g2order=[];
+function g2start(){
+  g2score=0;g2q=0;g2streak=0;
+  g2order=[...g2bank].sort(()=>Math.random()-.5).slice(0,10);
+  g2idx=0;
+  document.getElementById('g2startBtn').style.display='none';
+  document.getElementById('g2end').innerHTML='';
+  updG2Stats();
+  g2showQ();
+}
+function updG2Stats(){
+  document.getElementById('g2score').textContent=g2score;
+  document.getElementById('g2q').textContent=g2q+'/10';
+  document.getElementById('g2streak').textContent=g2streak;
+}
+function g2showQ(){
+  if(g2idx>=g2order.length){g2endGame();return;}
+  const item=g2order[g2idx];
+  document.getElementById('g2display').textContent=item.q;
+  const wrap=document.getElementById('g2opts');
+  wrap.innerHTML='';
+  const shuffled=[...item.opts].sort(()=>Math.random()-.5);
+  shuffled.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='q-opt';b.textContent=o;b.style.direction='ltr';
+    b.addEventListener('click',()=>g2answer(b,o,item.a));
+    wrap.appendChild(b);
+  });
+}
+function g2answer(btn,sel,correct){
+  document.querySelectorAll('#g2opts .q-opt').forEach(b=>{
+    b.classList.add('disabled');
+    if(b.textContent===correct) b.classList.add('correct');
+    else if(b===btn) b.classList.add('wrong');
+    b.onclick=null;
+  });
+  if(sel===correct){g2score++;g2streak++;}else g2streak=0;
+  g2q++;updG2Stats();
+  setTimeout(()=>{g2idx++;g2showQ();},800);
+}
+function g2endGame(){
+  document.getElementById('g2opts').innerHTML='';
+  document.getElementById('g2display').textContent='🏆 انتهت اللعبة!';
+  const pct=Math.round(g2score/10*100);
+  let msg,em;
+  if(pct>=90){msg='أداء خارق! أنت خبير الأعداد! 🌟';em='🥇';}
+  else if(pct>=70){msg='جيد جدًا! تقريبًا وصلت!';em='🥈';}
+  else if(pct>=50){msg='جيد، استمر في التدريب!';em='🥉';}
+  else{msg='راجع الشرح وحاول مجددًا!';em='💪';}
+  document.getElementById('g2end').innerHTML=`<div style="background:#fff;border:2px solid var(--plum-line);border-radius:14px;padding:1.2rem;text-align:center;margin-top:1rem">
+    <div style="font-size:2.2rem">${em}</div>
+    <div style="font-size:1.6rem;font-weight:800;color:var(--teal)">${g2score}/10</div>
+    <div style="font-weight:700;color:var(--muted)">${msg}</div></div>`;
+  document.getElementById('g2startBtn').textContent='🔄 العب مجددًا';
+  document.getElementById('g2startBtn').style.display='inline-flex';
+}
+
+// INIT
+renderBuilder();
+</script>
+</body>
+</html>
