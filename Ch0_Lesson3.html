@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اتجاه قراءة وكتابة الأعداد</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#7C3AED;--p-lt:#F5F3FF;--p-dk:#5B21B6;--pk:#EC4899;--pk-lt:#FDF2F8;--gold:#F59E0B;--gold-lt:#FFFBEA;--gr:#10B981;--gr-lt:#ECFDF5;--sky:#0EA5E9;--sky-lt:#F0F9FF;--red:#EF4444;--red-lt:#FEF2F2;--ink:#1E1B4B;--muted:#6B7280;--border:#E5E7EB;--bg:#FDF4FF;--surface:#fff;--radius:18px;--shadow:0 4px 28px rgba(124,58,237,.10)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(135deg,#4C1D95,#7C3AED 45%,#EC4899);color:#fff;padding:22px 16px;text-align:center;border-radius:0 0 26px 26px;position:relative}
+header h1{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.6rem}
+header p{opacity:.9;font-size:.95rem;margin-top:4px}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.tab-btn{border:none;cursor:pointer;background:#fff;color:var(--p-dk);font-family:inherit;font-weight:700;font-size:.95rem;padding:10px 16px;border-radius:99px;box-shadow:var(--shadow)}
+.tab-btn.active{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.section{display:none}.section.active{display:block;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;border:1px solid var(--border)}
+.card h2{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p-dk);font-size:1.3rem;margin-bottom:10px}
+.card h3{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p);font-size:1.1rem;margin:12px 0 8px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:1rem;padding:10px 18px;border-radius:14px;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-p{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.btn-o{background:var(--p-lt);color:var(--p-dk);border:2px solid var(--p)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
+.opt{background:var(--sky-lt);border:2px solid var(--sky);border-radius:14px;padding:12px;font-size:1.15rem;font-weight:700;cursor:pointer;text-align:center;font-family:inherit}
+.opt.ok{background:var(--gr-lt);border-color:var(--gr);color:#065F46}
+.opt.no{background:var(--red-lt);border-color:var(--red);color:#7F1D1D}
+.big{font-size:2.4rem;font-weight:800;text-align:center;color:var(--p-dk);letter-spacing:2px;font-family:'Baloo Bhaijaan 2',sans-serif}
+.note{background:var(--gold-lt);border-right:6px solid var(--gold);padding:12px;border-radius:12px;margin:10px 0}
+.fb{margin-top:10px;font-weight:700;padding:10px;border-radius:12px;display:none}
+.fb.ok{display:block;background:var(--gr-lt);color:#065F46}
+.fb.no{display:block;background:var(--red-lt);color:#7F1D1D}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:1rem}
+th,td{border:1px solid var(--border);padding:8px;text-align:center}
+th{background:var(--p-lt);color:var(--p-dk)}
+input[type=text],input[type=number]{font-family:inherit;font-size:1.1rem;padding:10px;border:2px solid var(--p);border-radius:12px;width:100%;text-align:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.chip{display:inline-block;background:var(--pk-lt);border:2px solid var(--pk);color:#9D174D;border-radius:99px;padding:6px 14px;margin:4px;font-weight:700;cursor:pointer}
+.chip.sel{background:var(--pk);color:#fff}
+.score{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff;border-radius:14px;padding:10px 16px;text-align:center;font-weight:800}
+.bar{height:12px;background:var(--p-lt);border-radius:99px;overflow:hidden;margin:10px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--pk));width:0;transition:.3s}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mem .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:12px;font-size:1.1rem;font-weight:800;cursor:pointer;user-select:none}
+.mem .c.open{background:var(--gold-lt);color:var(--ink);border:2px solid var(--gold)}
+.mem .c.done{background:var(--gr-lt);color:#065F46;border:2px solid var(--gr);cursor:default}
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,0.25);padding:8px 18px;border-radius:99px;backdrop-filter:blur(4px);transition:0.2s}
+.back:hover{background:rgba(255,255,255,0.4);transform:translateY(-1px)}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+
+/* زر التحكم بالموسيقى */
+.music-btn{position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.25);color:#fff;border:none;padding:8px 14px;border-radius:99px;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.85rem;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px);transition:0.2s}
+.music-btn:hover{background:rgba(255,255,255,0.4)}
+
+/* Games Grid UI */
+.games-title-box{text-align:center;margin:10px 0 24px}
+.games-title-box h2{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.7rem;color:var(--ink)}
+.games-title-box p{color:var(--muted);font-size:0.95rem;font-weight:600;margin-top:4px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.game-card-select{background:#fff;border-radius:20px;padding:26px 20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.03);border:1px solid #EEF2F6;transition:all .2s ease;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.game-card-select:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(124,58,237,0.12);border-color:var(--p-lt)}
+.game-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:14px}
+.game-card-select h3{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.25rem;color:var(--ink);margin:0 0 6px}
+.game-card-select p{font-size:0.9rem;color:var(--muted);line-height:1.5;margin-bottom:16px;flex-grow:1}
+.game-card-select .start-link{color:var(--p);font-weight:700;font-size:0.95rem;display:inline-flex;align-items:center;gap:4px}
+.game-card-select:hover .start-link{text-decoration:underline}
+</style></head><body>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="Ch0_Music.mp3" type="audio/mpeg">
+  <source src="Ch0_Music.wav" type="audio/wav">
+  <source src="Ch0_Music.ogg" type="audio/ogg">
+</audio>
+
+<header><button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 الموسيقى: تفعيل</button><h1>اتجاه قراءة وكتابة الأعداد</h1><p>الدرس الأول — من أين نبدأ القراءة والعدّ؟</p><a class="back" href="https://math-quest-fourth-grade.vercel.app/">🏠 العودة للرئيسية</a></header>
+<div class="wrap">
+<div class="tabs">
+<button class="tab-btn active" data-tab="learn" onclick="showTab('learn')">📘 المفهوم</button>
+<button class="tab-btn" data-tab="games" onclick="showTab('games')">🎮 الألعاب</button>
+<button class="tab-btn" data-tab="drill" onclick="showTab('drill')">📝 التمارين</button>
+</div>
+<div class="section active" id="sec-learn"><div class="card"><h2>➡️⬅️ الاتجاه الصحيح</h2>
+<p>الأرقام في العدد <b>تُكتب وتُقرأ من اليسار إلى اليمين</b>، لكن <b>ترقيم المنازل يبدأ من اليمين</b>: أول منزلة من اليمين هي الآحاد.</p>
+<div class="note">مثال: في العدد 6294 نبدأ العدّ من اليمين: 4 آحاد، 9 عشرات، 2 مئات، 6 آلاف. وعند القراءة نقول: ستة آلاف ومئتان وأربعة وتسعون.</div>
+<h3>شاهد الترتيب خطوة بخطوة</h3><div class="big" id="dNum">—</div><p id="dStep" style="text-align:center;font-weight:700;min-height:28px"></p>
+<div class="btn-row"><button class="btn btn-p" onclick="playDir()">▶️ شاهد</button><button class="btn btn-o" onclick="newDir()">🔄 عدد جديد</button></div></div></div>
+<div class="section" id="sec-games">
+  <div id="games-hub">
+    <div class="games-title-box">
+      <h2>🎮 الألعاب التعليمية</h2>
+      <p>اختر لعبة وتعلّم وأنت تلعب!</p>
+    </div>
+    <div class="games-grid">
+      <div class="game-card-select" onclick="openGame('g1')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">⚡</div>
+        <h3>لعبة السرعة</h3>
+        <p>ما الرقم في المنزلة المطلوبة؟ حدد الإجابة الصحيحة بسرعة قبل انتهاء الوقت</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g2')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">🧠</div>
+        <h3>لعبة الذاكرة</h3>
+        <p>طابق بين ترتيب المنازل وأسمائها بدءاً من اليمين</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g3')">
+        <div class="game-icon" style="background:var(--gr-lt);color:var(--gr)">🧭</div>
+        <h3>اتجاه القراءة أم العدّ؟</h3>
+        <p>حدد إن كانت العبارة عن اتجاه القراءة أو اتجاه العدّ صحيحة أم خاطئة</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g4')">
+        <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">🏗️</div>
+        <h3>لعبة البرج</h3>
+        <p>أجب بشكل صحيح لتبني طابقاً جديداً في برجك، احذر السقوط!</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g5')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">🔤</div>
+        <h3>اكتب العدد بالكلمات</h3>
+        <p>اختر الكتابة الصحيحة بالحروف للعدد المعروض أمامك</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g6')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">👆</div>
+        <h3>اضغط بالترتيب الصحيح</h3>
+        <p>اضغط على أرقام العدد بترتيب المنازل من اليمين لليسار بأسرع وقت</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+    </div>
+  </div>
+  <div id="game-view" style="display:none">
+    <button class="btn btn-o" onclick="closeGame()" style="margin-bottom:14px">⬅️ قائمة الألعاب</button>
+    <div class="card" id="wrap-g1" style="display:none"><h3>⚡ لعبة السرعة: ما الرقم في المنزلة المطلوبة؟</h3><div id="g1"></div></div>
+    <div class="card" id="wrap-g2" style="display:none"><h3>🧠 لعبة الذاكرة: ترتيب المنازل من اليمين</h3><div id="g2"></div></div>
+    <div class="card" id="wrap-g3" style="display:none"><h3>🧭 اتجاه القراءة أم اتجاه العدّ؟</h3><div id="g3"></div></div>
+    <div class="card" id="wrap-g4" style="display:none"><h3>🏗️ لعبة البرج</h3><div id="g4"></div></div>
+    <div class="card" id="wrap-g5" style="display:none"><h3>🔤 اكتب العدد بالكلمات</h3><div id="g5"></div></div>
+    <div class="card" id="wrap-g6" style="display:none"><h3>👆 اضغط بالترتيب الصحيح</h3><div id="g6"></div></div>
+  </div>
+</div>
+<div class="section" id="sec-drill"><div class="card"><h2>📝 تمارين على الاتجاه والمنازل</h2><div id="q1"></div></div></div>
+</div>
+<footer>رياضيات — الصف الرابع الابتدائي</footer>
+<script>
+function toAr(n){return String(n)}
+function toHi(n){return toAr(n)}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+function showTab(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));if(id==='games')closeGame();window.scrollTo({top:0,behavior:'smooth'})}
+
+// الموسيقى الخلفية
+const bgAudio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggleBtn');
+let isMusicPlaying = false;
+if(bgAudio) bgAudio.volume = 0.35;
+
+function startBgMusic() {
+  if (!isMusicPlaying && bgAudio) {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    }).catch(() => {
+      musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+    });
+  }
+}
+function toggleMusic() {
+  if (!bgAudio) return;
+  if (isMusicPlaying) {
+    bgAudio.pause();
+    isMusicPlaying = false;
+    musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+  } else {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    });
+  }
+}
+window.addEventListener('load', startBgMusic);
+document.addEventListener('click', startBgMusic, { once: true });
+document.addEventListener('touchstart', startBgMusic, { once: true });
+
+// المؤثرات الصوتية
+let audioCtx;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function playCorrectSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.setValueAtTime(659.25, now + 0.08);
+    osc.frequency.setValueAtTime(783.99, now + 0.16);
+    osc.frequency.setValueAtTime(1046.50, now + 0.24);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.45);
+  } catch(e){}
+}
+function playWrongSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.setValueAtTime(110, now + 0.12);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.35);
+  } catch(e){}
+}
+
+// التنقل بين الألعاب
+function openGame(gameId) {
+  document.getElementById('games-hub').style.display = 'none';
+  document.getElementById('game-view').style.display = 'block';
+  ['wrap-g1','wrap-g2','wrap-g3','wrap-g4','wrap-g5','wrap-g6'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('wrap-' + gameId).style.display = 'block';
+}
+function closeGame() {
+  document.getElementById('game-view').style.display = 'none';
+  document.getElementById('games-hub').style.display = 'block';
+}
+const NAMES={1:'آحاد',2:'عشرات',3:'مئات',4:'آلاف',5:'عشرات الآلاف',6:'مئات الآلاف',7:'ملايين'};
+function placeName(pos){return NAMES[pos]}
+function words(n){
+  const ones=['','واحد','اثنان','ثلاثة','أربعة','خمسة','ستة','سبعة','ثمانية','تسعة'];
+  const tens=['','عشرة','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
+  const teen=['عشرة','أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'];
+  const huns=['','مائة','مئتان','ثلاثمائة','أربعمائة','خمسمائة','ستمائة','سبعمائة','ثمانمائة','تسعمائة'];
+  function under1000(x){let p=[];const h=Math.floor(x/100),r=x%100;if(h)p.push(huns[h]);
+    if(r){if(r<10)p.push(ones[r]);else if(r<20)p.push(teen[r-10]);else{const u=r%10,t=Math.floor(r/10);p.push(u?ones[u]+' و'+tens[t]:tens[t])}}
+    return p.join(' و')}
+  if(n===0)return 'صفر';
+  const th=Math.floor(n/1000),r=n%1000;let out=[];
+  if(th===1)out.push('ألف');else if(th===2)out.push('ألفان');else if(th>2&&th<11)out.push(ones[th]+' آلاف');else if(th>=11)out.push(under1000(th)+' ألفاً');
+  if(r)out.push(under1000(r));
+  return out.join(' و');
+}
+// generic quiz engine
+function makeQuiz(elId,gen,count){
+  const el=document.getElementById(elId);let i=0,correct=0,qs=[];
+  for(let k=0;k<count;k++)qs.push(gen());
+  function render(){
+    if(i>=qs.length){
+      const pct=Math.round(correct/qs.length*100);
+      el.innerHTML='<div class="score">'+(pct>=80?'🏆 ممتاز!':'💪 كمّل تدريب!')+'<br>نتيجتك: '+toAr(correct)+' / '+toAr(qs.length)+' ('+toAr(pct)+'٪)</div><div class="btn-row"><button class="btn btn-o" id="rq">🔄 أعد التمارين</button></div>';
+      document.getElementById('rq').onclick=()=>{i=0;correct=0;qs=[];for(let k=0;k<count;k++)qs.push(gen());render()};
+      return;
+    }
+    const q=qs[i];
+    el.innerHTML='<div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div><p style="font-weight:700;font-size:1.1rem">سؤال '+toAr(i+1)+' من '+toAr(qs.length)+'</p><p style="margin:8px 0;font-size:1.15rem">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div><div class="fb" id="'+elId+'-f"></div>';
+    const box=document.getElementById(elId+'-o'),fb=document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o=>{
+      const b=document.createElement('button');b.className='opt';b.innerHTML=o;
+      b.onclick=()=>{
+        if(box.dataset.done)return;box.dataset.done='1';
+        const ok=o===q.answer;
+        [...box.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok');else if(c===b)c.classList.add('no')});
+        fb.className='fb '+(ok?'ok':'no');
+        fb.innerHTML=(ok?'✅ إجابة صحيحة! ':'❌ الإجابة الصحيحة: '+q.answer+'. ')+(q.hint||'');
+        if(ok){correct++;playCorrectSound();}else{playWrongSound();}
+        setTimeout(()=>{i++;render()},1400);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+
+function memoryGame(elId,pairs){
+  const el=document.getElementById(elId);
+  let cards=[];pairs.forEach((p,i)=>{cards.push({k:i,t:p[0]});cards.push({k:i,t:p[1]})});
+  cards=shuffle(cards);let open=[],done=0,moves=0;
+  el.innerHTML='<div class="mem" id="'+elId+'-g"></div><p style="margin-top:8px" id="'+elId+'-s"></p><div class="btn-row"><button class="btn btn-o" id="'+elId+'-r">🔄 لعبة جديدة</button></div>';
+  const g=document.getElementById(elId+'-g'),s=document.getElementById(elId+'-s');
+  document.getElementById(elId+'-r').onclick=()=>memoryGame(elId,pairs);
+  cards.forEach((c,idx)=>{
+    const d=document.createElement('div');d.className='c';d.textContent='؟';
+    d.onclick=()=>{
+      if(d.classList.contains('done')||d.classList.contains('open')||open.length===2)return;
+      d.classList.add('open');d.textContent=c.t;open.push({d,c});
+      if(open.length===2){moves++;
+        if(open[0].c.k===open[1].c.k){open.forEach(o=>{o.d.classList.remove('open');o.d.classList.add('done')});open=[];done++;playCorrectSound();
+          if(done===pairs.length)s.innerHTML='🎉 أحسنت! أكملت اللعبة في '+toAr(moves)+' محاولة';
+        } else {playWrongSound();setTimeout(()=>{open.forEach(o=>{o.d.classList.remove('open');o.d.textContent='؟'});open=[]},800);}
+      }
+      s.textContent||(s.textContent='المحاولات: '+toAr(moves));
+      if(done<pairs.length)s.textContent='المحاولات: '+toAr(moves)+' — أزواج صحيحة: '+toAr(done)+'/'+toAr(pairs.length);
+    };
+    g.appendChild(d);
+  });
+}
+function speedGame(elId,gen,seconds){
+  const el=document.getElementById(elId);let score=0,t=seconds,timer=null,q=null;
+  el.innerHTML='<div class="score" id="'+elId+'-h"></div><div id="'+elId+'-b" style="margin-top:10px"></div>';
+  const h=document.getElementById(elId+'-h'),b=document.getElementById(elId+'-b');
+  function next(){q=gen();
+    b.innerHTML='<p style="font-size:1.15rem;font-weight:700;text-align:center">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div>';
+    const box=document.getElementById(elId+'-o');
+    shuffle(q.options).forEach(o=>{const x=document.createElement('button');x.className='opt';x.innerHTML=o;
+      x.onclick=()=>{if(o===q.answer){score++;x.classList.add('ok');playCorrectSound();}else{x.classList.add('no');[...box.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok')});playWrongSound();}
+        setTimeout(next,450)};box.appendChild(x)});
+  }
+  function tick(){h.innerHTML='⏱️ الوقت: '+toAr(t)+' ثانية — النقاط: '+toAr(score);
+    if(t<=0){clearInterval(timer);b.innerHTML='<div class="score">انتهى الوقت! نقاطك: '+toAr(score)+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>speedGame(elId,gen,seconds);return}
+    t--;}
+  tick();timer=setInterval(tick,1000);next();
+}
+function sortGame(elId,count,asc){
+  const el=document.getElementById(elId);
+  let nums=[];while(nums.length<count){const n=rnd(1000,99999);if(!nums.includes(n))nums.push(n)}
+  let picked=[];
+  el.innerHTML='<p>رتّب الأعداد '+(asc?'تصاعدياً (من الأصغر للأكبر)':'تنازلياً (من الأكبر للأصغر)')+' بالضغط عليها بالترتيب:</p><div id="'+elId+'-c" style="margin:10px 0"></div><div class="big" id="'+elId+'-p">—</div><div class="fb" id="'+elId+'-f"></div><div class="btn-row"><button class="btn btn-o" id="'+elId+'-r">🔄 أعداد جديدة</button></div>';
+  const c=document.getElementById(elId+'-c'),p=document.getElementById(elId+'-p'),f=document.getElementById(elId+'-f');
+  document.getElementById(elId+'-r').onclick=()=>sortGame(elId,count,asc);
+  shuffle(nums).forEach(n=>{const s=document.createElement('span');s.className='chip';s.textContent=toAr(n);
+    s.onclick=()=>{if(s.classList.contains('sel'))return;s.classList.add('sel');picked.push(n);p.textContent=picked.map(toAr).join(' ، ');
+      if(picked.length===nums.length){const sorted=nums.slice().sort((a,b)=>asc?a-b:b-a);
+        const ok=picked.every((v,i)=>v===sorted[i]);
+        f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?'✅ ترتيب صحيح! ممتاز':'❌ الترتيب الصحيح: '+sorted.map(toAr).join(' ، ');}};
+    c.appendChild(s)});
+}
+
+let dN=0;
+function newDir(){dN=rnd(1000,99999);document.getElementById('dNum').textContent=toAr(dN);document.getElementById('dStep').textContent=''}
+function playDir(){const ds=String(dN).split('').reverse();let i=0;const el=document.getElementById('dStep');
+ const t=setInterval(()=>{if(i>=ds.length){clearInterval(t);el.textContent='✅ إذاً نقرأه: '+words(dN);return}
+  el.textContent='المنزلة رقم '+toAr(i+1)+' من اليمين: الرقم '+toAr(ds[i])+' = '+placeName(i+1);i++},1100)}
+newDir();
+function dirQ(){const n=rnd(1000,99999);const ds=String(n).split('').reverse();const pos=rnd(1,ds.length);
+ const opts=[...new Set(shuffle(ds).slice(0,4).map(toAr))];if(!opts.includes(toAr(ds[pos-1])))opts[0]=toAr(ds[pos-1]);
+ return{q:'في العدد <b>'+toAr(n)+'</b> ما الرقم في منزلة <b>'+placeName(pos)+'</b>؟',options:[...new Set(opts)],answer:toAr(ds[pos-1]),hint:'ابدأ العدّ من اليمين.'}}
+// ============ لعبة اتجاه القراءة أم اتجاه العدّ؟ ============
+function directionTFGame(elId){
+  const el=document.getElementById(elId);
+  const statements=[
+    {t:'نقرأ ونكتب الأرقام من اليسار إلى اليمين', v:true},
+    {t:'نقرأ ونكتب الأرقام من اليمين إلى اليسار', v:false},
+    {t:'نبدأ ترقيم المنازل من اليمين', v:true},
+    {t:'نبدأ ترقيم المنازل من اليسار', v:false},
+    {t:'أول منزلة من اليمين هي الآحاد', v:true},
+    {t:'أول منزلة من اليمين هي العشرات', v:false},
+    {t:'ثاني منزلة من اليمين هي العشرات', v:true},
+    {t:'ثاني منزلة من اليمين هي المئات', v:false},
+    {t:'نبدأ عدّ المنازل من اليسار', v:false},
+    {t:'اتجاه القراءة يخالف اتجاه ترقيم المنازل', v:true},
+    {t:'ثالث منزلة من اليمين هي المئات', v:true},
+    {t:'ثالث منزلة من اليمين هي الآلاف', v:false},
+    {t:'رابع منزلة من اليمين هي الآلاف', v:true},
+    {t:'نبدأ العدّ من أعلى منزلة إلى اليمين', v:false}
+  ];
+  let score=0, round=0; const totalRounds=8;
+  function next(){
+    if(round>=totalRounds){
+      el.innerHTML='<div class="score" style="font-size:1.2rem">🎉 انتهت اللعبة! نقاطك: '+toAr(score)+' من '+toAr(totalRounds)+'</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>directionTFGame(elId);
+      return;
+    }
+    round++;
+    const st=statements[rnd(0,statements.length-1)];
+    el.innerHTML='<div class="score" style="margin-bottom:12px">الجولة '+toAr(round)+' من '+toAr(totalRounds)+' — النقاط: '+toAr(score)+'</div>'+
+      '<p style="font-size:1.15rem;font-weight:700;text-align:center;margin:14px 0">'+st.t+'</p>'+
+      '<div class="btn-row" style="justify-content:center;gap:16px"><button class="btn btn-p" style="background:var(--gr);min-width:110px" id="'+elId+'-ok">✔️ صح</button><button class="btn btn-p" style="background:var(--red);min-width:110px" id="'+elId+'-no">❌ خطأ</button></div>'+
+      '<div class="fb" id="'+elId+'-f"></div>';
+    const fb=document.getElementById(elId+'-f');
+    document.getElementById(elId+'-ok').onclick=()=>check(true);
+    document.getElementById(elId+'-no').onclick=()=>check(false);
+    function check(ans){
+      const ok=ans===st.v;
+      fb.className='fb '+(ok?'ok':'no');
+      fb.textContent=ok?'✅ إجابة صحيحة':'❌ إجابة خاطئة! العبارة '+(st.v?'صحيحة':'خاطئة');
+      if(ok){score++;playCorrectSound();}else playWrongSound();
+      setTimeout(next,1200);
+    }
+  }
+  next();
+}
+
+// ============ لعبة البرج ============
+function towerGame(elId){
+  const el=document.getElementById(elId);
+  let floors=0, lives=3; const goal=8;
+  function render(){
+    let towerHtml='';
+    for(let i=0;i<floors;i++){
+      towerHtml='<div style="background:linear-gradient(135deg,var(--p),var(--pk));border-radius:8px;height:22px;margin:2px auto;width:'+(70+i*4)+'%;box-shadow:0 2px 6px rgba(0,0,0,.15)"></div>'+towerHtml;
+    }
+    el.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-weight:800">🏗️ الطوابق: '+toAr(floors)+' / '+toAr(goal)+'</span><span style="font-weight:800;color:var(--red)">❤️ '+toAr(lives)+'</span></div>'+
+    '<div style="min-height:'+(goal*26+20)+'px;display:flex;flex-direction:column;justify-content:flex-end;background:var(--p-lt);border-radius:12px;padding:8px 10px;margin-bottom:14px">'+towerHtml+'<div style="height:6px;background:var(--muted);border-radius:4px;width:90%;margin:2px auto"></div></div>'+
+    '<div id="'+elId+'-q"></div>';
+    nextQ();
+  }
+  function nextQ(){
+    const q=dirQ();
+    const box=document.getElementById(elId+'-q');
+    box.innerHTML='<p style="text-align:center;font-weight:700;font-size:1.1rem">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div><div class="fb" id="'+elId+'-f"></div>';
+    const opts=document.getElementById(elId+'-o'), fb=document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o=>{
+      const b=document.createElement('button');b.className='opt';b.innerHTML=o;
+      b.onclick=()=>{
+        if(opts.dataset.done)return; opts.dataset.done='1';
+        const ok=o===q.answer;
+        [...opts.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok'); else if(c===b)c.classList.add('no')});
+        if(ok){floors++;playCorrectSound(); fb.className='fb ok'; fb.textContent='✅ طابق جديد للبرج!';}
+        else{lives--;playWrongSound(); fb.className='fb no'; fb.textContent='❌ سقط طابق! فقدت قلباً';}
+        setTimeout(()=>{
+          if(floors>=goal){
+            el.innerHTML='<div class="score" style="font-size:1.3rem">🏆 اكتمل البرج! أحسنت يا مهندساً صغيراً</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 ابنِ برجاً جديداً</button></div>';
+            document.getElementById(elId+'-r').onclick=()=>towerGame(elId);
+          } else if(lives<=0){
+            el.innerHTML='<div class="score" style="background:linear-gradient(135deg,var(--red),#B91C1C)">💥 انهار البرج! وصلت إلى '+toAr(floors)+' من '+toAr(goal)+' طابق</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 حاول مرة أخرى</button></div>';
+            document.getElementById(elId+'-r').onclick=()=>towerGame(elId);
+          } else render();
+        },900);
+      };
+      opts.appendChild(b);
+    });
+  }
+  render();
+}
+
+// ============ لعبة اكتب العدد بالكلمات ============
+function wordsQ(){
+  const n=rnd(100,9999);
+  const correct=words(n);
+  let opts=new Set([correct]);
+  let tries=0;
+  while(opts.size<4 && tries<25){
+    const rn=rnd(100,9999);
+    if(rn!==n) opts.add(words(rn));
+    tries++;
+  }
+  return {q:'اختر الكتابة الصحيحة بالكلمات للعدد <b>'+toAr(n)+'</b>:', options:[...opts], answer:correct, hint:'اقرأ العدد بدءاً من أعلى منزلة نزولاً حتى الآحاد.'};
+}
+function wordsGame(elId){
+  const el=document.getElementById(elId);
+  let score=0, round=0; const totalRounds=8;
+  function next(){
+    if(round>=totalRounds){
+      el.innerHTML='<div class="score" style="font-size:1.2rem">🎉 انتهت اللعبة! نقاطك: '+toAr(score)+' من '+toAr(totalRounds)+'</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>wordsGame(elId);
+      return;
+    }
+    round++;
+    const q=wordsQ();
+    el.innerHTML='<div class="score" style="margin-bottom:12px">الجولة '+toAr(round)+' من '+toAr(totalRounds)+' — النقاط: '+toAr(score)+'</div>'+
+      '<p style="text-align:center;font-weight:700;font-size:1.1rem">'+q.q+'</p><div class="opts" id="'+elId+'-o" style="grid-template-columns:1fr"></div><div class="fb" id="'+elId+'-f"></div>';
+    const box=document.getElementById(elId+'-o'), fb=document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o=>{
+      const b=document.createElement('button');b.className='opt';b.style.fontSize='1rem';b.textContent=o;
+      b.onclick=()=>{
+        if(box.dataset.done)return; box.dataset.done='1';
+        const ok=o===q.answer;
+        [...box.children].forEach(c=>{if(c.textContent===q.answer)c.classList.add('ok'); else if(c===b)c.classList.add('no')});
+        fb.className='fb '+(ok?'ok':'no');
+        fb.textContent=ok?'✅ صحيح!':'❌ الصحيح: '+q.answer;
+        if(ok){score++;playCorrectSound();} else playWrongSound();
+        setTimeout(next,1600);
+      };
+      box.appendChild(b);
+    });
+  }
+  next();
+}
+
+// ============ لعبة اضغط بالترتيب الصحيح ============
+function tapOrderGame(elId){
+  const el=document.getElementById(elId);
+  let score=0, round=0; const totalRounds=6;
+  function finish(){
+    el.innerHTML='<div class="score" style="font-size:1.2rem">🎉 انتهت اللعبة! نقاطك: '+toAr(score)+' من '+toAr(totalRounds)+'</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+    document.getElementById(elId+'-r').onclick=()=>tapOrderGame(elId);
+  }
+  function startRound(){
+    const n=rnd(1000,99999);
+    const digits=String(n).split('');
+    const expected=[]; for(let i=digits.length-1;i>=0;i--) expected.push(i);
+    let step=0, locked=false;
+    el.innerHTML='<div class="score" style="margin-bottom:10px">الجولة '+toAr(round)+' من '+toAr(totalRounds)+' — النقاط: '+toAr(score)+'</div>'+
+      '<p style="text-align:center;font-weight:700;font-size:1.1rem">اضغط على أرقام العدد <b>'+toAr(n)+'</b> بترتيب المنازل: من الآحاد حتى أعلى منزلة</p>'+
+      '<div class="big" id="'+elId+'-p" style="min-height:44px;letter-spacing:6px">—</div>'+
+      '<div class="opts" id="'+elId+'-o"></div>'+
+      '<div class="fb" id="'+elId+'-f"></div>';
+    const p=document.getElementById(elId+'-p'), opts=document.getElementById(elId+'-o'), fb=document.getElementById(elId+'-f');
+    const orderBtns=shuffle(digits.map((d,i)=>i));
+    orderBtns.forEach(origIdx=>{
+      const btn=document.createElement('button'); btn.className='opt'; btn.textContent=toAr(digits[origIdx]);
+      btn.onclick=()=>{
+        if(locked||btn.disabled) return;
+        if(origIdx===expected[step]){
+          btn.disabled=true; btn.classList.add('ok');
+          step++;
+          p.textContent=(p.textContent==='—'?'':p.textContent+' ')+toAr(digits[origIdx]);
+          if(step===expected.length){
+            locked=true; score++; playCorrectSound();
+            fb.className='fb ok'; fb.textContent='✅ ممتاز! ترتيب صحيح بالكامل';
+            setTimeout(()=>{ round++; if(round>=totalRounds) finish(); else startRound(); },1300);
+          }
+        } else {
+          locked=true; btn.classList.add('no'); playWrongSound();
+          fb.className='fb no'; fb.textContent='❌ ترتيب خاطئ! جرّب عدداً جديداً';
+          setTimeout(()=>{ round++; if(round>=totalRounds) finish(); else startRound(); },1300);
+        }
+      };
+      opts.appendChild(btn);
+    });
+  }
+  round=1;
+  startRound();
+}
+
+speedGame('g1',dirQ,45);
+memoryGame('g2',[['المنزلة 1 من اليمين','آحاد'],['المنزلة 2','عشرات'],['المنزلة 3','مئات'],['المنزلة 4','آلاف'],['المنزلة 5','عشرات الآلاف'],['المنزلة 6','مئات الآلاف'],['نقرأ العدد','من اليسار لليمين'],['نعدّ المنازل','من اليمين']]);
+directionTFGame('g3');
+towerGame('g4');
+wordsGame('g5');
+tapOrderGame('g6');
+makeQuiz('q1',dirQ,10);
+
+</script></body></html>

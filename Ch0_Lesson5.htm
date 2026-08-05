@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>درس صور العدد</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- مكتبة تحويل العناصر إلى صور للتقرير -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#7C3AED;--p-lt:#F5F3FF;--p-dk:#5B21B6;--pk:#EC4899;--pk-lt:#FDF2F8;--gold:#F59E0B;--gold-lt:#FFFBEA;--gr:#10B981;--gr-lt:#ECFDF5;--sky:#0EA5E9;--sky-lt:#F0F9FF;--red:#EF4444;--red-lt:#FEF2F2;--ink:#1E1B4B;--muted:#6B7280;--border:#E5E7EB;--bg:#FDF4FF;--surface:#fff;--radius:18px;--shadow:0 4px 28px rgba(124,58,237,.10)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(135deg,#4C1D95,#7C3AED 45%,#EC4899);color:#fff;padding:22px 16px;text-align:center;border-radius:0 0 26px 26px;position:relative}
+header h1{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.6rem}
+header p{opacity:.9;font-size:.95rem;margin-top:4px}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.tab-btn{border:none;cursor:pointer;background:#fff;color:var(--p-dk);font-family:inherit;font-weight:700;font-size:.95rem;padding:10px 16px;border-radius:99px;box-shadow:var(--shadow)}
+.tab-btn.active{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.section{display:none}.section.active{display:block;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;border:1px solid var(--border)}
+.card h2{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p-dk);font-size:1.3rem;margin-bottom:10px}
+.card h3{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p);font-size:1.1rem;margin:12px 0 8px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:1rem;padding:10px 18px;border-radius:14px;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-p{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.btn-o{background:var(--p-lt);color:var(--p-dk);border:2px solid var(--p)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
+.opt{background:var(--sky-lt);border:2px solid var(--sky);border-radius:14px;padding:12px;font-size:1.15rem;font-weight:700;cursor:pointer;text-align:center;font-family:inherit}
+.opt.ok{background:var(--gr-lt);border-color:var(--gr);color:#065F46}
+.opt.no{background:var(--red-lt);border-color:var(--red);color:#7F1D1D}
+.big{font-size:2.4rem;font-weight:800;text-align:center;color:var(--p-dk);letter-spacing:2px;font-family:'Baloo Bhaijaan 2',sans-serif}
+.note{background:var(--gold-lt);border-right:6px solid var(--gold);padding:12px;border-radius:12px;margin:10px 0}
+.fb{margin-top:10px;font-weight:700;padding:10px;border-radius:12px;display:none}
+.fb.ok{display:block;background:var(--gr-lt);color:#065F46}
+.fb.no{display:block;background:var(--red-lt);color:#7F1D1D}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:1rem}
+th,td{border:1px solid var(--border);padding:8px;text-align:center}
+th{background:var(--p-lt);color:var(--p-dk)}
+input[type=text],input[type=number]{font-family:inherit;font-size:1.1rem;padding:10px;border:2px solid var(--p);border-radius:12px;width:100%;text-align:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.score{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff;border-radius:14px;padding:10px 16px;text-align:center;font-weight:800}
+.bar{height:12px;background:var(--p-lt);border-radius:99px;overflow:hidden;margin:10px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--pk));width:0;transition:.3s}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mem .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:12px;font-size:1.1rem;font-weight:800;cursor:pointer;user-select:none;text-align:center;padding:4px}
+.mem .c.open{background:var(--gold-lt);color:var(--ink);border:2px solid var(--gold)}
+.mem .c.done{background:var(--gr-lt);color:#065F46;border:2px solid var(--gr);cursor:default}
+
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,0.25);padding:8px 18px;border-radius:99px;backdrop-filter:blur(4px);transition:0.2s}
+.back:hover{background:rgba(255,255,255,0.4);transform:translateY(-1px)}
+
+footer{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+
+.music-btn{position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.25);color:#fff;border:none;padding:8px 14px;border-radius:99px;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.85rem;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px);transition:0.2s}
+.music-btn:hover{background:rgba(255,255,255,0.4)}
+
+.games-title-box{text-align:center;margin:10px 0 24px}
+.games-title-box h2{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.7rem;color:var(--ink)}
+.games-title-box p{color:var(--muted);font-size:0.95rem;font-weight:600;margin-top:4px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.game-card-select{background:#fff;border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.03);border:1px solid #EEF2F6;transition:all .2s ease;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.game-card-select:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(124,58,237,0.12);border-color:var(--p-lt)}
+.game-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:12px}
+.game-card-select h3{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.2rem;color:var(--ink);margin:0 0 6px}
+.game-card-select p{font-size:0.88rem;color:var(--muted);line-height:1.5;margin-bottom:14px;flex-grow:1}
+.game-card-select .start-link{color:var(--p);font-weight:700;font-size:0.9rem;display:inline-flex;align-items:center;gap:4px}
+.game-card-select:hover .start-link{text-decoration:underline}
+
+.card-chip{display:inline-block;padding:10px 18px;margin:6px;background:var(--p-lt);border:2px solid var(--p);border-radius:14px;font-weight:800;font-size:1.2rem;color:var(--p-dk);cursor:pointer;transition:0.2s}
+.card-chip:hover{background:var(--p);color:#fff}
+.card-chip.selected{background:var(--gr-lt);border-color:var(--gr);color:#065F46;opacity:0.6;cursor:default}
+
+/* تصميم لعبة العداد (Abacus) */
+.abacus-col{background:var(--p-lt);border:2px solid var(--p);border-radius:16px;padding:10px;display:flex;flex-direction:column;align-items:center;min-width:85px;box-shadow:0 4px 12px rgba(0,0,0,0.03)}
+.abacus-title{font-weight:800;color:var(--p-dk);font-size:0.95rem;margin-bottom:8px}
+.abacus-rod{height:130px;width:8px;background:#CBD5E1;border-radius:99px;display:flex;flex-direction:column-reverse;align-items:center;padding:4px 0;margin-bottom:8px;position:relative}
+.bead{width:34px;height:11px;background:linear-gradient(135deg,var(--gold),#D97706);border-radius:99px;margin:1px 0;box-shadow:0 2px 4px rgba(0,0,0,0.15)}
+.abacus-cnt{font-size:1.3rem;font-weight:800;color:var(--p-dk);margin-bottom:6px;font-family:'Baloo Bhaijaan 2'}
+.abacus-btn{border:none;background:var(--p);color:#fff;border-radius:8px;width:32px;height:32px;font-weight:800;font-size:1.1rem;cursor:pointer;transition:0.15s}
+.abacus-btn:hover{background:var(--p-dk);transform:scale(1.05)}
+
+/* تصميم لعبة التوصيل المباشر (Line Matching) */
+.matching-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:10px}
+.match-card{background:#fff;border:2px solid var(--border);border-radius:14px;padding:12px;text-align:center;font-weight:800;font-size:1.05rem;cursor:pointer;transition:0.2s;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.02)}
+.match-card:hover{border-color:var(--p);transform:translateY(-2px)}
+.match-card.sel{border-color:var(--p);background:var(--p-lt);color:var(--p-dk);box-shadow:0 0 0 3px rgba(124,58,237,0.2)}
+.match-card.done{border-color:var(--gr);background:var(--gr-lt);color:#065F46;cursor:default;transform:none}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="Ch0_Music.mp3" type="audio/mpeg">
+  <source src="Ch0_Music.wav" type="audio/wav">
+  <source src="Ch0_Music.ogg" type="audio/ogg">
+</audio>
+
+<header>
+  <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 الموسيقى: تفعيل</button>
+  <h1>صور العدد</h1>
+  <p>الدرس الأول — الصورة القياسية والتحليلية واللفظية</p>
+  <a class="back" href="https://math-quest-fourth-grade.vercel.app/">🏠 العودة للرئيسية</a>
+</header>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab-btn active" data-tab="learn" onclick="showTab('learn')">📘 المفهوم</button>
+  <button class="tab-btn" data-tab="games" onclick="showTab('games')">🎮 الألعاب (8)</button>
+  <button class="tab-btn" data-tab="drill" onclick="showTab('drill')">📝 التمارين</button>
+</div>
+
+<!-- ==================== قسم المفهوم ==================== -->
+<div class="section active" id="sec-learn">
+  <div class="card">
+    <h2>🎭 للعدد ثلاث صور رئيسية</h2>
+    <div class="grid2">
+      <div class="note"><b>1. الصورة القياسية:</b> كتابة العدد بالأرقام فقط (مثال: <b>3,426</b>)</div>
+      <div class="note"><b>2. الصورة التحليلية:</b> مجموع قيم الأرقام بالأصفار (مثال: <b>3000 + 400 + 20 + 6</b>)</div>
+      <div class="note"><b>3. الصورة اللفظية:</b> كتابة العدد بالحروف والكلمات (مثال: <b>ثلاثة آلاف وأربعمائة وستة وعشرون</b>)</div>
+    </div>
+    
+    <table>
+      <tr><th>نوع الصورة</th><th>كيفية الكتابة</th><th>مثال للعدد (7,541)</th></tr>
+      <tr><td><b>القياسية</b></td><td>أرقام فقط</td><td><b>7,541</b></td></tr>
+      <tr><td><b>التحليلية</b></td><td>مجموع القيم المنزلية</td><td><b>7000 + 500 + 40 + 1</b></td></tr>
+      <tr><td><b>اللفظية</b></td><td>كلمات وحروف عربية</td><td><b>سبعة آلاف وخمسمائة وواحد وأربعون</b></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔍 مستكشف تحويل صور العدد</h3>
+    <p>اضغط على زر "توليد عدد جديد" لرؤية العدد نفسه في صورة قياسية، تحليلية، ولفظية في نفس الوقت:</p>
+    
+    <div class="big" id="fN" style="margin:16px 0; color:var(--p-dk);">—</div>
+    <div style="background:var(--p-lt); border:2px solid var(--p); border-radius:16px; padding:16px; text-align:center;">
+      <p id="fE" style="font-size:1.25rem; font-weight:800; color:var(--pk); margin-bottom:8px"></p>
+      <p id="fW" style="font-size:1.25rem; font-weight:800; color:var(--p-dk)"></p>
+    </div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-p" onclick="newForm()">🔄 توليد عدد جديد</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 اختبر فهمك السريع</h3>
+    <p>ما هي الصورة القياسية للعدد: <b>(5000 + 300 + 20 + 8)</b>؟</p>
+    <div class="opts">
+      <button class="opt" onclick="quickCheck(this, false, 'هذا العدد هو 5,320 وينقصه الآحاد')">5,320</button>
+      <button class="opt" onclick="quickCheck(this, true, 'أحسنت! 5000+300+20+8 = 5,328')">5,328</button>
+      <button class="opt" onclick="quickCheck(this, false, 'هذا العدد كُتب بترتيب خاطئ')">8,235</button>
+    </div>
+    <div class="fb" id="quickFb"></div>
+  </div>
+</div>
+
+<!-- ==================== قسم الألعاب ==================== -->
+<div class="section" id="sec-games">
+  <div id="games-hub">
+    <div class="games-title-box">
+      <h2>🎮 مركز الألعاب التعليمية (8 ألعاب)</h2>
+      <p>اختر لعبة وتدرّب على التغيير والربط بين صور العدد بحرية ومتعة!</p>
+    </div>
+    <div class="games-grid">
+      <div class="game-card-select" onclick="openGame('g1')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">🧠</div>
+        <h3>لعبة الذاكرة</h3>
+        <p>طابق بين الصورة القياسية للعدد وصورته التحليلية</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g2')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">⚡</div>
+        <h3>التحدي السريع</h3>
+        <p>اختر الصورة التحليلية أو اللفظية المناسبة للعدد قبل فوات الوقت</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g3')">
+        <div class="game-icon" style="background:var(--gr-lt);color:var(--gr)">✔️</div>
+        <h3>صح أم خطأ</h3>
+        <p>هل التكافؤ بين صورتي العدد المذكورتين صحيح؟</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g4')">
+        <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">🧺</div>
+        <h3>فرز السلال</h3>
+        <p>صنّف البطاقات المعروضة: (قياسية)، (تحليلية)، أو (لفظية)</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g5')">
+        <div class="game-icon" style="background:var(--p-lt);color:var(--p)">🧩</div>
+        <h3>تركيب الصورة التحليلية</h3>
+        <p>اختر القيم المناسبة لتأكيد الصيغة التحليلية الصحيحة للعدد</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g6')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--p-dk)">⚖️</div>
+        <h3>ميزان صور العدد</h3>
+        <p>حدد الصورة اللفظية التي تطابق العدد القياسي بالضبط</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g7')">
+        <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">🧮</div>
+        <h3>العداد ولوحة المنازل</h3>
+        <p>اضبط خرزات الخانات (آحاد، عشرات، مئات، آلاف) لتكوين العدد اللفظي المطلوب</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g8')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--p-dk)">🔗</div>
+        <h3>التوصيل المباشر</h3>
+        <p>صل كل عدد قياسي في القائمة بالصورة اللفظية أو التحليلية المناسبة له</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-view" style="display:none">
+    <button class="btn btn-o" onclick="closeGame()" style="margin-bottom:14px">⬅️ قائمة الألعاب</button>
+    <div class="card" id="wrap-g1" style="display:none">
+      <h3>🧠 لعبة الذاكرة: القياسية ↔ التحليلية</h3>
+      <div id="g1"></div>
+    </div>
+    <div class="card" id="wrap-g2" style="display:none">
+      <h3>⚡ لعبة السرعة: حدّد الصورة الصحيحة!</h3>
+      <div id="g2"></div>
+    </div>
+    <div class="card" id="wrap-g3" style="display:none">
+      <h3>✔️❌ لعبة صح أم خطأ في صور العدد</h3>
+      <div id="g3"></div>
+    </div>
+    <div class="card" id="wrap-g4" style="display:none">
+      <h3>🧺 لعبة فرز السلال: أي صورة تمثل هذه البطاقة؟</h3>
+      <div id="g4"></div>
+    </div>
+    <div class="card" id="wrap-g5" style="display:none">
+      <h3>🧩 لعبة تركيب الصورة التحليلية</h3>
+      <div id="g5"></div>
+    </div>
+    <div class="card" id="wrap-g6" style="display:none">
+      <h3>⚖️ لعبة ميزان الصور</h3>
+      <div id="g6"></div>
+    </div>
+    <div class="card" id="wrap-g7" style="display:none">
+      <h3>🧮 لعبة العداد ولوحة المنازل التفاعلية</h3>
+      <div id="g7"></div>
+    </div>
+    <div class="card" id="wrap-g8" style="display:none">
+      <h3>🔗 لعبة التوصيل المباشر بين الصور</h3>
+      <div id="g8"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== قسم التمارين والتقرير ==================== -->
+<div class="section" id="sec-drill">
+  <div class="card">
+    <h2>📝 تمارين شاملة على صور العدد</h2>
+    <div id="q1"></div>
+  </div>
+</div>
+</div>
+
+<footer>رياضيات — الصف الرابع الابتدائي</footer>
+
+<script>
+// ---------- الموسيقى والمؤثرات الصوتية ----------
+const bgAudio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggleBtn');
+let isMusicPlaying = false;
+if(bgAudio) bgAudio.volume = 0.35; 
+
+function startBgMusic() {
+  if (!isMusicPlaying && bgAudio) {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    }).catch(() => {
+      musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+    });
+  }
+}
+
+function toggleMusic() {
+  if (!bgAudio) return;
+  if (isMusicPlaying) {
+    bgAudio.pause();
+    isMusicPlaying = false;
+    musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+  } else {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    });
+  }
+}
+
+window.addEventListener('load', startBgMusic);
+document.addEventListener('click', startBgMusic, { once: true });
+document.addEventListener('touchstart', startBgMusic, { once: true });
+
+let audioCtx;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playCorrectSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.setValueAtTime(659.25, now + 0.08);
+    osc.frequency.setValueAtTime(783.99, now + 0.16);
+    osc.frequency.setValueAtTime(1046.50, now + 0.24);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  } catch(e){}
+}
+
+function playWrongSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.setValueAtTime(110, now + 0.12);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch(e){}
+}
+
+// ---------- أدوات تحويل الأعداد والحروف ----------
+function toAr(n){ return String(n); }
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  if(id === 'games') closeGame();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openGame(gameId) {
+  document.getElementById('games-hub').style.display = 'none';
+  document.getElementById('game-view').style.display = 'block';
+  ['wrap-g1', 'wrap-g2', 'wrap-g3', 'wrap-g4', 'wrap-g5', 'wrap-g6', 'wrap-g7', 'wrap-g8'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  document.getElementById('wrap-' + gameId).style.display = 'block';
+}
+
+function closeGame() {
+  document.getElementById('game-view').style.display = 'none';
+  document.getElementById('games-hub').style.display = 'block';
+}
+
+function expand(n){
+  const ds=String(n).split('');
+  const parts=[];
+  ds.forEach((d,i)=>{
+    const v=+d*Math.pow(10,ds.length-1-i);
+    if(v)parts.push(toAr(v));
+  });
+  return parts.join(' + ');
+}
+
+function words(n){
+  const ones=['','واحد','اثنان','ثلاثة','أربعة','خمسة','ستة','سبعة','ثمانية','تسعة'];
+  const tens=['','عشرة','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
+  const teen=['عشرة','أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'];
+  const huns=['','مائة','مئتان','ثلاثمائة','أربعمائة','خمسمائة','ستمائة','سبعمائة','ثمانمائة','تسعمائة'];
+  
+  function under1000(x){
+    let p=[];
+    const h=Math.floor(x/100),r=x%100;
+    if(h) p.push(huns[h]);
+    if(r){
+      if(r<10) p.push(ones[r]);
+      else if(r<20) p.push(teen[r-10]);
+      else{
+        const u=r%10,t=Math.floor(r/10);
+        p.push(u ? ones[u]+' و'+tens[t] : tens[t]);
+      }
+    }
+    return p.join(' و');
+  }
+
+  if(n===0) return 'صفر';
+  const th=Math.floor(n/1000), r=n%1000;
+  let out=[];
+  if(th===1) out.push('ألف');
+  else if(th===2) out.push('ألفان');
+  else if(th>2 && th<11) out.push(ones[th]+' آلاف');
+  else if(th>=11) out.push(under1000(th)+' ألفاً');
+  
+  if(r) out.push(under1000(r));
+  return out.join(' و');
+}
+
+function newForm(){
+  const n=rnd(1000,99999);
+  document.getElementById('fN').textContent = toAr(n);
+  document.getElementById('fE').textContent = 'التحليلية: ' + expand(n);
+  document.getElementById('fW').textContent = 'اللفظية: ' + words(n);
+}
+newForm();
+
+function quickCheck(btn, isCorrect, msg){
+  const fb = document.getElementById('quickFb');
+  fb.className = 'fb ' + (isCorrect ? 'ok' : 'no');
+  fb.textContent = msg;
+  if(isCorrect) playCorrectSound(); else playWrongSound();
+}
+
+// ---------- اللعبة 1: الذاكرة ----------
+function memoryGame(elId, pairs){
+  const el=document.getElementById(elId);
+  let cards=[]; pairs.forEach((p,i)=>{cards.push({k:i,t:p[0]});cards.push({k:i,t:p[1]})});
+  cards=shuffle(cards); let open=[],done=0,moves=0;
+  el.innerHTML='<div class="mem" id="'+elId+'-g"></div><p style="margin-top:8px" id="'+elId+'-s"></p><div class="btn-row"><button class="btn btn-o" id="'+elId+'-r">🔄 لعبة جديدة</button></div>';
+  const g=document.getElementById(elId+'-g'),s=document.getElementById(elId+'-s');
+  document.getElementById(elId+'-r').onclick=()=>memoryGame(elId,pairs);
+  
+  cards.forEach((c)=>{
+    const d=document.createElement('div');d.className='c';d.textContent='؟';
+    d.onclick=()=>{
+      if(d.classList.contains('done')||d.classList.contains('open')||open.length===2)return;
+      d.classList.add('open');d.textContent=c.t;
+      d.style.fontSize = c.t.length>10 ? '0.75rem' : '1rem';
+      open.push({d,c});
+      if(open.length===2){moves++;
+        if(open[0].c.k===open[1].c.k){
+          open.forEach(o=>{o.d.classList.remove('open');o.d.classList.add('done')});open=[];done++;
+          playCorrectSound();
+          if(done===pairs.length)s.innerHTML='🎉 أحسنت! أكملت اللعبة في '+toAr(moves)+' محاولة';
+        } else {
+          playWrongSound();
+          setTimeout(()=>{open.forEach(o=>{o.d.classList.remove('open');o.d.textContent='؟'});open=[]},800);
+        }
+      }
+      if(done<pairs.length)s.textContent='المحاولات: '+toAr(moves)+' — أزواج صحيحة: '+toAr(done)+'/'+toAr(pairs.length);
+    };
+    g.appendChild(d);
+  });
+}
+
+memoryGame('g1', [
+  [toAr(324), expand(324)],
+  [toAr(1205), expand(1205)],
+  [toAr(4060), expand(4060)],
+  [toAr(7500), expand(7500)]
+]);
+
+// ---------- اللعبة 2: السرعة ----------
+function formQ(){
+  const n=rnd(1000,9999);
+  const opts=[expand(n)];
+  while(opts.length<4){
+    const m=rnd(1000,9999);
+    const e=expand(m);
+    if(!opts.includes(e)) opts.push(e);
+  }
+  return {
+    q:'ما الصورة التحليلية للعدد <b style="color:var(--p-dk);font-size:1.4rem">'+toAr(n)+'</b>؟',
+    options:opts,
+    answer:expand(n),
+    hint:'اكتب قيمة كل رقم حسب منزلته ثم اجمعها.'
+  };
+}
+
+function speedGame(elId, gen, seconds){
+  const el=document.getElementById(elId);let score=0,t=seconds,timer=null,q=null;
+  el.innerHTML='<div class="score" id="'+elId+'-h"></div><div id="'+elId+'-b" style="margin-top:10px"></div>';
+  const h=document.getElementById(elId+'-h'),b=document.getElementById(elId+'-b');
+  
+  function next(){
+    q=gen();
+    b.innerHTML='<p style="font-size:1.15rem;font-weight:700;text-align:center">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div>';
+    const box=document.getElementById(elId+'-o');
+    shuffle(q.options).forEach(o=>{
+      const x=document.createElement('button');x.className='opt';x.innerHTML=o;
+      x.onclick=()=>{
+        if(o===q.answer){score++;x.classList.add('ok');playCorrectSound();}
+        else{x.classList.add('no');[...box.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok')});playWrongSound();}
+        setTimeout(next,450);
+      };
+      box.appendChild(x);
+    });
+  }
+  function tick(){
+    h.innerHTML='⏱️ الوقت: '+toAr(t)+' ثانية — النقاط: '+toAr(score);
+    if(t<=0){
+      clearInterval(timer);
+      b.innerHTML='<div class="score">انتهى الوقت! نقاطك: '+toAr(score)+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>speedGame(elId,gen,seconds);
+      return;
+    }
+    t--;
+  }
+  tick();timer=setInterval(tick,1000);next();
+}
+speedGame('g2', formQ, 45);
+
+// ---------- اللعبة 3: صح أم خطأ ----------
+function dfGame(elId){
+  const el=document.getElementById(elId);
+  let score=0, q=null;
+  
+  function next(){
+    const num = rnd(1000, 9999);
+    const correctExp = expand(num);
+    const isTrue = Math.random() < 0.5;
+    
+    let shownExp = correctExp;
+    if(!isTrue){
+      const wrongNum = num + rnd(1, 9) * 10;
+      shownExp = expand(wrongNum);
+    }
+
+    q = { isTrue, num, correctExp, shownExp };
+
+    el.innerHTML='<p style="font-size:1.2rem;font-weight:700;text-align:center">هل العبارة التالية صحيحة أم خاطئة؟</p>'+
+      '<div class="big" style="font-size:1.3rem;margin:16px 0;line-height:1.8">'+
+        'الصورة التحليلية للعدد <span style="color:var(--pk);font-size:1.6rem">'+toAr(num)+'</span> هي:<br>'+
+        '<span style="color:var(--p-dk);font-size:1.4rem">('+shownExp+')</span>'+
+      '</div>'+
+      '<div class="btn-row" style="justify-content:center;gap:16px"><button class="btn btn-p" style="background:var(--gr);min-width:110px" id="df-ok">✔️ صح</button><button class="btn btn-p" style="background:var(--red);min-width:110px" id="df-no">❌ خطأ</button></div>'+
+      '<div class="fb" id="'+elId+'-f"></div>'+
+      '<p style="text-align:center;margin-top:12px;font-weight:700">النقاط: '+toAr(score)+'</p>';
+
+    const fb=document.getElementById(elId+'-f');
+    document.getElementById('df-ok').onclick=()=>check(true);
+    document.getElementById('df-no').onclick=()=>check(false);
+
+    function check(ans){
+      if(el.dataset.done) return;
+      el.dataset.done='1';
+      const ok = ans === q.isTrue;
+      fb.className='fb '+(ok?'ok':'no');
+      if(ok){
+        score++;
+        fb.textContent='✅ ممتاز! إجابة صحيحة';
+        playCorrectSound();
+      } else {
+        fb.textContent='❌ خطأ! الصورة التحليلية الصحيحة للعدد '+toAr(q.num)+' هي: '+q.correctExp;
+        playWrongSound();
+      }
+      setTimeout(()=>{ delete el.dataset.done; next(); }, 1500);
+    }
+  }
+  next();
+}
+dfGame('g3');
+
+// ---------- اللعبة 4: فرز السلال ----------
+function basketGame(elId){
+  const el = document.getElementById(elId);
+  let score = 0, currentItem = null;
+
+  const itemsPool = [
+    { t: '5,432', cat: 'صورة قياسية', hint: 'تتكون من أرقام مجتمعة فقط' },
+    { t: '900 + 40 + 2', cat: 'صورة تحليلية', hint: 'تتكون من مجموع أرقامها بأصفار خاناتها' },
+    { t: 'ثلاثة آلاف وخمسمائة', cat: 'صورة لفظية', hint: 'تتكون من كلمات وحروف عربية' },
+    { t: '12,050', cat: 'صورة قياسية', hint: 'تتكون من أرقام مجتمعة فقط' },
+    { t: '4000 + 600 + 1', cat: 'صورة تحليلية', hint: 'تتكون من مجموع أرقامها بأصفار خاناتها' },
+    { t: 'سبعة آلاف وأربعة', cat: 'صورة لفظية', hint: 'تتكون من كلمات وحروف عربية' }
+  ];
+
+  function nextItem(){
+    currentItem = itemsPool[rnd(0, itemsPool.length - 1)];
+    render();
+  }
+
+  function render(){
+    el.innerHTML = `
+      <p style="font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:12px">
+        إلى أي سلة تنتمي هذه البطاقة؟
+      </p>
+      
+      <div style="background:var(--p-lt);border:2px dashed var(--p);border-radius:18px;padding:20px;text-align:center;margin-bottom:20px">
+        <span class="big" style="color:var(--p-dk);font-size:2rem">${currentItem.t}</span>
+      </div>
+
+      <div class="opts" style="grid-template-columns:repeat(3, 1fr);gap:10px">
+        <button class="opt" style="background:var(--sky-lt);border-color:var(--sky);padding:12px" onclick="checkBasket('صورة قياسية')">🧺 صورة قياسية</button>
+        <button class="opt" style="background:var(--pk-lt);border-color:var(--pk);padding:12px" onclick="checkBasket('صورة تحليلية')">🧺 صورة تحليلية</button>
+        <button class="opt" style="background:var(--gold-lt);border-color:var(--gold);padding:12px" onclick="checkBasket('صورة لفظية')">🧺 صورة لفظية</button>
+      </div>
+
+      <div class="fb" id="${elId}-fb"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px">
+        <span style="font-weight:800;color:var(--p-dk);font-size:1.1rem">النقاط: ${toAr(score)}</span>
+        <button class="btn btn-o" onclick="nextItem()">🔄 بطاقة جديدة</button>
+      </div>
+    `;
+  }
+
+  window.checkBasket = function(choice){
+    const fb = document.getElementById(`${elId}-fb`);
+    if(!fb) return;
+    
+    if(choice === currentItem.cat){
+      score++;
+      fb.className = 'fb ok';
+      fb.textContent = `✅ ممتاز! البطاقة "${currentItem.t}" هي (${currentItem.cat}).`;
+      playCorrectSound();
+    } else {
+      fb.className = 'fb no';
+      fb.textContent = `❌ غير صحيح! "${currentItem.t}" هي (${currentItem.cat}). ${currentItem.hint}.`;
+      playWrongSound();
+    }
+    
+    setTimeout(nextItem, 1300);
+  };
+
+  nextItem();
+}
+basketGame('g4');
+
+// ---------- اللعبة 5: تركيب الصورة التحليلية ----------
+function expandedFormGame(elId) {
+  const el = document.getElementById(elId);
+  let score = 0, selected = [];
+
+  function genProblem() {
+    const d1 = rnd(1, 9);
+    const d2 = rnd(1, 9);
+    const d3 = rnd(1, 9);
+    const d4 = rnd(1, 9);
+
+    const targetNum = d1 * 1000 + d2 * 100 + d3 * 10 + d4;
+    const parts = [d1 * 1000, d2 * 100, d3 * 10, d4];
+
+    let distractors = [
+      d1 * 100, d2 * 10, d3 * 1000, d4 * 10
+    ].filter(v => !parts.includes(v));
+
+    let options = shuffle([...parts, ...distractors]).slice(0, 6);
+
+    return { targetNum, parts, options: shuffle([...new Set(options)]) };
+  }
+
+  let currentP = genProblem();
+
+  function render() {
+    selected = [];
+    el.innerHTML = `
+      <p style="font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:10px">
+        اختر كروت القيم المناسبة لتكوين الصورة التحليلية للعدد:
+      </p>
+
+      <div class="big" style="color:var(--p-dk);margin-bottom:14px">${toAr(currentP.targetNum)}</div>
+
+      <div style="background:var(--p-lt);border:2px dashed var(--p);border-radius:16px;padding:14px;text-align:center;min-height:60px;margin-bottom:16px">
+        <span style="font-weight:700;color:var(--muted)">تركيبك الحالي: </span>
+        <span id="userFormula" style="font-size:1.3rem;font-weight:800;color:var(--pk)">...</span>
+      </div>
+
+      <div style="text-align:center;margin-bottom:16px" id="chipsBox">
+        ${currentP.options.map((val, idx) => `
+          <button class="card-chip" id="chip-${idx}" onclick="selectChip(${val}, 'chip-${idx}')">${toAr(val)}</button>
+        `).join('')}
+      </div>
+
+      <div class="fb" id="${elId}-fb"></div>
+
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn btn-p" onclick="checkFormula()">✔️ تأكيد الإجابة</button>
+        <button class="btn btn-o" onclick="resetFormula()">🔄 مسح الاختيار</button>
+      </div>
+
+      <p style="text-align:center;margin-top:14px;font-weight:700;color:var(--p-dk)">النقاط: ${toAr(score)}</p>
+    `;
+  }
+
+  window.selectChip = function(val, btnId) {
+    const btn = document.getElementById(btnId);
+    if(btn.classList.contains('selected')) return;
+    btn.classList.add('selected');
+    selected.push(val);
+    document.getElementById('userFormula').textContent = selected.map(toAr).join(' + ');
+    playCorrectSound();
+  };
+
+  window.resetFormula = function() {
+    selected = [];
+    document.querySelectorAll('.card-chip').forEach(c => c.classList.remove('selected'));
+    document.getElementById('userFormula').textContent = '...';
+  };
+
+  window.checkFormula = function() {
+    const fb = document.getElementById(`${elId}-fb`);
+    const sumSelected = selected.reduce((a, b) => a + b, 0);
+
+    if (sumSelected === currentP.targetNum && selected.length === currentP.parts.length) {
+      score++;
+      fb.className = 'fb ok';
+      fb.textContent = `🎉 ممتااااز! التركيب الصحيح للعدد ${toAr(currentP.targetNum)} هو (${currentP.parts.map(toAr).join(' + ')})`;
+      playCorrectSound();
+      setTimeout(() => {
+        currentP = genProblem();
+        render();
+      }, 1800);
+    } else {
+      fb.className = 'fb no';
+      fb.textContent = `❌ غير صحيح! المجموع الحالي يختلف عن العدد المطلوب. حاول مرة أخرى.`;
+      playWrongSound();
+    }
+  };
+
+  render();
+}
+expandedFormGame('g5');
+
+// ---------- اللعبة 6: ميزان صور العدد ----------
+function compareFormGame(elId) {
+  const el = document.getElementById(elId);
+  let score = 0;
+
+  function genQuestion() {
+    const num = rnd(1000, 9999);
+    const correctW = words(num);
+    let wrongW1 = words(num + 100);
+    let wrongW2 = words(num - 10);
+    const opts = shuffle([correctW, wrongW1, wrongW2]);
+
+    return { num: num, correct: correctW, opts: opts };
+  }
+
+  function next() {
+    const q = genQuestion();
+    el.innerHTML = `
+      <p style="font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:14px">
+        اختر الصورة اللفظية المطابقة تماماً للعدد القياسي: <b style="color:var(--pk);font-size:1.6rem">${toAr(q.num)}</b>
+      </p>
+
+      <div class="opts" style="grid-template-columns:1fr;gap:10px;margin-bottom:16px">
+        ${q.opts.map((o, idx) => `
+          <button class="opt" id="mc-${idx}" onclick="checkMatch('${o}', '${q.correct}')" style="padding:14px;font-size:1.1rem">${o}</button>
+        `).join('')}
+      </div>
+
+      <div class="fb" id="${elId}-fb"></div>
+      <p style="text-align:center;margin-top:10px;font-weight:700">النقاط: ${toAr(score)}</p>
+    `;
+
+    window.checkMatch = function(choice, correctChoice) {
+      const fb = document.getElementById(`${elId}-fb`);
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+
+      if (choice === correctChoice) {
+        score++;
+        fb.className = 'fb ok';
+        fb.textContent = `✅ إجابة رائعة! الصورة اللفظية الصحيحة هي: (${correctChoice})`;
+        playCorrectSound();
+      } else {
+        fb.className = 'fb no';
+        fb.textContent = `❌ خطأ! الصورة اللفظية الصحيحة هي: (${correctChoice})`;
+        playWrongSound();
+      }
+
+      setTimeout(() => {
+        delete el.dataset.done;
+        next();
+      }, 1600);
+    };
+  }
+
+  next();
+}
+compareFormGame('g6');
+
+// ---------- اللعبة 7: العداد ولوحة المنازل التفاعلية ----------
+function abacusGame(elId) {
+  const el = document.getElementById(elId);
+  let score = 0, target = 0;
+  let counts = { th: 0, h: 0, t: 0, u: 0 };
+
+  function newRound() {
+    target = rnd(1000, 9999);
+    counts = { th: 0, h: 0, t: 0, u: 0 };
+    render();
+  }
+
+  function render() {
+    const wordForm = words(target);
+    const currentTotal = counts.th * 1000 + counts.h * 100 + counts.t * 10 + counts.u;
+
+    el.innerHTML = `
+      <p style="font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:8px">
+        اضبط أزرار العداد لتكوين العدد اللفظي المطلوب:
+      </p>
+      
+      <div class="note" style="text-align:center;font-size:1.25rem;font-weight:800;color:var(--p-dk);margin-bottom:16px">
+        📜 "${wordForm}"
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        ${renderCol('الآلاف', 'th')}
+        ${renderCol('المئات', 'h')}
+        ${renderCol('العشرات', 't')}
+        ${renderCol('الآحاد', 'u')}
+      </div>
+
+      <div style="background:var(--p-lt);border:2px solid var(--p);border-radius:14px;padding:12px;text-align:center;margin-bottom:14px">
+        <span style="font-weight:700">العدد الحالي على العداد: </span>
+        <span style="font-size:1.6rem;font-weight:800;color:var(--pk);font-family:'Baloo Bhaijaan 2'">${toAr(currentTotal)}</span>
+      </div>
+
+      <div class="fb" id="${elId}-fb"></div>
+
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn btn-p" onclick="checkAbacus()">✔️ تحقق من العداد</button>
+        <button class="btn btn-o" onclick="resetAbacus()">🔄 تفريغ العداد</button>
+      </div>
+
+      <p style="text-align:center;margin-top:12px;font-weight:700">النقاط: ${toAr(score)}</p>
+    `;
+  }
+
+  function renderCol(title, key) {
+    const cnt = counts[key];
+    let beadsHtml = '';
+    for(let b=0; b<cnt; b++) {
+      beadsHtml += `<div class="bead"></div>`;
+    }
+    return `
+      <div class="abacus-col">
+        <div class="abacus-title">${title}</div>
+        <div class="abacus-rod">${beadsHtml}</div>
+        <div class="abacus-cnt">${toAr(cnt)}</div>
+        <div style="display:flex;gap:4px">
+          <button class="abacus-btn" onclick="changeBead('${key}', 1)">+</button>
+          <button class="abacus-btn" onclick="changeBead('${key}', -1)">-</button>
+        </div>
+      </div>
+    `;
+  }
+
+  window.changeBead = function(key, delta) {
+    const newV = counts[key] + delta;
+    if (newV >= 0 && newV <= 9) {
+      counts[key] = newV;
+      render();
+    }
+  };
+
+  window.resetAbacus = function() {
+    counts = { th: 0, h: 0, t: 0, u: 0 };
+    render();
+  };
+
+  window.checkAbacus = function() {
+    const fb = document.getElementById(`${elId}-fb`);
+    const currentTotal = counts.th * 1000 + counts.h * 100 + counts.t * 10 + counts.u;
+    
+    if(currentTotal === target) {
+      score++;
+      fb.className = 'fb ok';
+      fb.textContent = `🎉 إجابة ممتازة! طابقت العداد مع العدد (${toAr(target)}) بنجاح.`;
+      playCorrectSound();
+      setTimeout(newRound, 1600);
+    } else {
+      fb.className = 'fb no';
+      fb.textContent = `❌ العدد على العداد حالياً هو (${toAr(currentTotal)}) لا يطابق المطلوب. حاول تعديل الخرزات.`;
+      playWrongSound();
+    }
+  };
+
+  newRound();
+}
+abacusGame('g7');
+
+// ---------- اللعبة 8: التوصيل المباشر بين الصور ----------
+function lineMatchingGame(elId) {
+  const el = document.getElementById(elId);
+  let score = 0, leftSelected = null, matches = {}, pairs = [], leftList = [], rightList = [];
+
+  function newRound() {
+    leftSelected = null;
+    matches = {};
+    pairs = [];
+    for(let i=0; i<4; i++) {
+      const num = rnd(1000, 9999);
+      const isVerbal = i % 2 === 0;
+      const rightText = isVerbal ? words(num) : expand(num);
+      pairs.push({ id: i, left: toAr(num), right: rightText });
+    }
+    leftList = shuffle(pairs.map(p => ({ id: p.id, text: p.left })));
+    rightList = shuffle(pairs.map(p => ({ id: p.id, text: p.right })));
+    render();
+  }
+
+  function render() {
+    el.innerHTML = `
+      <p style="font-size:1.1rem;font-weight:700;text-align:center;margin-bottom:12px">
+        اضغط على عدد في العمود الأيمن ثم اختر الصورة المقابلة له في العمود الأيسر:
+      </p>
+
+      <div class="matching-grid">
+        <div class="matching-col">
+          <h4 style="text-align:center;color:var(--p-dk);margin-bottom:8px">الصورة القياسية</h4>
+          ${leftList.map(item => `
+            <div class="match-card ${leftSelected === item.id ? 'sel' : ''} ${matches[item.id] !== undefined ? 'done' : ''}"
+                 onclick="selectLeft(${item.id})">
+              ${item.text}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="matching-col">
+          <h4 style="text-align:center;color:var(--p-dk);margin-bottom:8px">الصورة التحليلية / اللفظية</h4>
+          ${rightList.map(item => `
+            <div class="match-card ${matches[item.id] !== undefined ? 'done' : ''}"
+                 onclick="selectRight(${item.id})">
+              ${item.text}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="fb" id="${elId}-fb"></div>
+
+      <div class="btn-row" style="justify-content:center;margin-top:14px">
+        <button class="btn btn-o" onclick="resetMatching()">🔄 جولة جديدة</button>
+      </div>
+      <p style="text-align:center;margin-top:12px;font-weight:700">النقاط: ${toAr(score)}</p>
+    `;
+  }
+
+  window.selectLeft = function(id) {
+    if(matches[id] !== undefined) return;
+    leftSelected = id;
+    render();
+  };
+
+  window.selectRight = function(rightId) {
+    if(leftSelected === null) return;
+    if(matches[rightId] !== undefined) return;
+
+    const fb = document.getElementById(`${elId}-fb`);
+    if(leftSelected === rightId) {
+      matches[leftSelected] = rightId;
+      leftSelected = null;
+      playCorrectSound();
+      
+      if(Object.keys(matches).length === 4) {
+        score++;
+        fb.className = 'fb ok';
+        fb.textContent = '🎉 ممتاز جداً! قمت بتوصيل جميع بطاقات المجموعتين بنجاح!';
+        setTimeout(newRound, 1800);
+      } else {
+        render();
+      }
+    } else {
+      playWrongSound();
+      fb.className = 'fb no';
+      fb.textContent = '❌ توصيل غير صحيح! جرب التوصيل مع بطاقة أخرى.';
+      leftSelected = null;
+      setTimeout(() => { render(); }, 1200);
+    }
+  };
+
+  window.resetMatching = function() {
+    newRound();
+  };
+
+  newRound();
+}
+lineMatchingGame('g8');
+
+// ---------- قسم التمارين والتقرير ----------
+function updateReportName(val) {
+  const target = document.getElementById('reportStudentName');
+  if (target) target.textContent = val.trim() || '....................';
+}
+
+function downloadReportImage() {
+  const reportEl = document.getElementById('reportCard');
+  if (!reportEl) return;
+  
+  const studentInput = document.getElementById('studentNameInput');
+  const studentName = (studentInput && studentInput.value.trim()) ? studentInput.value.trim() : 'الطالب';
+
+  html2canvas(reportEl, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff'
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `تقرير_${studentName}_صور_العدد.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+function makeQuiz(elId, gen, count){
+  const el=document.getElementById(elId); let i=0, correct=0, qs=[];
+  for(let k=0; k<count; k++) qs.push(gen());
+  
+  function render(){
+    if(i >= qs.length){
+      const pct = Math.round(correct/qs.length*100);
+      const grade = pct >= 85 ? 'ممتاز 🌟' : pct >= 70 ? 'جيد جداً 👍' : pct >= 50 ? 'جيد 👌' : 'يحتاج إلى مراجعة 💪';
+      const today = new Date().toLocaleDateString('ar-EG-u-nu-latn');
+
+      el.innerHTML = `
+        <div style="text-align:center;">
+          <h3 style="font-size:1.4rem;color:var(--p-dk);margin-bottom:10px">🎉 اكتمل الاختبار بنجاح!</h3>
+          <p style="margin-bottom:12px;font-weight:600">اكتب اسمك أدناه لإنشاء تقرير النتيجة ومشاركته مع معلمك:</p>
+          
+          <div style="max-width:320px;margin:0 auto 18px">
+            <input type="text" id="studentNameInput" placeholder="ادخل اسم الطالب هنا..." oninput="updateReportName(this.value)">
+          </div>
+
+          <div id="reportCard" style="background:#fff; border:3px solid var(--p); border-radius:20px; padding:25px; text-align:center; max-width:440px; margin:0 auto; box-shadow:0 10px 30px rgba(0,0,0,0.06); font-family:'Tajawal',sans-serif; color:var(--ink);">
+            <div style="font-size:2.2rem;margin-bottom:4px">📜</div>
+            <h2 style="font-family:'Baloo Bhaijaan 2',sans-serif; color:var(--p-dk); font-size:1.5rem; margin-bottom:2px">تقرير أداء الطالب</h2>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px">درس: صور العدد (قياسية - تحليلية - لفظية)</p>
+            
+            <div style="background:var(--p-lt); border-radius:12px; padding:10px 14px; margin-bottom:14px; border:1px solid var(--p)">
+              <span style="font-size:0.85rem; color:var(--p-dk); font-weight:700">اسم الطالب:</span>
+              <div id="reportStudentName" style="font-size:1.25rem; font-weight:800; color:var(--pk); margin-top:2px">....................</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
+              <div style="background:var(--sky-lt); padding:10px; border-radius:12px; border:1px solid var(--sky)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">الإجابات الصحيحة</div>
+                <div style="font-size:1.2rem; font-weight:800; color:var(--p-dk); margin-top:2px">${toAr(correct)} من ${toAr(qs.length)}</div>
+              </div>
+              <div style="background:var(--gr-lt); padding:10px; border-radius:12px; border:1px solid var(--gr)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">النسبة المئوية</div>
+                <div style="font-size:1.2rem; font-weight:800; color:#065F46; margin-top:2px">${toAr(pct)}٪</div>
+              </div>
+            </div>
+
+            <div style="background:var(--gold-lt); border:1px solid var(--gold); padding:8px; border-radius:12px; font-size:1.05rem; font-weight:800; color:#B45309; margin-bottom:12px">
+              التقدير العام: ${grade}
+            </div>
+
+            <div style="font-size:0.75rem; color:var(--muted); border-top:1px dashed var(--border); padding-top:8px">
+              تاريخ الإنجاز: ${toAr(today)} | مادة الرياضيات — الصف الرابع
+            </div>
+          </div>
+
+          <div class="btn-row" style="justify-content:center; margin-top:20px">
+            <button class="btn btn-p" onclick="downloadReportImage()" style="background:linear-gradient(135deg,var(--gr),#059669)">📸 تحميل التقرير كصورة</button>
+            <button class="btn btn-o" id="rq">🔄 إعادة التمارين</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('rq').onclick=()=>{i=0;correct=0;qs=[];for(let k=0;k<count;k++)qs.push(gen());render()};
+      return;
+    }
+
+    const q=qs[i];
+    el.innerHTML='<div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div><p style="font-weight:700;font-size:1.1rem">سؤال '+toAr(i+1)+' من '+toAr(qs.length)+'</p><p style="margin:8px 0;font-size:1.15rem">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div><div class="fb" id="'+elId+'-f"></div>';
+    const box=document.getElementById(elId+'-o'),fb=document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o=>{
+      const b=document.createElement('button');b.className='opt';b.innerHTML=o;
+      b.onclick=()=>{
+        if(box.dataset.done)return;box.dataset.done='1';
+        const ok=o===q.answer;
+        [...box.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok');else if(c===b)c.classList.add('no')});
+        fb.className='fb '+(ok?'ok':'no');
+        fb.innerHTML=(ok?'✅ إجابة صحيحة! ':'❌ الإجابة الصحيحة: '+q.answer+'. ')+(q.hint||'');
+        if(ok){ correct++; playCorrectSound(); } else { playWrongSound(); }
+        setTimeout(()=>{i++;render()},1400);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+makeQuiz('q1', formQ, 10);
+</script>
+</body>
+</html>
