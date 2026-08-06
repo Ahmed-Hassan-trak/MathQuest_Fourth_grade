@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأشكال الهندسية ثنائية الأبعاد</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- مكتبة تحويل العناصر إلى صور -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#7C3AED;--p-lt:#F5F3FF;--p-dk:#5B21B6;--pk:#EC4899;--pk-lt:#FDF2F8;--gold:#F59E0B;--gold-lt:#FFFBEA;--gr:#10B981;--gr-lt:#ECFDF5;--sky:#0EA5E9;--sky-lt:#F0F9FF;--red:#EF4444;--red-lt:#FEF2F2;--ink:#1E1B4B;--muted:#6B7280;--border:#E5E7EB;--bg:#FDF4FF;--surface:#fff;--radius:18px;--shadow:0 4px 28px rgba(124,58,237,.10)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(135deg,#4C1D95,#7C3AED 45%,#EC4899);color:#fff;padding:22px 16px;text-align:center;border-radius:0 0 26px 26px;position:relative}
+header h1{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.6rem}
+header p{opacity:.9;font-size:.95rem;margin-top:4px}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.tab-btn{border:none;cursor:pointer;background:#fff;color:var(--p-dk);font-family:inherit;font-weight:700;font-size:.95rem;padding:10px 16px;border-radius:99px;box-shadow:var(--shadow)}
+.tab-btn.active{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.section{display:none}.section.active{display:block;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;border:1px solid var(--border)}
+.card h2{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p-dk);font-size:1.3rem;margin-bottom:10px}
+.card h3{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p);font-size:1.1rem;margin:12px 0 8px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:1rem;padding:10px 18px;border-radius:14px;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-p{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.btn-o{background:var(--p-lt);color:var(--p-dk);border:2px solid var(--p)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
+.opt{background:var(--sky-lt);border:2px solid var(--sky);border-radius:14px;padding:12px;font-size:1.15rem;font-weight:700;cursor:pointer;text-align:center;font-family:inherit}
+.opt.ok{background:var(--gr-lt);border-color:var(--gr);color:#065F46}
+.opt.no{background:var(--red-lt);border-color:var(--red);color:#7F1D1D}
+.fb{margin-top:10px;font-weight:700;padding:10px;border-radius:12px;display:none}
+.fb.ok{display:block;background:var(--gr-lt);color:#065F46}
+.fb.no{display:block;background:var(--red-lt);color:#7F1D1D}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:1rem}
+th,td{border:1px solid var(--border);padding:10px;text-align:center}
+th{background:var(--p-lt);color:var(--p-dk)}
+input[type=text]{font-family:inherit;font-size:1.1rem;padding:10px;border:2px solid var(--p);border-radius:12px;width:100%;text-align:center}
+.score{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff;border-radius:14px;padding:10px 16px;text-align:center;font-weight:800}
+.bar{height:12px;background:var(--p-lt);border-radius:99px;overflow:hidden;margin:10px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--pk));width:0;transition:.3s}
+
+/* شبكة الأشكال */
+.shapes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:14px}
+.shape-card{background:var(--sky-lt);border:2px solid var(--sky);border-radius:16px;padding:16px;text-align:center}
+.shape-icon{font-size:3rem;margin-bottom:6px}
+
+/* ألعاب */
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mem .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:12px;font-size:1.4rem;font-weight:800;cursor:pointer;user-select:none}
+.mem .c.open{background:var(--gold-lt);color:var(--ink);border:2px solid var(--gold)}
+.mem .c.done{background:var(--gr-lt);color:#065F46;border:2px solid var(--gr);cursor:default}
+
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,0.25);padding:8px 18px;border-radius:99px;backdrop-filter:blur(4px);transition:0.2s}
+.back:hover{background:rgba(255,255,255,0.4);transform:translateY(-1px)}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+
+.music-btn{position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.25);color:#fff;border:none;padding:8px 14px;border-radius:99px;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.85rem;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px);transition:0.2s}
+.music-btn:hover{background:rgba(255,255,255,0.4)}
+
+.games-title-box{text-align:center;margin:10px 0 24px}
+.games-title-box h2{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.7rem;color:var(--ink)}
+.games-title-box p{color:var(--muted);font-size:0.95rem;font-weight:600;margin-top:4px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.game-card-select{background:#fff;border-radius:20px;padding:26px 20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.03);border:1px solid #EEF2F6;transition:all .2s ease;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.game-card-select:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(124,58,237,0.12);border-color:var(--p-lt)}
+.game-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:14px}
+.game-card-select h3{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.25rem;color:var(--ink);margin:0 0 6px}
+.game-card-select p{font-size:0.9rem;color:var(--muted);line-height:1.5;margin-bottom:16px;flex-grow:1}
+.game-card-select .start-link{color:var(--p);font-weight:700;font-size:0.95rem;display:inline-flex;align-items:center;gap:4px}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="Ch0_Music.mp3" type="audio/mpeg">
+</audio>
+
+<header>
+  <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 الموسيقى: تفعيل</button>
+  <h1>الأشكال الهندسية ثنائية الأبعاد</h1>
+  <p>الدرس الثالث — الأضلاع والرؤوس والخصائص</p>
+  <a class="back" href="https://math-quest-fourth-grade-ranz.vercel.app/">🏠 العودة للرئيسية</a>
+</header>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab-btn active" data-tab="learn" onclick="showTab('learn')">📘 المفهوم</button>
+  <button class="tab-btn" data-tab="games" onclick="showTab('games')">🎮 الألعاب</button>
+  <button class="tab-btn" data-tab="drill" onclick="showTab('drill')">📝 التمارين</button>
+</div>
+
+<!-- قسم المفهوم -->
+<div class="section active" id="sec-learn">
+  <div class="card">
+    <h2>📐 ما هي الأشكال ثنائية الأبعاد؟</h2>
+    <p>هي أشكال مسطحة لها <b>طول وعرض</b> فقط، وتتكون من <b>أضلاع</b> (خطوط مستقيمة) و<b>رؤوس</b> (نقاط التقاء الأضلاع).</p>
+    
+    <div class="shapes-grid">
+      <div class="shape-card">
+        <div class="shape-icon">🟦</div>
+        <h3>المربع</h3>
+        <p><b>٤</b> أضلاع متساوية<br><b>٤</b> رؤوس</p>
+      </div>
+      <div class="shape-card">
+        <div class="shape-icon">▭</div>
+        <h3>المستطيل</h3>
+        <p><b>٤</b> أضلاع (كل ٢ متقابلين متساويان)<br><b>٤</b> رؤوس</p>
+      </div>
+      <div class="shape-card">
+        <div class="shape-icon">🔺</div>
+        <h3>الممثلث</h3>
+        <p><b>٣</b> أضلاع<br><b>٣</b> رؤوس</p>
+      </div>
+      <div class="shape-card">
+        <div class="shape-icon">🟡</div>
+        <h3>الدائرة</h3>
+        <p><b>٠</b> أضلاع (منحنى مغلق)<br><b>٠</b> رؤوس</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- قسم الألعاب -->
+<div class="section" id="sec-games">
+  <div id="games-hub">
+    <div class="games-title-box">
+      <h2>🎮 الألعاب التعليمية</h2>
+      <p>اختر لعبة وتعلّم وأنت تلعب!</p>
+    </div>
+    <div class="games-grid">
+      <div class="game-card-select" onclick="openGame('g1')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">🧠</div>
+        <h3>لعبة الذاكرة</h3>
+        <p>طابق بين الشكل الهندي واسمه الصحيح</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g2')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">⚡</div>
+        <h3>تحدي الأضلاع السريع</h3>
+        <p>حدد عدد الأضلاع والرؤوس للشكل قبل انتهاء الوقت</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g3')">
+        <div class="game-icon" style="background:var(--gr-lt);color:var(--gr)">✔️</div>
+        <h3>صح أم خطأ</h3>
+        <p>اختر هل الخصائص المعروضة للشكل صحيحة أم خاطئة</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g4')">
+        <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">🔍</div>
+        <h3>لعبة من أنا؟</h3>
+        <p>خمن الشكل الهندسي من خلال قراءة خصائصه</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g5')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">🍕</div>
+        <h3>لعبة أشكال من حولنا</h3>
+        <p>طابق الأدوات اليومية مع الشكل الهندسي المناسب لها</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-view" style="display:none">
+    <button class="btn btn-o" onclick="closeGame()" style="margin-bottom:14px">⬅️ قائمة الألعاب</button>
+    <div class="card" id="wrap-g1" style="display:none">
+      <h3>🧠 لعبة الذاكرة: الشكل ↔ الاسم</h3>
+      <div id="g1"></div>
+    </div>
+    <div class="card" id="wrap-g2" style="display:none">
+      <h3>⚡ تحدي الأضلاع والرؤوس</h3>
+      <div id="g2"></div>
+    </div>
+    <div class="card" id="wrap-g3" style="display:none">
+      <h3>✔️❌ صح أم خطأ</h3>
+      <div id="g3"></div>
+    </div>
+    <div class="card" id="wrap-g4" style="display:none">
+      <h3>🔍 لعبة من أنا؟ (تخمين الأشكال)</h3>
+      <div id="g4"></div>
+    </div>
+    <div class="card" id="wrap-g5" style="display:none">
+      <h3>🍕 لعبة أشكال من حولنا</h3>
+      <div id="g5"></div>
+    </div>
+  </div>
+</div>
+
+<!-- قسم التمارين -->
+<div class="section" id="sec-drill">
+  <div class="card">
+    <h2>📝 تمارين على الأشكال الهندسية</h2>
+    <div id="q1"></div>
+  </div>
+</div>
+</div>
+
+<footer>رياضيات — الصف الرابع الابتدائي</footer>
+
+<script>
+// التحكم بالموسيقى
+const bgAudio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggleBtn');
+let isMusicPlaying = false;
+
+function toggleMusic() {
+  if (!bgAudio) return;
+  if (isMusicPlaying) {
+    bgAudio.pause();
+    isMusicPlaying = false;
+    musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+  } else {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    });
+  }
+}
+
+// المؤثرات الصوتية
+let audioCtx;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playCorrectSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.setValueAtTime(659.25, now + 0.08);
+    osc.frequency.setValueAtTime(783.99, now + 0.16);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch(e){}
+}
+
+function playWrongSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.setValueAtTime(110, now + 0.12);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch(e){}
+}
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  if(id === 'games') closeGame();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openGame(gameId) {
+  document.getElementById('games-hub').style.display = 'none';
+  document.getElementById('game-view').style.display = 'block';
+  ['wrap-g1', 'wrap-g2', 'wrap-g3', 'wrap-g4', 'wrap-g5'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('wrap-' + gameId).style.display = 'block';
+}
+
+function closeGame() {
+  document.getElementById('game-view').style.display = 'none';
+  document.getElementById('games-hub').style.display = 'block';
+}
+
+function updateReportName(val) {
+  const target = document.getElementById('reportStudentName');
+  if (target) target.textContent = val.trim() || '....................';
+}
+
+function downloadReportImage() {
+  const reportEl = document.getElementById('reportCard');
+  if (!reportEl) return;
+  const studentInput = document.getElementById('studentNameInput');
+  const studentName = (studentInput && studentInput.value.trim()) ? studentInput.value.trim() : 'الطالب';
+
+  html2canvas(reportEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `تقرير_${studentName}_الأشكال_الهندسية.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+// 1. لعبة الذاكرة
+function memoryGame(elId, pairs){
+  const el = document.getElementById(elId);
+  let cards = []; pairs.forEach((p,i)=>{ cards.push({k:i,t:p[0]}); cards.push({k:i,t:p[1]}); });
+  cards = shuffle(cards); let open = [], done = 0, moves = 0;
+  el.innerHTML = '<div class="mem" id="'+elId+'-g"></div><p style="margin-top:8px" id="'+elId+'-s"></p><div class="btn-row"><button class="btn btn-o" id="'+elId+'-r">🔄 لعبة جديدة</button></div>';
+  const g = document.getElementById(elId+'-g'), s = document.getElementById(elId+'-s');
+  document.getElementById(elId+'-r').onclick = () => memoryGame(elId, pairs);
+  cards.forEach(c => {
+    const d = document.createElement('div'); d.className = 'c'; d.textContent = '؟';
+    d.onclick = () => {
+      if(d.classList.contains('done')||d.classList.contains('open')||open.length===2) return;
+      d.classList.add('open'); d.textContent = c.t; open.push({d,c});
+      if(open.length === 2){
+        moves++;
+        if(open[0].c.k === open[1].c.k){
+          open.forEach(o => { o.d.classList.remove('open'); o.d.classList.add('done'); }); open = []; done++;
+          playCorrectSound();
+          if(done === pairs.length) s.innerHTML = '🎉 أحسنت! أكملت اللعبة في ' + moves + ' محاولة';
+        } else {
+          playWrongSound();
+          setTimeout(() => { open.forEach(o => { o.d.classList.remove('open'); o.d.textContent = '؟'; }); open = []; }, 800);
+        }
+      }
+      if(done < pairs.length) s.textContent = 'المحاولات: ' + moves + ' — أزواج صحيحة: ' + done + '/' + pairs.length;
+    };
+    g.appendChild(d);
+  });
+}
+
+// 2. لعبة السرعة
+const shapesData = [
+  { name: 'المربع', sides: 4, vertices: 4, icon: '🟦' },
+  { name: 'المستطيل', sides: 4, vertices: 4, icon: '▭' },
+  { name: 'المثلث', sides: 3, vertices: 3, icon: '🔺' },
+  { name: 'الدائرة', sides: 0, vertices: 0, icon: '🟡' },
+  { name: 'الشكل الخماسي', sides: 5, vertices: 5, icon: '⬟' }
+];
+
+function genSpeedQ() {
+  const item = shapesData[Math.floor(Math.random() * shapesData.length)];
+  const askSides = Math.random() < 0.5;
+  const ans = askSides ? item.sides : item.vertices;
+  const qText = askSides ? `كم عدد <b>أضلاع</b> الشكل: ${item.icon} (${item.name})؟` : `كم عدد <b>رؤوس</b> الشكل: ${item.icon} (${item.name})؟`;
+  const options = shuffle([...new Set([ans, (ans+1)%6, Math.abs(ans-1), 4])]).map(String);
+  return { q: qText, answer: String(ans), options };
+}
+
+function speedGame(elId, seconds){
+  const el = document.getElementById(elId); let score = 0, t = seconds, timer = null, q = null;
+  el.innerHTML = '<div class="score" id="'+elId+'-h"></div><div id="'+elId+'-b" style="margin-top:10px"></div>';
+  const h = document.getElementById(elId+'-h'), b = document.getElementById(elId+'-b');
+  function next(){
+    q = genSpeedQ();
+    b.innerHTML = '<p style="font-size:1.15rem;font-weight:700;text-align:center">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div>';
+    const box = document.getElementById(elId+'-o');
+    q.options.forEach(o => {
+      const x = document.createElement('button'); x.className = 'opt'; x.innerHTML = o;
+      x.onclick = () => {
+        if(o === q.answer){ score++; x.classList.add('ok'); playCorrectSound(); }
+        else { x.classList.add('no'); [...box.children].forEach(c => { if(c.innerHTML === q.answer) c.classList.add('ok'); }); playWrongSound(); }
+        setTimeout(next, 450);
+      };
+      box.appendChild(x);
+    });
+  }
+  function tick(){
+    h.innerHTML = '⏱️ الوقت: ' + t + ' ثانية — النقاط: ' + score;
+    if(t <= 0){
+      clearInterval(timer);
+      b.innerHTML = '<div class="score">انتهى الوقت! نقاطك: '+score+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick = () => speedGame(elId, seconds);
+      return;
+    }
+    t--;
+  }
+  tick(); timer = setInterval(tick, 1000); next();
+}
+
+// 3. صح أم خطأ
+function tfGame(elId){
+  const el = document.getElementById(elId); let score = 0;
+  function next(){
+    const item = shapesData[Math.floor(Math.random() * shapesData.length)];
+    const isTrue = Math.random() < 0.5;
+    let shownSides = item.sides;
+    if(!isTrue) { shownSides = (item.sides + 2) % 6; if(shownSides === item.sides) shownSides++; }
+    
+    el.innerHTML = '<p style="font-size:1.2rem;font-weight:700;text-align:center">هل الجملة التالية صحيحة؟</p>'+
+      '<div style="font-size:1.4rem;text-align:center;margin:12px 0;font-weight:800;color:var(--p-dk)">'+item.icon+' عدد أضلاع '+item.name+' هو '+shownSides+'</div>'+
+      '<div class="btn-row" style="justify-content:center;gap:16px"><button class="btn btn-p" style="background:var(--gr);min-width:110px" id="tf-ok">✔️ صح</button><button class="btn btn-p" style="background:var(--red);min-width:110px" id="tf-no">❌ خطأ</button></div>'+
+      '<div class="fb" id="'+elId+'-f"></div>'+
+      '<p style="text-align:center;margin-top:12px;font-weight:700">النقاط: '+score+'</p>';
+
+    const fb = document.getElementById(elId+'-f');
+    document.getElementById('tf-ok').onclick = () => check(true);
+    document.getElementById('tf-no').onclick = () => check(false);
+
+    function check(ans){
+      if(el.dataset.done) return; el.dataset.done = '1';
+      const ok = ans === isTrue;
+      fb.className = 'fb ' + (ok ? 'ok' : 'no');
+      if(ok){ score++; fb.textContent = '✅ أحسنت! إجابة صحيحة'; playCorrectSound(); }
+      else { fb.textContent = '❌ إجابة خاطئة!'; playWrongSound(); }
+      setTimeout(() => { delete el.dataset.done; next(); }, 1000);
+    }
+  }
+  next();
+}
+
+// 4. لعبة من أنا؟
+function whoAmIGame(elId) {
+  const el = document.getElementById(elId);
+  const riddles = [
+    { text: "لدي ٤ أضلاع متساوية في الطول و٤ رؤوس، فمن أنا؟", ans: "المربع", opts: ["المربع", "المستطيل", "المثلث", "الدائرة"] },
+    { text: "أنا منحنى مغلق وليس لدي أي أضلاع أو رؤوس، فمن أنا؟", ans: "الدائرة", opts: ["الدائرة", "المربع", "المثلث", "خماسي الأضلاع"] },
+    { text: "لدي ٣ أضلاع و٣ رؤوس، فمن أنا؟", ans: "المثلث", opts: ["المثلث", "المستطيل", "الدائرة", "المربع"] },
+    { text: "لدي ٤ أضلاع، كل ضلعين متقابلين متساويان، فمن أنا؟", ans: "المستطيل", opts: ["المستطيل", "المربع", "المثلث", "الدائرة"] }
+  ];
+  let idx = 0, score = 0;
+
+  function render() {
+    if (idx >= riddles.length) {
+      el.innerHTML = `<div class="score">🎉 رائع! أنهيت اللعبة بنقاط: ${score}/${riddles.length}</div>
+      <div class="btn-row"><button class="btn btn-p" onclick="whoAmIGame('${elId}')">🔄 اللعب مرة أخرى</button></div>`;
+      return;
+    }
+    const r = riddles[idx];
+    el.innerHTML = `<p style="font-size:1.2rem;font-weight:700;text-align:center;margin-bottom:12px">❓ ${r.text}</p>
+    <div class="opts" id="${elId}-opts"></div><div class="fb" id="${elId}-fb"></div>`;
+    
+    const box = document.getElementById(`${elId}-opts`);
+    const fb = document.getElementById(`${elId}-fb`);
+
+    shuffle(r.opts).forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === r.ans;
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        if (ok) { score++; fb.textContent = '✅ إجابة صحيحة! أحسنت'; playCorrectSound(); }
+        else { fb.textContent = '❌ إجابة خاطئة! الصحيح هو: ' + r.ans; playWrongSound(); }
+        setTimeout(() => { idx++; render(); }, 1200);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+// 5. لعبة أشكال من حولنا
+function realWorldShapesGame(elId) {
+  const el = document.getElementById(elId);
+  const items = [
+    { item: "قطعة بيتزا 🍕", ans: "مثلث", opts: ["مثلث", "مربع", "دائرة", "مستطيل"] },
+    { item: "شاشة التلفاز 📺", ans: "مستطيل", opts: ["مستطيل", "مربع", "دائرة", "مثلث"] },
+    { item: "ساعة حائط دائرية ⏰", ans: "دائرة", opts: ["دائرة", "مربع", "مثلث", "مستطيل"] },
+    { item: "رقعة الشطرنج ♟️", ans: "مربع", opts: ["مربع", "مستطيل", "مثلث", "دائرة"] },
+    { item: "إشارة الخطر ⚠️", ans: "مثلث", opts: ["مثلث", "دائرة", "مربع", "مستطيل"] }
+  ];
+  let idx = 0, score = 0;
+
+  function render() {
+    if (idx >= items.length) {
+      el.innerHTML = `<div class="score">🎉 ممتاز! طابقت جميع الأشياء بنجاح! النقاط: ${score}/${items.length}</div>
+      <div class="btn-row"><button class="btn btn-p" onclick="realWorldShapesGame('${elId}')">🔄 اللعب مرة أخرى</button></div>`;
+      return;
+    }
+    const it = items[idx];
+    el.innerHTML = `<p style="font-size:1.2rem;font-weight:700;text-align:center;margin-bottom:12px">ما هو الشكل الهندسي الأقرب لـ <b>${it.item}</b>؟</p>
+    <div class="opts" id="${elId}-opts"></div><div class="fb" id="${elId}-fb"></div>`;
+    
+    const box = document.getElementById(`${elId}-opts`);
+    const fb = document.getElementById(`${elId}-fb`);
+
+    shuffle(it.opts).forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === it.ans;
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        if (ok) { score++; fb.textContent = '✅ أحسنت! مطابقة صحيحة'; playCorrectSound(); }
+        else { fb.textContent = '❌ مطابقة خاطئة! الشكل الأقرب هو: ' + it.ans; playWrongSound(); }
+        setTimeout(() => { idx++; render(); }, 1200);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+// الاختبار النهائي
+function genDrillQ() {
+  const list = [
+    { q: 'الشكل الذي يتكون من <b>٣ أضلاع</b> يسمى:', answer: 'المثلث', options: ['المثلث', 'المربع', 'الدائرة', 'المستطيل'] },
+    { q: 'الشكل الذي ليس له أي <b>أضلاع أو رؤوس</b> هو:', answer: 'الدائرة', options: ['المربع', 'الدائرة', 'المستطيل', 'المثلث'] },
+    { q: 'المربع يتكون من ٤ أضلاع تكون دائماً:', answer: 'متساوية في الطول', options: ['متساوية في الطول', 'مختلفة في الطول', 'منحنية', 'غير منتظمة'] },
+    { q: 'كم عدد <b>رؤوس المستطيل</b>؟', answer: '٤', options: ['٣', '٤', '٥', '٠'] },
+    { q: 'شكل هندسي له <b>٥ أضلاع</b> يسمى:', answer: 'خماسي الأضلاع', options: ['رباعي الأضلاع', 'مربع', 'خماسي الأضلاع', 'مثلث'] }
+  ];
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function makeQuiz(elId, count){
+  const el = document.getElementById(elId); let i = 0, correct = 0, qs = [];
+  for(let k=0; k<count; k++) qs.push(genDrillQ());
+  
+  function render(){
+    if(i >= qs.length){
+      const pct = Math.round(correct / qs.length * 100);
+      const grade = pct >= 85 ? 'ممتاز 🌟' : pct >= 70 ? 'جيد جداً 👍' : pct >= 50 ? 'جيد 👌' : 'يحتاج إلى مراجعة 💪';
+      const today = new Date().toLocaleDateString('ar-EG');
+
+      el.innerHTML = `
+        <div style="text-align:center;">
+          <h3 style="font-size:1.4rem;color:var(--p-dk);margin-bottom:10px">🎉 اكتمل الاختبار بنجاح!</h3>
+          <p style="margin-bottom:12px;font-weight:600">اكتب اسمك أدناه لإنشاء تقرير النتيجة ومشاركته مع معلمك:</p>
+          
+          <div style="max-width:320px;margin:0 auto 18px">
+            <input type="text" id="studentNameInput" placeholder="ادخل اسم الطالب هنا..." oninput="updateReportName(this.value)">
+          </div>
+
+          <div id="reportCard" style="background:#fff; border:3px solid var(--p); border-radius:20px; padding:25px; text-align:center; max-width:440px; margin:0 auto; box-shadow:0 10px 30px rgba(0,0,0,0.06); font-family:'Tajawal',sans-serif; color:var(--ink);">
+            <div style="font-size:2.2rem;margin-bottom:4px">📜</div>
+            <h2 style="font-family:'Baloo Bhaijaan 2',sans-serif; color:var(--p-dk); font-size:1.5rem; margin-bottom:2px">تقرير أداء الطالب</h2>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px">الدرس الثالث: الأشكال الهندسية ثنائية الأبعاد</p>
+            
+            <div style="background:var(--p-lt); border-radius:12px; padding:10px 14px; margin-bottom:14px; border:1px solid var(--p)">
+              <span style="font-size:0.85rem; color:var(--p-dk); font-weight:700">اسم الطالب:</span>
+              <div id="reportStudentName" style="font-size:1.25rem; font-weight:800; color:var(--pk); margin-top:2px">....................</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
+              <div style="background:var(--sky-lt); padding:10px; border-radius:12px; border:1px solid var(--sky)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">الإجابات الصحيحة</div>
+                <div style="font-size:1.2rem; font-weight:800; color:var(--p-dk); margin-top:2px">${correct} من ${qs.length}</div>
+              </div>
+              <div style="background:var(--gr-lt); padding:10px; border-radius:12px; border:1px solid var(--gr)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">النسبة المئوية</div>
+                <div style="font-size:1.2rem; font-weight:800; color:#065F46; margin-top:2px">${pct}٪</div>
+              </div>
+            </div>
+
+            <div style="background:var(--gold-lt); border:1px solid var(--gold); padding:8px; border-radius:12px; font-size:1.05rem; font-weight:800; color:#B45309; margin-bottom:12px">
+              التقدير العام: ${grade}
+            </div>
+
+            <div style="font-size:0.75rem; color:var(--muted); border-top:1px dashed var(--border); padding-top:8px">
+              تاريخ الإنجاز: ${today} | مادة الرياضيات — الصف الرابع
+            </div>
+          </div>
+
+          <div class="btn-row" style="justify-content:center; margin-top:20px">
+            <button class="btn btn-p" onclick="downloadReportImage()" style="background:linear-gradient(135deg,var(--gr),#059669)">📸 تحميل التقرير كصورة</button>
+            <button class="btn btn-o" id="rq">🔄 إعادة التمارين</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('rq').onclick = () => { i=0; correct=0; qs=[]; for(let k=0;k<count;k++) qs.push(genDrillQ()); render(); };
+      return;
+    }
+
+    const q = qs[i];
+    el.innerHTML = '<div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div><p style="font-weight:700;font-size:1.1rem">سؤال '+(i+1)+' من '+qs.length+'</p><p style="margin:8px 0;font-size:1.15rem">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div><div class="fb" id="'+elId+'-f"></div>';
+    const box = document.getElementById(elId+'-o'), fb = document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if(box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === q.answer;
+        [...box.children].forEach(c => { if(c.innerHTML === q.answer) c.classList.add('ok'); else if(c === b) c.classList.add('no'); });
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        fb.innerHTML = (ok ? '✅ إجابة صحيحة!' : '❌ الإجابة الصحيحة: ' + q.answer);
+        if(ok){ correct++; playCorrectSound(); } else { playWrongSound(); }
+        setTimeout(() => { i++; render(); }, 1400);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+// تشغيل الألعاب
+memoryGame('g1', [['🟦', 'مربع'], ['🔺', 'مثلث'], ['🟡', 'دائرة'], ['▭', 'مستطيل']]);
+speedGame('g2', 45);
+tfGame('g3');
+whoAmIGame('g4');
+realWorldShapesGame('g5');
+makeQuiz('q1', 5);
+</script>
+</body>
+</html>
