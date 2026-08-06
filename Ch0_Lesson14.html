@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مساحة المربع والمستطيل</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- مكتبة تحويل العناصر إلى صور -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#059669;--p-lt:#ECFDF5;--p-dk:#047857;--pk:#D97706;--pk-lt:#FFFBEB;--gold:#F59E0B;--gold-lt:#FEF3C7;--gr:#10B981;--gr-lt:#E6F4EA;--sky:#0284C7;--sky-lt:#E0F2FE;--red:#EF4444;--red-lt:#FEF2F2;--ink:#0F172A;--muted:#64748B;--border:#E2E8F0;--bg:#F0FDF4;--surface:#fff;--radius:18px;--shadow:0 4px 28px rgba(5,150,105,.10)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(135deg,#065F46,#059669 45%,#0284C7);color:#fff;padding:22px 16px;text-align:center;border-radius:0 0 26px 26px;position:relative}
+header h1{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.6rem}
+header p{opacity:.9;font-size:.95rem;margin-top:4px}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.tab-btn{border:none;cursor:pointer;background:#fff;color:var(--p-dk);font-family:inherit;font-weight:700;font-size:.95rem;padding:10px 16px;border-radius:99px;box-shadow:var(--shadow)}
+.tab-btn.active{background:linear-gradient(135deg,var(--p),var(--sky));color:#fff}
+.section{display:none}.section.active{display:block;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;border:1px solid var(--border)}
+.card h2{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p-dk);font-size:1.3rem;margin-bottom:10px}
+.card h3{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p);font-size:1.1rem;margin:12px 0 8px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:1rem;padding:10px 18px;border-radius:14px;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-p{background:linear-gradient(135deg,var(--p),var(--sky));color:#fff}
+.btn-o{background:var(--p-lt);color:var(--p-dk);border:2px solid var(--p)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:10px}
+.opt{background:var(--sky-lt);border:2px solid var(--sky);border-radius:14px;padding:12px;font-size:1.1rem;font-weight:700;cursor:pointer;text-align:center;font-family:inherit}
+.opt.ok{background:var(--gr-lt);border-color:var(--gr);color:#065F46}
+.opt.no{background:var(--red-lt);border-color:var(--red);color:#7F1D1D}
+.fb{margin-top:10px;font-weight:700;padding:10px;border-radius:12px;display:none}
+.fb.ok{display:block;background:var(--gr-lt);color:#065F46}
+.fb.no{display:block;background:var(--red-lt);color:#7F1D1D}
+input[type=text]{font-family:inherit;font-size:1.1rem;padding:10px;border:2px solid var(--p);border-radius:12px;width:100%;text-align:center}
+.score{background:linear-gradient(135deg,var(--p),var(--sky));color:#fff;border-radius:14px;padding:10px 16px;text-align:center;font-weight:800}
+.bar{height:12px;background:var(--p-lt);border-radius:99px;overflow:hidden;margin:10px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--sky));width:0;transition:.3s}
+
+.rule-box{background:var(--p-lt);border:2px dashed var(--p);border-radius:16px;padding:16px;margin:12px 0;text-align:center}
+.rule-formula{font-size:1.3rem;font-weight:800;color:var(--sky);background:#fff;display:inline-block;padding:6px 16px;border-radius:10px;margin-top:4px}
+
+.shapes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:14px}
+.shape-card{background:var(--sky-lt);border:2px solid var(--sky);border-radius:16px;padding:16px;text-align:center}
+
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mem .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:12px;font-size:1rem;font-weight:800;cursor:pointer;user-select:none;text-align:center;padding:4px}
+.mem .c.open{background:var(--gold-lt);color:var(--ink);border:2px solid var(--gold)}
+.mem .c.done{background:var(--gr-lt);color:#065F46;border:2px solid var(--gr);cursor:default}
+
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,0.25);padding:8px 18px;border-radius:99px;backdrop-filter:blur(4px);transition:0.2s}
+.back:hover{background:rgba(255,255,255,0.4);transform:translateY(-1px)}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+
+.music-btn{position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.25);color:#fff;border:none;padding:8px 14px;border-radius:99px;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.85rem;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px);transition:0.2s}
+.music-btn:hover{background:rgba(255,255,255,0.4)}
+
+.games-title-box{text-align:center;margin:10px 0 24px}
+.games-title-box h2{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.7rem;color:var(--ink)}
+.games-title-box p{color:var(--muted);font-size:0.95rem;font-weight:600;margin-top:4px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.game-card-select{background:#fff;border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.03);border:1px solid #EEF2F6;transition:all .2s ease;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.game-card-select:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(5,150,105,0.12);border-color:var(--p-lt)}
+.game-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:14px}
+.game-card-select h3{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.2rem;color:var(--ink);margin:0 0 6px}
+.game-card-select p{font-size:0.88rem;color:var(--muted);line-height:1.5;margin-bottom:14px;flex-grow:1}
+.game-card-select .start-link{color:var(--p);font-weight:700;font-size:0.95rem;display:inline-flex;align-items:center;gap:4px}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="Ch0_Music.mp3" type="audio/mpeg">
+</audio>
+
+<header>
+  <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 الموسيقى: تفعيل</button>
+  <h1>مساحة المربع والمستطيل</h1>
+  <p>قياس المساحة بالوحدات المربعة وحساب قوانين الأشكال</p>
+  <a class="back" href="#">🏠 العودة للرئيسية</a>
+</header>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab-btn active" data-tab="learn" onclick="showTab('learn')">📘 القوانين والمفهوم</button>
+  <button class="tab-btn" data-tab="games" onclick="showTab('games')">🎮 الألعاب التفاعلية</button>
+  <button class="tab-btn" data-tab="drill" onclick="showTab('drill')">📝 التمارين والتقرير</button>
+</div>
+
+<!-- قسم المفهوم -->
+<div class="section active" id="sec-learn">
+  <div class="card">
+    <h2>📏 ما هي المساحة؟</h2>
+    <p>المساحة هي قياس للمنطقة المحصورة داخل حدود الشكل الهندسي، وتُقاس بـ <b>الوحدات المربعة</b> (مثل: سم²، م²).</p>
+    
+    <div class="shapes-grid">
+      <div class="shape-card">
+        <div style="font-size:2.5rem;margin-bottom:6px">🟦</div>
+        <h3>مساحة المربع</h3>
+        <p>بما أن جميع أضلاع المربع متساوية:</p>
+        <div class="rule-box">
+          <div class="rule-formula">المساحة = طول الضلع × نفسه</div>
+        </div>
+        <p style="font-size:0.9rem;color:var(--muted)">مثال: مربع طول ضلعه ٥ سم<br>المساحة = ٥ × ٥ = <b>٢٥ سم²</b></p>
+      </div>
+
+      <div class="shape-card">
+        <div style="font-size:2.5rem;margin-bottom:6px">▭</div>
+        <h3>مساحة المستطيل</h3>
+        <p>يتكون المستطيل من طول وعرض:</p>
+        <div class="rule-box">
+          <div class="rule-formula">المساحة = الطول × العرض</div>
+        </div>
+        <p style="font-size:0.9rem;color:var(--muted)">مثال: مستطيل طوله ٦ سم وعرضه ٤ سم<br>المساحة = ٦ × ٤ = <b>٢٤ سم²</b></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- قسم الألعاب -->
+<div class="section" id="sec-games">
+  <div id="games-hub">
+    <div class="games-title-box">
+      <h2>🎮 ألعاب حساب المساحات</h2>
+      <p>اختر لعبة وطبق القوانين لتفوز بالنقلة!</p>
+    </div>
+    <div class="games-grid">
+      <div class="game-card-select" onclick="openGame('g1')">
+        <div class="game-icon" style="background:var(--p-lt);color:var(--p)">🧠</div>
+        <h3>مطابقة القوانين</h3>
+        <p>طابق بين الشكل وقانون المساحة المناسب له</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g2')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">⚡</div>
+        <h3>تحدي المساحة السريع</h3>
+        <p>احسب مساحة المربع أو المستطيل قبل انتهاء الوقت</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g3')">
+        <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">👷</div>
+        <h3>المهندس الصغير</h3>
+        <p>اكتشف طول الضلع المجهول من خلال المساحة المعطاة</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g4')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">⚖️</div>
+        <h3>أيهما أكبر مساحة؟</h3>
+        <p>قارن بين مساحتين وحدد الشكل ذو المساحة الأكبر</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g5')">
+        <div class="game-icon" style="background:var(--p-lt);color:var(--p-dk)">🧱</div>
+        <h3>ابنِ الشكل (Shape Builder)</h3>
+        <p>اختر الأبعاد المناسبة لتكوين المساحة المطلوبة</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g6')">
+        <div class="game-icon" style="background:var(--gold-lt);color:#B45309">🧩</div>
+        <h3>المساحة المركبة</h3>
+        <p>قسّم الشكل إلى مربع ومستطيل واحسب المساحة الكلية</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-view" style="display:none">
+    <button class="btn btn-o" onclick="closeGame()" style="margin-bottom:14px">⬅️ قائمة الألعاب</button>
+    <div class="card" id="wrap-g1" style="display:none">
+      <h3>🧠 لعبة الذاكرة: قوانين المساحة</h3>
+      <div id="g1"></div>
+    </div>
+    <div class="card" id="wrap-g2" style="display:none">
+      <h3>⚡ تحدي المساحة السريع</h3>
+      <div id="g2"></div>
+    </div>
+    <div class="card" id="wrap-g3" style="display:none">
+      <h3>👷 لعبة المهندس الصغير (الأبعاد المجهولة)</h3>
+      <div id="g3"></div>
+    </div>
+    <div class="card" id="wrap-g4" style="display:none">
+      <h3>⚖️ تحدي مقارنة المساحات</h3>
+      <div id="g4"></div>
+    </div>
+    <div class="card" id="wrap-g5" style="display:none">
+      <h3>🧱 لعبة ابنِ الشكل (Shape Builder)</h3>
+      <div id="g5"></div>
+    </div>
+    <div class="card" id="wrap-g6" style="display:none">
+      <h3>🧩 لعبة حساب المساحة المركبة (Composite Area Challenge)</h3>
+      <div id="g6"></div>
+    </div>
+  </div>
+</div>
+
+<!-- قسم التمارين -->
+<div class="section" id="sec-drill">
+  <div class="card">
+    <h2>📝 تمارين واختبار المساحة</h2>
+    <div id="q1"></div>
+  </div>
+</div>
+</div>
+
+<footer>رياضيات — المرحلة الابتدائية</footer>
+
+<script>
+// التحكم بالموسيقى
+const bgAudio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggleBtn');
+let isMusicPlaying = false;
+
+function toggleMusic() {
+  if (!bgAudio) return;
+  if (isMusicPlaying) {
+    bgAudio.pause();
+    isMusicPlaying = false;
+    musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+  } else {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: تفعيل';
+    });
+  }
+}
+
+// المؤثرات الصوتية
+let audioCtx;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playCorrectSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.setValueAtTime(659.25, now + 0.08);
+    osc.frequency.setValueAtTime(783.99, now + 0.16);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch(e){}
+}
+
+function playWrongSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.setValueAtTime(110, now + 0.12);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch(e){}
+}
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  if(id === 'games') closeGame();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openGame(gameId) {
+  document.getElementById('games-hub').style.display = 'none';
+  document.getElementById('game-view').style.display = 'block';
+  ['wrap-g1', 'wrap-g2', 'wrap-g3', 'wrap-g4', 'wrap-g5', 'wrap-g6'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('wrap-' + gameId).style.display = 'block';
+}
+
+function closeGame() {
+  document.getElementById('game-view').style.display = 'none';
+  document.getElementById('games-hub').style.display = 'block';
+}
+
+function updateReportName(val) {
+  const target = document.getElementById('reportStudentName');
+  if (target) target.textContent = val.trim() || '....................';
+}
+
+function downloadReportImage() {
+  const reportEl = document.getElementById('reportCard');
+  if (!reportEl) return;
+  const studentInput = document.getElementById('studentNameInput');
+  const studentName = (studentInput && studentInput.value.trim()) ? studentInput.value.trim() : 'الطالب';
+
+  html2canvas(reportEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `تقرير_${studentName}_مساحة_المربع_والمستطيل.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+// 1. لعبة الذاكرة (قوانين المساحة)
+function memoryGame(elId, pairs){
+  const el = document.getElementById(elId);
+  let cards = []; pairs.forEach((p,i)=>{ cards.push({k:i,t:p[0]}); cards.push({k:i,t:p[1]}); });
+  cards = shuffle(cards); let open = [], done = 0, moves = 0;
+  el.innerHTML = '<div class="mem" id="'+elId+'-g"></div><p style="margin-top:8px" id="'+elId+'-s"></p><div class="btn-row"><button class="btn btn-o" id="'+elId+'-r">🔄 لعبة جديدة</button></div>';
+  const g = document.getElementById(elId+'-g'), s = document.getElementById(elId+'-s');
+  document.getElementById(elId+'-r').onclick = () => memoryGame(elId, pairs);
+  cards.forEach(c => {
+    const d = document.createElement('div'); d.className = 'c'; d.textContent = '؟';
+    d.onclick = () => {
+      if(d.classList.contains('done')||d.classList.contains('open')||open.length===2) return;
+      d.classList.add('open'); d.textContent = c.t; open.push({d,c});
+      if(open.length === 2){
+        moves++;
+        if(open[0].c.k === open[1].c.k){
+          open.forEach(o => { o.d.classList.remove('open'); o.d.classList.add('done'); }); open = []; done++;
+          playCorrectSound();
+          if(done === pairs.length) s.innerHTML = '🎉 أحسنت! طابقت جميع القوانين في ' + moves + ' محاولة';
+        } else {
+          playWrongSound();
+          setTimeout(() => { open.forEach(o => { o.d.classList.remove('open'); o.d.textContent = '؟'; }); open = []; }, 900);
+        }
+      }
+      if(done < pairs.length) s.textContent = 'المحاولات: ' + moves + ' — طابق القوانين الصحيحة';
+    };
+    g.appendChild(d);
+  });
+}
+
+// 2. تحدي المساحة السريع
+function genSpeedQ() {
+  const isSquare = Math.random() < 0.5;
+  if(isSquare) {
+    const side = Math.floor(Math.random() * 8) + 2;
+    const ans = side * side;
+    const options = shuffle([...new Set([ans, side * 4, (side+1)*(side+1), ans - 2])]).map(v => v + " سم²");
+    return { q: `مربع طول ضلعه <b>${side} سم</b>. ما مساحته؟`, answer: ans + " سم²", options };
+  } else {
+    const l = Math.floor(Math.random() * 7) + 3;
+    const w = Math.floor(Math.random() * 4) + 2;
+    const ans = l * w;
+    const options = shuffle([...new Set([ans, (l + w) * 2, l * 2 + w, ans + 4])]).map(v => v + " سم²");
+    return { q: `مستطيل طوله <b>${l} سم</b> وعرضه <b>${w} سم</b>. ما مساحته؟`, answer: ans + " سم²", options };
+  }
+}
+
+function speedGame(elId, seconds){
+  const el = document.getElementById(elId); let score = 0, t = seconds, timer = null, q = null;
+  el.innerHTML = '<div class="score" id="'+elId+'-h"></div><div id="'+elId+'-b" style="margin-top:10px"></div>';
+  const h = document.getElementById(elId+'-h'), b = document.getElementById(elId+'-b');
+  function next(){
+    q = genSpeedQ();
+    b.innerHTML = '<p style="font-size:1.15rem;font-weight:700;text-align:center">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div>';
+    const box = document.getElementById(elId+'-o');
+    q.options.forEach(o => {
+      const x = document.createElement('button'); x.className = 'opt'; x.innerHTML = o;
+      x.onclick = () => {
+        if(o === q.answer){ score++; x.classList.add('ok'); playCorrectSound(); }
+        else { x.classList.add('no'); [...box.children].forEach(c => { if(c.innerHTML === q.answer) c.classList.add('ok'); }); playWrongSound(); }
+        setTimeout(next, 500);
+      };
+      box.appendChild(x);
+    });
+  }
+  function tick(){
+    h.innerHTML = '⏱️ الوقت: ' + t + ' ثانية — النقاط: ' + score;
+    if(t <= 0){
+      clearInterval(timer);
+      b.innerHTML = '<div class="score">انتهى الوقت! مجموع نقاطك: '+score+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 التحدي مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick = () => speedGame(elId, seconds);
+      return;
+    }
+    t--;
+  }
+  tick(); timer = setInterval(tick, 1000); next();
+}
+
+// 3. لعبة المهندس الصغير
+function engineerGame(elId) {
+  const el = document.getElementById(elId);
+  const questions = [
+    { text: "مربع مساحته <b>٣٦ سم²</b>، فما هو طول ضلعه؟", ans: "٦ سم", opts: ["٦ سم", "٩ سم", "١٢ سم", "٤ سم"] },
+    { text: "مستطيل مساحته <b>٢٠ سم²</b> وطوله <b>٥ سم</b>، فما هو عرضه؟", ans: "٤ سم", opts: ["٤ سم", "٥ سم", "١٠ سم", "٢ سم"] },
+    { text: "مربع مساحته <b>١٦ سم²</b>، كم يكون طول ضلعه؟", ans: "٤ سم", opts: ["٤ سم", "٨ سم", "٢ سم", "٦ سم"] },
+    { text: "مستطيل مساحته <b>٣٠ سم²</b> وعرضه <b>٥ سم</b>، فما هو طوله؟", ans: "٦ سم", opts: ["٦ سم", "٥ سم", "١٠ سم", "١٥ سم"] }
+  ];
+  let idx = 0, score = 0;
+
+  function render() {
+    if (idx >= questions.length) {
+      el.innerHTML = `<div class="score">🎉 رائع يا مهندس! أنهيت المهمة بنجاح! النقاط: ${score}/${questions.length}</div>
+      <div class="btn-row"><button class="btn btn-p" onclick="engineerGame('${elId}')">🔄 اللعب مرة أخرى</button></div>`;
+      return;
+    }
+    const q = questions[idx];
+    el.innerHTML = `<p style="font-size:1.2rem;font-weight:700;text-align:center;margin-bottom:12px">📐 ${q.text}</p>
+    <div class="opts" id="${elId}-opts"></div><div class="fb" id="${elId}-fb"></div>`;
+    
+    const box = document.getElementById(`${elId}-opts`);
+    const fb = document.getElementById(`${elId}-fb`);
+
+    shuffle(q.opts).forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === q.ans;
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        if (ok) { score++; fb.textContent = '✅ حساب صحيح! إجابة ممتازة'; playCorrectSound(); }
+        else { fb.textContent = '❌ حساب غير صحيح! الناتج الصحيح: ' + q.ans; playWrongSound(); }
+        setTimeout(() => { idx++; render(); }, 1200);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+// 4. لعبة مقارنة المساحات
+function compareGame(elId) {
+  const el = document.getElementById(elId);
+  let score = 0, round = 0, totalRounds = 5;
+
+  function nextRound() {
+    if(round >= totalRounds) {
+      el.innerHTML = `<div class="score">🏆 أحسنت! أنهيت تحدي المقارنة بنجاح! النقاط: ${score}/${totalRounds}</div>
+      <div class="btn-row"><button class="btn btn-p" onclick="compareGame('${elId}')">🔄 إعادة التحدي</button></div>`;
+      return;
+    }
+    round++;
+    const s1 = Math.floor(Math.random()*5)+3;
+    const a1 = s1 * s1;
+    
+    const l2 = Math.floor(Math.random()*5)+4;
+    const w2 = Math.floor(Math.random()*3)+2;
+    const a2 = l2 * w2;
+
+    const correct = a1 > a2 ? 'المربع' : (a2 > a1 ? 'المستطيل' : 'المساحتان متساويتان');
+    const opts = ['المربع', 'المستطيل', 'المساحتان متساويتان'];
+
+    el.innerHTML = `
+      <p style="font-size:1.15rem;font-weight:700;text-align:center">أيهما أكبر مساحة؟</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;text-align:center">
+        <div style="background:var(--sky-lt);padding:10px;border-radius:12px;border:1px solid var(--sky)">
+          <b>🟦 مربع</b><br>طول ضلعه ${s1} سم
+        </div>
+        <div style="background:var(--gold-lt);padding:10px;border-radius:12px;border:1px solid var(--gold)">
+          <b>▭ مستطيل</b><br>أبعاده ${l2} سم × ${w2} سم
+        </div>
+      </div>
+      <div class="opts" id="${elId}-opts"></div>
+      <div class="fb" id="${elId}-fb"></div>
+    `;
+
+    const box = document.getElementById(`${elId}-opts`);
+    const fb = document.getElementById(`${elId}-fb`);
+
+    opts.forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === correct;
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        if (ok) { score++; fb.textContent = `✅ صح! (مساحة المربع = ${a1} سم² | مساحة المستطيل = ${a2} سم²)`; playCorrectSound(); }
+        else { fb.textContent = `❌ الإجابة الصحيحة هي ${correct} (المربع = ${a1} سم² | المستطيل = ${a2} سم²)`; playWrongSound(); }
+        setTimeout(() => { nextRound(); }, 1500);
+      };
+      box.appendChild(b);
+    });
+  }
+  nextRound();
+}
+
+// 5. لعبة ابنِ الشكل (Shape Builder)
+function buildShapeGame(elId) {
+  const el = document.getElementById(elId);
+  const tasks = [
+    { target: "مستطيل مساحته 12 سم²", ans: "4 سم × 3 سم", opts: ["4 سم × 3 سم", "5 سم × 2 سم", "6 سم × 6 سم", "3 سم × 3 سم"] },
+    { target: "مربع مساحته 36 سم²", ans: "6 سم × 6 سم", opts: ["6 سم × 6 سم", "9 سم × 4 سم", "6 سم × 3 سم", "8 سم × 8 سم"] },
+    { target: "مستطيل مساحته 20 سم²", ans: "5 سم × 4 سم", opts: ["5 سم × 4 سم", "10 سم × 3 سم", "4 سم × 4 سم", "6 سم × 3 سم"] },
+    { target: "مستطيل مساحته 18 سم²", ans: "9 سم × 2 سم", opts: ["9 سم × 2 سم", "4 سم × 4 سم", "6 سم × 4 سم", "5 سم × 3 سم"] },
+    { target: "مربع مساحته 16 سم²", ans: "4 سم × 4 سم", opts: ["4 سم × 4 سم", "8 سم × 2 سم", "4 سم × 3 سم", "5 سم × 5 سم"] }
+  ];
+  let idx = 0, score = 0;
+
+  function render() {
+    if (idx >= tasks.length) {
+      el.innerHTML = `<div class="score">🎉 بناء ممتاز! نجحت في اختيار أبعاد كافة الأشكال المطلوب بناؤها! النقاط: ${score}/${tasks.length}</div>
+      <div class="btn-row"><button class="btn btn-p" onclick="buildShapeGame('${elId}')">🔄 اللعب مرة أخرى</button></div>`;
+      return;
+    }
+    const t = tasks[idx];
+    el.innerHTML = `<p style="font-size:1.2rem;font-weight:700;text-align:center;margin-bottom:12px">🧱 اختر الأبعاد المناسبة لبناء: <b>${t.target}</b></p>
+    <div class="opts" id="${elId}-opts"></div><div class="fb" id="${elId}-fb"></div>`;
+    
+    const box = document.getElementById(`${elId}-opts`);
+    const fb = document.getElementById(`${elId}-fb`);
+
+    shuffle(t.opts).forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === t.ans;
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        if (ok) { score++; fb.textContent = '✅ برافو! أبعاد صحيحة تُعطي المساحة المطلوبة'; playCorrectSound(); }
+        else { fb.textContent = '❌ أبعاد غير صحيحة! الأبعاد المناسبة هي: ' + t.ans; playWrongSound(); }
+        setTimeout(() => { idx++; render(); }, 1300);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+// 6. لعبة حساب المساحة المركبة (Composite Area Challenge)
+function compositeAreaGame(elId) {
+  const el = document.getElementById(elId);
+  const questions = [
+    { text: "شكل يتكون من مربع (طول ضلعه 3 سم) ومستطيل (أبعاده 4 سم × 2 سم). ما هي المساحة الكلية للشكل؟", ans: "17 سم²", opts: ["17 سم²", "14 سم²", "20 سم²", "12 سم²"], note: "مساحة المربع (3×3 = 9) + مساحة المستطيل (4×2 = 8) = 17 سم²" },
+    { text: "شكل مركّب من مستطيل (5 سم × 3 سم) ومربع (طول ضلعه 2 سم). ما المساحة الكلية؟", ans: "19 سم²", opts: ["19 سم²", "15 سم²", "22 سم²", "18 سم²"], note: "مساحة المستطيل (5×3 = 15) + مساحة المربع (2×2 = 4) = 19 سم²" },
+    { text: "شكل يتكون من مستطيلين؛ الأول (6 سم × 3 سم) والثاني (4 سم × 2 سم). ما المساحة الكلية؟", ans: "26 سم²", opts: ["26 سم²", "24 سم²", "18 سم²", "30 سم²"], note: "المستطيل الأول (18) + المستطيل الثاني (8) = 26 سم²" },
+    { text: "شكل مركّب من مربع (طول ضلعه 4 سم) ومستطيل (5 سم × 2 سم). ما هي المساحة الكلية؟", ans: "26 سم²", opts: ["26 سم²", "22 سم²", "18 سم²", "20 سم²"], note: "مساحة المربع (16) + مساحة المستطيل (10) = 26 سم²" }
+  ];
+  let idx = 0, score = 0;
+
+  function render() {
+    if (idx >= questions.length) {
+      el.innerHTML = `<div class="score">🏆 تفكير منطقي رائع! تمكنت من حل أشكال المساحات المركبة! النقاط: ${score}/${questions.length}</div>
+      <div class="btn-row"><button class="btn btn-p" onclick="compositeAreaGame('${elId}')">🔄 إعادة التحدي</button></div>`;
+      return;
+    }
+    const q = questions[idx];
+    el.innerHTML = `<p style="font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:12px">🧩 ${q.text}</p>
+    <div class="opts" id="${elId}-opts"></div><div class="fb" id="${elId}-fb"></div>`;
+    
+    const box = document.getElementById(`${elId}-opts`);
+    const fb = document.getElementById(`${elId}-fb`);
+
+    shuffle(q.opts).forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === q.ans;
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        if (ok) { score++; fb.textContent = '✅ إجابة صحيحة وممتازة! ' + q.note; playCorrectSound(); }
+        else { fb.textContent = '❌ إجابة خاطئة! ' + q.note; playWrongSound(); }
+        setTimeout(() => { idx++; render(); }, 1800);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+// الاختبار النهائي
+function genDrillQ() {
+  const list = [
+    { q: 'مساحة المربع تُحسب بالقانون:', answer: 'طول الضلع × نفسه', options: ['طول الضلع × نفسه', 'الطول + العرض', 'الطول × العرض', 'طول الضلع × ٤'] },
+    { q: 'مستطيل طوله ٧ سم وعرضه ٣ سم، مساحته تساوي:', answer: '٢١ سم²', options: ['٢١ سم²', '١٠ سم²', '٢٠ سم²', '١٤ سم²'] },
+    { q: 'مربع طول ضلعه ٦ سم، مساحته تساوي:', answer: '٣٦ سم²', options: ['٢٤ سم²', '٣٦ سم²', '١٢ سم²', '١٨ سم²'] },
+    { q: 'مساحة المستطيل الذي أبعاده ٥ سم و ٨ سم هي:', answer: '٤٠ سم²', options: ['٤٠ سم²', '٢٦ سم²', '١٣ سم²', '٣٥ سم²'] },
+    { q: 'إذا كانت مساحة مربع ١٦ سم²، فإن طول ضلعه يساوي:', answer: '٤ سم', options: ['٤ سم', '٨ سم', '٢ سم', '١٦ سم'] }
+  ];
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function makeQuiz(elId, count){
+  const el = document.getElementById(elId); let i = 0, correct = 0, qs = [];
+  for(let k=0; k<count; k++) qs.push(genDrillQ());
+  
+  function render(){
+    if(i >= qs.length){
+      const pct = Math.round(correct / qs.length * 100);
+      const grade = pct >= 85 ? 'ممتاز 🌟' : pct >= 70 ? 'جيد جداً 👍' : pct >= 50 ? 'جيد 👌' : 'يحتاج إلى مراجعة 💪';
+      const today = new Date().toLocaleDateString('ar-EG');
+
+      el.innerHTML = `
+        <div style="text-align:center;">
+          <h3 style="font-size:1.4rem;color:var(--p-dk);margin-bottom:10px">🎉 اكتمل الاختبار بنجاح!</h3>
+          <p style="margin-bottom:12px;font-weight:600">ادخل اسمك أدناه لاستخراج شهادة تقرير الدرس:</p>
+          
+          <div style="max-width:320px;margin:0 auto 18px">
+            <input type="text" id="studentNameInput" placeholder="ادخل اسم الطالب هنا..." oninput="updateReportName(this.value)">
+          </div>
+
+          <div id="reportCard" style="background:#fff; border:3px solid var(--p); border-radius:20px; padding:25px; text-align:center; max-width:440px; margin:0 auto; box-shadow:0 10px 30px rgba(0,0,0,0.06); font-family:'Tajawal',sans-serif; color:var(--ink);">
+            <div style="font-size:2.2rem;margin-bottom:4px">📐</div>
+            <h2 style="font-family:'Baloo Bhaijaan 2',sans-serif; color:var(--p-dk); font-size:1.5rem; margin-bottom:2px">تقرير أداء الطالب</h2>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px">درس: مساحة المربع والمستطيل</p>
+            
+            <div style="background:var(--p-lt); border-radius:12px; padding:10px 14px; margin-bottom:14px; border:1px solid var(--p)">
+              <span style="font-size:0.85rem; color:var(--p-dk); font-weight:700">اسم الطالب:</span>
+              <div id="reportStudentName" style="font-size:1.25rem; font-weight:800; color:var(--p-dk); margin-top:2px">....................</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
+              <div style="background:var(--sky-lt); padding:10px; border-radius:12px; border:1px solid var(--sky)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">الإجابات الصحيحة</div>
+                <div style="font-size:1.2rem; font-weight:800; color:var(--p-dk); margin-top:2px">${correct} من ${qs.length}</div>
+              </div>
+              <div style="background:var(--gr-lt); padding:10px; border-radius:12px; border:1px solid var(--gr)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">النسبة المئوية</div>
+                <div style="font-size:1.2rem; font-weight:800; color:#065F46; margin-top:2px">${pct}٪</div>
+              </div>
+            </div>
+
+            <div style="background:var(--gold-lt); border:1px solid var(--gold); padding:8px; border-radius:12px; font-size:1.05rem; font-weight:800; color:#B45309; margin-bottom:12px">
+              التقدير العام: ${grade}
+            </div>
+
+            <div style="font-size:0.75rem; color:var(--muted); border-top:1px dashed var(--border); padding-top:8px">
+              تاريخ الإنجاز: ${today} | مادة الرياضيات — الصف الرابع
+            </div>
+          </div>
+
+          <div class="btn-row" style="justify-content:center; margin-top:20px">
+            <button class="btn btn-p" onclick="downloadReportImage()" style="background:linear-gradient(135deg,var(--gr),#059669)">📸 تحميل التقرير كصورة</button>
+            <button class="btn btn-o" id="rq">🔄 إعادة الاختبار</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('rq').onclick = () => { i=0; correct=0; qs=[]; for(let k=0;k<count;k++) qs.push(genDrillQ()); render(); };
+      return;
+    }
+
+    const q = qs[i];
+    el.innerHTML = '<div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div><p style="font-weight:700;font-size:1.1rem">سؤال '+(i+1)+' من '+qs.length+'</p><p style="margin:8px 0;font-size:1.15rem">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div><div class="fb" id="'+elId+'-f"></div>';
+    const box = document.getElementById(elId+'-o'), fb = document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o => {
+      const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if(box.dataset.done) return; box.dataset.done = '1';
+        const ok = o === q.answer;
+        [...box.children].forEach(c => { if(c.innerHTML === q.answer) c.classList.add('ok'); else if(c === b) c.classList.add('no'); });
+        fb.className = 'fb ' + (ok ? 'ok' : 'no');
+        fb.innerHTML = (ok ? '✅ إجابة صحيحة!' : '❌ الإجابة الصحيحة: ' + q.answer);
+        if(ok){ correct++; playCorrectSound(); } else { playWrongSound(); }
+        setTimeout(() => { i++; render(); }, 1400);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+// تشغيل الألعاب
+memoryGame('g1', [
+  ['مساحة المربع', 'الضلع × نفسه'], 
+  ['مساحة المستطيل', 'الطول × العرض'], 
+  ['وحدة المساحة', 'سم²'], 
+  ['مربع ضلعه ٤سم', '١٦ سم²']
+]);
+speedGame('g2', 45);
+engineerGame('g3');
+compareGame('g4');
+buildShapeGame('g5');
+compositeAreaGame('g6');
+makeQuiz('q1', 5);
+</script>
+</body>
+</html>
