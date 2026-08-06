@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مفهوم الضرب كجمع متكرر</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- مكتبة تحويل العناصر إلى صور -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#7C3AED;--p-lt:#F5F3FF;--p-dk:#5B21B6;--pk:#EC4899;--pk-lt:#FDF2F8;--gold:#F59E0B;--gold-lt:#FFFBEA;--gr:#10B981;--gr-lt:#ECFDF5;--sky:#0EA5E9;--sky-lt:#F0F9FF;--red:#EF4444;--red-lt:#FEF2F2;--ink:#1E1B4B;--muted:#6B7280;--border:#E5E7EB;--bg:#FDF4FF;--surface:#fff;--radius:18px;--shadow:0 4px 28px rgba(124,58,237,.10)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(135deg,#4C1D95,#7C3AED 45%,#EC4899);color:#fff;padding:22px 16px;text-align:center;border-radius:0 0 26px 26px;position:relative}
+header h1{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.6rem}
+header p{opacity:.9;font-size:.95rem;margin-top:4px}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.tab-btn{border:none;cursor:pointer;background:#fff;color:var(--p-dk);font-family:inherit;font-weight:700;font-size:.95rem;padding:10px 16px;border-radius:99px;box-shadow:var(--shadow);transition:.2s}
+.tab-btn.active{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.section{display:none}.section.active{display:block;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;border:1px solid var(--border)}
+.card h2{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p-dk);font-size:1.3rem;margin-bottom:10px}
+.card h3{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p);font-size:1.1rem;margin:12px 0 8px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:1rem;padding:10px 18px;border-radius:14px;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-p{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.btn-o{background:var(--p-lt);color:var(--p-dk);border:2px solid var(--p)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
+.opt{background:var(--sky-lt);border:2px solid var(--sky);border-radius:14px;padding:12px;font-size:1.15rem;font-weight:700;cursor:pointer;text-align:center;font-family:inherit;transition:.15s}
+.opt.ok{background:var(--gr-lt);border-color:var(--gr);color:#065F46}
+.opt.no{background:var(--red-lt);border-color:var(--red);color:#7F1D1D}
+.big{font-size:2rem;font-weight:800;text-align:center;color:var(--p-dk);letter-spacing:1px;font-family:'Baloo Bhaijaan 2',sans-serif;margin:12px 0}
+.note{background:var(--gold-lt);border-right:6px solid var(--gold);padding:12px;border-radius:12px;margin:10px 0;font-weight:600}
+.fb{margin-top:10px;font-weight:700;padding:10px;border-radius:12px;display:none}
+.fb.ok{display:block;background:var(--gr-lt);color:#065F46}
+.fb.no{display:block;background:var(--red-lt);color:#7F1D1D}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:1rem}
+th,td{border:1px solid var(--border);padding:8px;text-align:center}
+th{background:var(--p-lt);color:var(--p-dk)}
+input[type=text],input[type=number]{font-family:inherit;font-size:1.1rem;padding:10px;border:2px solid var(--p);border-radius:12px;width:100%;text-align:center}
+.score{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff;border-radius:14px;padding:10px 16px;text-align:center;font-weight:800}
+.bar{height:12px;background:var(--p-lt);border-radius:99px;overflow:hidden;margin:10px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--pk));width:0;transition:.3s}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mem .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:12px;font-size:0.95rem;font-weight:800;cursor:pointer;user-select:none;text-align:center;padding:4px}
+.mem .c.open{background:var(--gold-lt);color:var(--ink);border:2px solid var(--gold)}
+.mem .c.done{background:var(--gr-lt);color:#065F46;border:2px solid var(--gr);cursor:default}
+
+.vis-group{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:15px 0}
+.group-box{background:#fff;border:2px dashed var(--p);border-radius:14px;padding:10px 14px;text-align:center}
+.group-box .items{font-size:1.8rem;margin-bottom:4px}
+
+/* زر العودة للرئيسية */
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,0.25);padding:8px 18px;border-radius:99px;backdrop-filter:blur(4px);transition:0.2s}
+.back:hover{background:rgba(255,255,255,0.4);transform:translateY(-1px)}
+
+/* زر التحكم بالموسيقى */
+.music-btn{position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.25);color:#fff;border:none;padding:8px 14px;border-radius:99px;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.85rem;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px);transition:0.2s}
+.music-btn:hover{background:rgba(255,255,255,0.4)}
+
+/* UI الألعاب - شبكة الألعاب منظم كالصورة */
+.games-title-box{text-align:center;margin:10px 0 24px}
+.games-title-box h2{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.7rem;color:var(--ink)}
+.games-title-box p{color:var(--muted);font-size:0.95rem;font-weight:600;margin-top:4px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.game-card-select{background:#fff;border-radius:20px;padding:26px 20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.03);border:1px solid #EEF2F6;transition:all .2s ease;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.game-card-select:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(124,58,237,0.12);border-color:var(--p-lt)}
+.game-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:14px}
+.game-card-select h3{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.25rem;color:var(--ink);margin:0 0 6px}
+.game-card-select p{font-size:0.9rem;color:var(--muted);line-height:1.5;margin-bottom:16px;flex-grow:1}
+.game-card-select .start-link{color:var(--p);font-weight:700;font-size:0.95rem;display:inline-flex;align-items:center;gap:4px}
+.game-card-select:hover .start-link{text-decoration:underline}
+
+footer{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="Ch0_Music.mp3" type="audio/mpeg">
+  <source src="Ch0_Music.wav" type="audio/wav">
+  <source src="Ch0_Music.ogg" type="audio/ogg">
+</audio>
+
+<!-- مؤثرات الصوتيّة للأجوبة -->
+<audio id="sndCorrect" preload="auto">
+  <source src="dragon-studio-correct-472358.mp3" type="audio/mpeg">
+</audio>
+<audio id="sndWrong" preload="auto">
+  <source src="freesound_community-failfare-86009.mp3" type="audio/mpeg">
+</audio>
+
+<header>
+  <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 الموسيقى: تفعيل</button>
+  <h1>✖️ مفهوم الضرب كجمع متكرر</h1>
+  <p>الدرس الأول — تحويل الجمع المتكرر إلى عملية ضرب</p>
+  <a class="back" href="https://math-quest-fourth-grade-ranz.vercel.app/">🏠 العودة للرئيسية</a>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="learn" onclick="showTab('learn')">📘 المفهوم</button>
+    <button class="tab-btn" data-tab="games" onclick="showTab('games')">🎮 الألعاب</button>
+    <button class="tab-btn" data-tab="drill" onclick="showTab('drill')">📝 التمارين</button>
+  </div>
+
+  <!-- قسم المفهوم -->
+  <div class="section active" id="sec-learn">
+    <div class="card">
+      <h2>🍎 ما هو الضرب؟</h2>
+      <p style="font-size:1.1rem; margin-bottom:10px;"><b>الضرب</b> هو طريقة سريعة ومختصرة لجمع نفس العدد عدة مرات (جمع متكرر).</p>
+      <div class="vis-group">
+        <div class="group-box"><div class="items">🍎🍎🍎</div><small>المجموعة 1 (3)</small></div>
+        <div class="group-box"><div class="items">🍎🍎🍎</div><small>المجموعة 2 (3)</small></div>
+        <div class="group-box"><div class="items">🍎🍎🍎</div><small>المجموعة 3 (3)</small></div>
+        <div class="group-box"><div class="items">🍎🍎🍎</div><small>المجموعة 4 (3)</small></div>
+      </div>
+      <div class="big">3 + 3 + 3 + 3 = 12</div>
+      <div class="note" style="text-align:center; font-size:1.15rem;">
+        بدلاً من جمع العدد <b>3</b> أربع مرات، نكتبها بأسلوب الضرب: <br>
+        <b>4 × 3 = 12</b> <br>
+        <small>(4 مجموعات × 3 عناصر في كل مجموعة = 12 عنصر)</small>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📊 جدول التكافؤ بين الجمع والضرب</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>الجمع المتكرر</th>
+            <th>عناصر المجموعات</th>
+            <th>جملة الضرب</th>
+            <th>الناتج النهائي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>2 + 2 + 2</b></td>
+            <td>3 مجموعات في كل منها 2</td>
+            <td><b>3 × 2</b></td>
+            <td><b>6</b></td>
+          </tr>
+          <tr>
+            <td><b>5 + 5</b></td>
+            <td>مجموعتان في كل منهما 5</td>
+            <td><b>2 × 5</b></td>
+            <td><b>10</b></td>
+          </tr>
+          <tr>
+            <td><b>4 + 4 + 4 + 4 + 4</b></td>
+            <td>5 مجموعات في كل منها 4</td>
+            <td><b>5 × 4</b></td>
+            <td><b>20</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>🎯 جرب التحدي بنفسك</h3>
+      <div id="cmpBox"></div>
+      <div class="fb" id="cmpFb"></div>
+      <div class="btn-row">
+        <button class="btn btn-p" onclick="newCmp()">🔄 مسألة جديدة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم الألعاب -->
+  <div class="section" id="sec-games">
+    <div id="games-hub">
+      <div class="games-title-box">
+        <h2>🎮 الألعاب التعليمية</h2>
+        <p>اختر لعبة وتعلّم وأنت تلعب!</p>
+      </div>
+      <div class="games-grid">
+        <div class="game-card-select" onclick="openGame('g1')">
+          <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">🧠</div>
+          <h3>لعبة الذاكرة</h3>
+          <p>طابق بين عبارة الجمع المتكرر وجملة الضرب المناسبة لها</p>
+          <span class="start-link">ابدأ اللعب ←</span>
+        </div>
+        <div class="game-card-select" onclick="openGame('g2')">
+          <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">⚡</div>
+          <h3>لعبة السرعة</h3>
+          <p>اختر جملة الضرب الصحيحة قبل انتهاء الوقت المخصص</p>
+          <span class="start-link">ابدأ اللعب ←</span>
+        </div>
+        <div class="game-card-select" onclick="openGame('g3')">
+          <div class="game-icon" style="background:var(--gr-lt);color:var(--gr)">✔️</div>
+          <h3>صح أم خطأ</h3>
+          <p>حدد إن كانت عبارات التكافؤ المعروضة صحيحة أم خاطئة</p>
+          <span class="start-link">ابدأ اللعب ←</span>
+        </div>
+        <div class="game-card-select" onclick="openGame('g4')">
+          <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">🏆</div>
+          <h3>السباق نحو القمة</h3>
+          <p>أجب بشكل صحيح لتتقدم خطوة نحو القمة، احذر فقدان القلوب!</p>
+          <span class="start-link">ابدأ اللعب ←</span>
+        </div>
+        <div class="game-card-select" onclick="openGame('g5')">
+          <div class="game-icon" style="background:var(--p-lt);color:var(--p)">🃏</div>
+          <h3>لعبة البطاقات</h3>
+          <p>بارز الكمبيوتر في جولات ضرب، ومن يملك الناتج الأكبر يفوز</p>
+          <span class="start-link">ابدأ اللعب ←</span>
+        </div>
+        <div class="game-card-select" onclick="openGame('g6')">
+          <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">🧩</div>
+          <h3>إكمال الفراغ</h3>
+          <p>عد المجموعات والعناصر لتكوين جملة الضرب الصحيحة</p>
+          <span class="start-link">ابدأ اللعب ←</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-view" style="display:none">
+      <button class="btn btn-o" onclick="closeGame()" style="margin-bottom:14px">⬅️ قائمة الألعاب</button>
+      <div class="card" id="wrap-g1" style="display:none">
+        <h3>🧠 لعبة الذاكرة: الجمع والضرب</h3>
+        <div id="g1"></div>
+      </div>
+      <div class="card" id="wrap-g2" style="display:none">
+        <h3>⚡ لعبة السرعة: اختر جملة الضرب</h3>
+        <div id="g2"></div>
+      </div>
+      <div class="card" id="wrap-g3" style="display:none">
+        <h3>✔️❌ صح أم خطأ السريعة</h3>
+        <div id="g3"></div>
+      </div>
+      <div class="card" id="wrap-g4" style="display:none">
+        <h3>🏆 السباق نحو القمة</h3>
+        <div id="g4"></div>
+      </div>
+      <div class="card" id="wrap-g5" style="display:none">
+        <h3>🃏 لعبة البطاقات: الناتج الأكبر يفوز</h3>
+        <div id="g5"></div>
+      </div>
+      <div class="card" id="wrap-g6" style="display:none">
+        <h3>🧩 لعبة إكمال الفراغ الرقمية</h3>
+        <div id="g6"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم التمارين -->
+  <div class="section" id="sec-drill">
+    <div class="card">
+      <h2>📝 تمارين شاملة وتوليد التقرير</h2>
+      <div id="q1"></div>
+    </div>
+  </div>
+</div>
+
+<footer>رياضيات — مفهوم الضرب كجمع متكرر</footer>
+
+<script>
+// تشغيل المؤثرات الصوتية للأجوبة الصحيحة والبيانات الخاطئة
+function playCorrect() {
+  const a = document.getElementById('sndCorrect');
+  if (a) { a.currentTime = 0; a.play().catch(()=>{}); }
+}
+
+function playWrong() {
+  const a = document.getElementById('sndWrong');
+  if (a) { a.currentTime = 0; a.play().catch(()=>{}); }
+}
+
+// التحكم بالموسيقى
+const bgAudio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggleBtn');
+let isMusicPlaying = false;
+if(bgAudio) bgAudio.volume = 0.35; 
+
+function startBgMusic() {
+  if (!isMusicPlaying && bgAudio) {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    }).catch(() => {
+      musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+    });
+  }
+}
+
+function toggleMusic() {
+  if (!bgAudio) return;
+  if (isMusicPlaying) {
+    bgAudio.pause();
+    isMusicPlaying = false;
+    musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+  } else {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    });
+  }
+}
+
+window.addEventListener('load', startBgMusic);
+document.addEventListener('click', startBgMusic, { once: true });
+document.addEventListener('touchstart', startBgMusic, { once: true });
+
+function toAr(n){return String(n)}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  if(id === 'games') closeGame();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openGame(gameId) {
+  document.getElementById('games-hub').style.display = 'none';
+  document.getElementById('game-view').style.display = 'block';
+  ['wrap-g1', 'wrap-g2', 'wrap-g3', 'wrap-g4', 'wrap-g5', 'wrap-g6'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('wrap-' + gameId).style.display = 'block';
+}
+
+function closeGame() {
+  document.getElementById('game-view').style.display = 'none';
+  document.getElementById('games-hub').style.display = 'block';
+}
+
+function updateReportName(val) {
+  const target = document.getElementById('reportStudentName');
+  if (target) target.textContent = val.trim() || '....................';
+}
+
+function downloadReportImage() {
+  const reportEl = document.getElementById('reportCard');
+  if (!reportEl) return;
+  const studentInput = document.getElementById('studentNameInput');
+  const studentName = (studentInput && studentInput.value.trim()) ? studentInput.value.trim() : 'الطالب';
+
+  html2canvas(reportEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `تقرير_${studentName}_مفهوم_الضرب.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+// التحدي السريع
+let curAdd="", curMult="";
+function newCmp(){
+  const num = rnd(2,6);
+  const count = rnd(2,5);
+  let addArr = [];
+  for(let i=0; i<count; i++) addArr.push(num);
+  curAdd = addArr.join(' + ');
+  curMult = `${count} × ${num}`;
+  const total = count * num;
+
+  document.getElementById('cmpFb').className='fb';
+  document.getElementById('cmpBox').innerHTML = `
+    <p style="text-align:center; font-weight:700;">ما هي جملة الضرب التكافؤية للمسألة التالية؟</p>
+    <div class="big">${curAdd} = ${total}</div>
+    <div class="opts" id="cmpOpts"></div>
+  `;
+  
+  let options = [curMult, `${num} × ${count+1}`, `${count+1} × ${num}`, `${count} × ${num+1}`];
+  options = shuffle([...new Set(options)]).slice(0, 3);
+  if(!options.includes(curMult)) options[0] = curMult;
+  options = shuffle(options);
+
+  const box = document.getElementById('cmpOpts');
+  options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = opt;
+    b.onclick = () => {
+      const ok = opt === curMult;
+      const f = document.getElementById('cmpFb');
+      f.className = 'fb ' + (ok?'ok':'no');
+      if (ok) {
+        playCorrect();
+        f.innerHTML = '✅ أحسنت! إجابة صحيحة';
+      } else {
+        playWrong();
+        f.innerHTML = `❌ الإجابة الصحيحة هي: ${curMult}`;
+      }
+    };
+    box.appendChild(b);
+  });
+}
+
+// لعبة الذاكرة (g1)
+function memoryGame(elId,pairs){
+  const el=document.getElementById(elId);
+  let cards=[];pairs.forEach((p,i)=>{cards.push({k:i,t:p[0]});cards.push({k:i,t:p[1]})});
+  cards=shuffle(cards);let open=[],done=0,moves=0;
+  el.innerHTML='<div class="mem" id="'+elId+'-g"></div><p style="margin-top:8px" id="'+elId+'-s"></p><div class="btn-row"><button class="btn btn-o" id="'+elId+'-r">🔄 لعبة جديدة</button></div>';
+  const g=document.getElementById(elId+'-g'),s=document.getElementById(elId+'-s');
+  document.getElementById(elId+'-r').onclick=()=>memoryGame(elId,pairs);
+  cards.forEach((c)=>{
+    const d=document.createElement('div');d.className='c';d.textContent='؟';
+    d.onclick=()=>{
+      if(d.classList.contains('done')||d.classList.contains('open')||open.length===2)return;
+      d.classList.add('open');d.textContent=c.t;open.push({d,c});
+      if(open.length===2){moves++;
+        if(open[0].c.k===open[1].c.k){
+          playCorrect();
+          open.forEach(o=>{o.d.classList.remove('open');o.d.classList.add('done')});open=[];done++;
+          if(done===pairs.length)s.innerHTML='🎉 أحسنت! أكملت اللعبة في '+toAr(moves)+' محاولة';
+        } else {
+          playWrong();
+          setTimeout(()=>{open.forEach(o=>{o.d.classList.remove('open');o.d.textContent='؟'});open=[]},800);
+        }
+      }
+      s.textContent||(s.textContent='المحاولات: '+toAr(moves));
+      if(done<pairs.length)s.textContent='المحاولات: '+toAr(moves)+' — أزواج صحيحة: '+toAr(done)+'/'+toAr(pairs.length);
+    };
+    g.appendChild(d);
+  });
+}
+
+// لعبة السرعة (g2)
+function speedGame(elId,gen,seconds){
+  const el=document.getElementById(elId);let score=0,t=seconds,timer=null,q=null;
+  el.innerHTML='<div class="score" id="'+elId+'-h"></div><div id="'+elId+'-b" style="margin-top:10px"></div>';
+  const h=document.getElementById(elId+'-h'),b=document.getElementById(elId+'-b');
+  function next(){q=gen();
+    b.innerHTML='<p style="font-size:1.15rem;font-weight:700;text-align:center">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div>';
+    const box=document.getElementById(elId+'-o');
+    shuffle(q.options).forEach(o=>{const x=document.createElement('button');x.className='opt';x.innerHTML=o;
+      x.onclick=()=>{
+        if(o===q.answer){score++;x.classList.add('ok');playCorrect();}
+        else{x.classList.add('no');playWrong();[...box.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok')});}
+        setTimeout(next,450)};box.appendChild(x)});
+  }
+  function tick(){h.innerHTML='⏱️ الوقت: '+toAr(t)+' ثانية — النقاط: '+toAr(score);
+    if(t<=0){clearInterval(timer);b.innerHTML='<div class="score">انتهى الوقت! نقاطك: '+toAr(score)+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>speedGame(elId,gen,seconds);return}
+    t--;}
+  tick();timer=setInterval(tick,1000);next();
+}
+
+// لعبة صح أم خطأ (g3)
+function tfGame(elId){
+  const el=document.getElementById(elId);
+  let score=0;
+  function next(){
+    const num = rnd(2,5);
+    const count = rnd(2,5);
+    const isTrue = Math.random() < 0.5;
+    let addStr = Array(count).fill(num).join(' + ');
+    let multStr = isTrue ? `${count} × ${num}` : `${count+1} × ${num}`;
+    
+    el.innerHTML='<p style="font-size:1.2rem;font-weight:700;text-align:center">هل هذه العبارة صحيحة؟</p>'+
+      '<div class="big" style="font-size:1.8rem;margin:12px 0">'+addStr+' = '+multStr+'</div>'+
+      '<div class="btn-row" style="justify-content:center;gap:16px"><button class="btn btn-p" style="background:var(--gr);min-width:110px" id="tf-ok">✔️ صح</button><button class="btn btn-p" style="background:var(--red);min-width:110px" id="tf-no">❌ خطأ</button></div>'+
+      '<div class="fb" id="'+elId+'-f"></div>'+
+      '<p style="text-align:center;margin-top:12px;font-weight:700">النقاط: '+toAr(score)+'</p>';
+
+    const fb=document.getElementById(elId+'-f');
+    document.getElementById('tf-ok').onclick=()=>check(true);
+    document.getElementById('tf-no').onclick=()=>check(false);
+
+    function check(ans){
+      if(el.dataset.done) return;
+      el.dataset.done='1';
+      const ok = ans === isTrue;
+      fb.className='fb '+(ok?'ok':'no');
+      if(ok){ score++; playCorrect(); fb.textContent='✅ أحسنت! إجابة صحيحة'; }
+      else { playWrong(); fb.textContent='❌ إجابة خاطئة!'; }
+      setTimeout(()=>{ delete el.dataset.done; next(); }, 1000);
+    }
+  }
+  next();
+}
+
+// لعبة السباق نحو القمة (g4)
+function raceGame(elId){
+  const el=document.getElementById(elId);
+  let progress=0, lives=3; const goal=8;
+  function render(){
+    el.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-weight:800">🚀 التقدم: '+toAr(progress)+' / '+toAr(goal)+'</span><span style="font-weight:800;color:var(--red)">❤️ '+toAr(lives)+'</span></div>'+
+    '<div class="bar" style="height:22px"><i style="width:'+(progress/goal*100)+'%"></i></div>'+
+    '<div id="'+elId+'-q" style="margin-top:16px"></div>';
+    nextQ();
+  }
+  function nextQ(){
+    const q=multQGen();
+    const box=document.getElementById(elId+'-q');
+    box.innerHTML='<p style="text-align:center;font-weight:700;font-size:1.1rem">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div><div class="fb" id="'+elId+'-f"></div>';
+    const opts=document.getElementById(elId+'-o'), fb=document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o=>{
+      const btn=document.createElement('button');btn.className='opt';btn.innerHTML=o;
+      btn.onclick=()=>{
+        if(opts.dataset.done)return; opts.dataset.done='1';
+        const ok=o===q.answer;
+        [...opts.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok'); else if(c===btn)c.classList.add('no')});
+        if(ok){progress++; playCorrect(); fb.className='fb ok'; fb.textContent='✅ تقدمت خطوة نحو القمة!';}
+        else{lives--; playWrong(); fb.className='fb no'; fb.textContent='❌ فقدت قلباً!';}
+        setTimeout(()=>{
+          if(progress>=goal){
+            el.innerHTML='<div class="score" style="font-size:1.3rem">🏆 وصلت للقمة! أحسنت يا بطل</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 ابدأ من جديد</button></div>';
+            document.getElementById(elId+'-r').onclick=()=>raceGame(elId);
+          } else if(lives<=0){
+            el.innerHTML='<div class="score" style="background:linear-gradient(135deg,var(--red),#B91C1C)">💔 انتهت المحاولات! وصلت إلى '+toAr(progress)+' من '+toAr(goal)+'</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 حاول مرة أخرى</button></div>';
+            document.getElementById(elId+'-r').onclick=()=>raceGame(elId);
+          } else render();
+        },900);
+      };
+      opts.appendChild(btn);
+    });
+  }
+  render();
+}
+
+// لعبة البطاقات (g5)
+function cardBattleGame(elId){
+  const el=document.getElementById(elId);
+  let playerScore=0, compScore=0, round=0; const totalRounds=6;
+  function next(){
+    if(round>=totalRounds){
+      const res = playerScore>compScore?'🏆 لقد فزت باللعبة!':(playerScore<compScore?'😅 فاز الكمبيوتر هذه المرة':'🤝 تعادل في اللعبة!');
+      el.innerHTML='<div class="score" style="font-size:1.2rem">'+res+'</div><p style="text-align:center;margin-top:8px;font-weight:700">النتيجة النهائية: أنت '+toAr(playerScore)+' — الكمبيوتر '+toAr(compScore)+'</p><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>cardBattleGame(elId);
+      return;
+    }
+    round++;
+    const pGroup = rnd(2,5), pItem = rnd(2,6);
+    const cGroup = rnd(2,5), cItem = rnd(2,6);
+    const pTotal = pGroup * pItem;
+    const cTotal = cGroup * cItem;
+    const pAddStr = Array(pGroup).fill(pItem).join(' + ');
+    const cMultStr = `${cGroup} × ${cItem}`;
+
+    el.innerHTML='<div class="score" style="margin-bottom:12px">الجولة '+toAr(round)+' من '+toAr(totalRounds)+' — أنت '+toAr(playerScore)+' : الكمبيوتر '+toAr(compScore)+'</div>'+
+    '<p style="text-align:center;font-weight:700;margin-bottom:10px">من يملك الناتج الأكبر يفوز بالجولة!</p>'+
+    '<div style="display:flex;justify-content:center;gap:20px;align-items:center;margin:16px 0;flex-wrap:wrap">'+
+      '<div style="background:#fff;border:3px solid var(--p);border-radius:16px;padding:16px 20px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:0.8rem;color:var(--muted);font-weight:700">بطاقتك 🃏</div><div style="font-size:1.2rem;font-weight:800;color:var(--p-dk)">'+pAddStr+'</div><div style="font-size:0.9rem;color:var(--pk);font-weight:700">= '+toAr(pTotal)+'</div></div>'+
+      '<div style="font-size:1.4rem;font-weight:800;color:var(--pk)">VS</div>'+
+      '<div id="'+elId+'-comp" style="background:#fff;border:3px solid var(--muted);border-radius:16px;padding:16px 20px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:0.8rem;color:var(--muted);font-weight:700">الكمبيوتر 🤖</div><div class="comp-val" style="font-size:1.4rem;font-weight:800">؟</div><div class="comp-tot" style="font-size:0.9rem;color:var(--muted);font-weight:700">؟</div></div>'+
+    '</div>'+
+    '<div class="btn-row" style="justify-content:center"><button class="btn btn-p" id="'+elId+'-flip">🔄 اقلب بطاقة الكمبيوتر</button></div>'+
+    '<div class="fb" id="'+elId+'-f"></div>';
+
+    document.getElementById(elId+'-flip').onclick=(e)=>{
+      const compBox=document.getElementById(elId+'-comp');
+      compBox.querySelector('.comp-val').textContent=cMultStr;
+      compBox.querySelector('.comp-tot').textContent='= ' + toAr(cTotal);
+      const fb=document.getElementById(elId+'-f');
+      if(pTotal > cTotal){playerScore++; playCorrect(); fb.className='fb ok'; fb.textContent='✅ فزت بهذه الجولة!';}
+      else if(pTotal < cTotal){compScore++; playWrong(); fb.className='fb no'; fb.textContent='❌ خسرت الجولة، بطاقة الكمبيوتر أكبر!';}
+      else {fb.className='fb ok'; fb.textContent='🤝 تعادل في هذه الجولة!';}
+      e.target.disabled=true;
+      setTimeout(next,1400);
+    };
+  }
+  next();
+}
+
+// لعبة إكمال الفراغ (g6)
+function fillBlanksGame(elId){
+  const el=document.getElementById(elId);
+  let score=0, round=0; const totalRounds=5;
+  const icons = ['🍎', '⭐️', '🎈', '🍊', '🍓', '🎁'];
+
+  function next(){
+    if(round>=totalRounds){
+      el.innerHTML='<div class="score" style="font-size:1.2rem">🎉 أتممت لعبة إكمال الفراغ! نقاطك: '+toAr(score)+' من '+toAr(totalRounds)+'</div><div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>fillBlanksGame(elId);
+      return;
+    }
+    round++;
+    const groups = rnd(2,4);
+    const items = rnd(2,5);
+    const icon = icons[rnd(0, icons.length-1)];
+    const total = groups * items;
+
+    let groupsHtml = '<div class="vis-group">';
+    for(let i=0; i<groups; i++){
+      groupsHtml += `<div class="group-box"><div class="items">${icon.repeat(items)}</div><small>مجموعة ${toAr(i+1)}</small></div>`;
+    }
+    groupsHtml += '</div>';
+
+    el.innerHTML = '<div class="score" style="margin-bottom:10px">الجولة '+toAr(round)+' من '+toAr(totalRounds)+' — النقاط: '+toAr(score)+'</div>'+
+      '<p style="text-align:center;font-weight:700">شاهد المجموعات التالية وأكمل الفراغات لتكوين جملة الضرب:</p>'+
+      groupsHtml +
+      '<div style="display:flex;justify-content:center;align-items:center;gap:8px;margin:15px 0;flex-wrap:wrap">'+
+        '<input type="number" id="in-g" style="width:65px" placeholder="المجموعات">'+
+        '<span style="font-size:1.4rem;font-weight:800">×</span>'+
+        '<input type="number" id="in-i" style="width:65px" placeholder="العناصر">'+
+        '<span style="font-size:1.4rem;font-weight:800">=</span>'+
+        '<input type="number" id="in-t" style="width:75px" placeholder="الناتج">'+
+      '</div>'+
+      '<div class="btn-row" style="justify-content:center"><button class="btn btn-p" id="'+elId+'-chk">✅ تحقق من الإجابة</button></div>'+
+      '<div class="fb" id="'+elId+'-f"></div>';
+
+    document.getElementById(elId+'-chk').onclick=()=>{
+      const gVal = parseInt(document.getElementById('in-g').value);
+      const iVal = parseInt(document.getElementById('in-i').value);
+      const tVal = parseInt(document.getElementById('in-t').value);
+      const fb = document.getElementById(elId+'-f');
+
+      const ok = (gVal === groups && iVal === items && tVal === total);
+      fb.className = 'fb ' + (ok?'ok':'no');
+      if(ok) {
+        score++;
+        playCorrect();
+        fb.textContent = '✅ ممتاز! الإجابة صحيحة بالكامل';
+      } else {
+        playWrong();
+        fb.textContent = `❌ الصحيح هو: ${groups} مجموعات × ${items} عناصر = ${total}`;
+      }
+      
+      setTimeout(next, 1400);
+    };
+  }
+  next();
+}
+
+// اختبار شامل
+function makeQuiz(elId,gen,count){
+  const el=document.getElementById(elId);let i=0,correct=0,qs=[];
+  for(let k=0;k<count;k++)qs.push(gen());
+  
+  function render(){
+    if(i>=qs.length){
+      const pct=Math.round(correct/qs.length*100);
+      const grade = pct >= 85 ? 'ممتاز 🌟' : pct >= 70 ? 'جيد جداً 👍' : pct >= 50 ? 'جيد 👌' : 'يحتاج إلى مراجعة 💪';
+      const today = new Date().toLocaleDateString('ar-EG');
+
+      el.innerHTML = `
+        <div style="text-align:center;">
+          <h3 style="font-size:1.4rem;color:var(--p-dk);margin-bottom:10px">🎉 اكتمل الاختبار بنجاح!</h3>
+          <p style="margin-bottom:12px;font-weight:600">اكتب اسمك أدناه لإنشاء تقرير النتيجة ومشاركته مع معلمك:</p>
+          
+          <div style="max-width:320px;margin:0 auto 18px">
+            <input type="text" id="studentNameInput" placeholder="ادخل اسم الطالب هنا..." oninput="updateReportName(this.value)">
+          </div>
+
+          <div id="reportCard" style="background:#fff; border:3px solid var(--p); border-radius:20px; padding:25px; text-align:center; max-width:440px; margin:0 auto; box-shadow:0 10px 30px rgba(0,0,0,0.06); font-family:'Tajawal',sans-serif; color:var(--ink);">
+            <div style="font-size:2.2rem;margin-bottom:4px">📜</div>
+            <h2 style="font-family:'Baloo Bhaijaan 2',sans-serif; color:var(--p-dk); font-size:1.5rem; margin-bottom:2px">تقرير أداء الطالب</h2>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px">مفهوم الضرب كجمع متكرر</p>
+            
+            <div style="background:var(--p-lt); border-radius:12px; padding:10px 14px; margin-bottom:14px; border:1px solid var(--p)">
+              <span style="font-size:0.85rem; color:var(--p-dk); font-weight:700">اسم الطالب:</span>
+              <h3 id="reportStudentName" style="font-family:'Baloo Bhaijaan 2',sans-serif; color:var(--p-dk); font-size:1.3rem; margin-top:2px">....................</h3>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
+              <div style="background:var(--sky-lt); border:1px solid var(--sky); border-radius:12px; padding:8px">
+                <div style="font-size:0.75rem; color:var(--muted); font-weight:700">النتيجة</div>
+                <div style="font-size:1.2rem; font-weight:800; color:var(--sky)">${toAr(correct)} / ${toAr(qs.length)}</div>
+              </div>
+              <div style="background:var(--gr-lt); border:1px solid var(--gr); border-radius:12px; padding:8px">
+                <div style="font-size:0.75rem; color:var(--muted); font-weight:700">النسبة المئوية</div>
+                <div style="font-size:1.2rem; font-weight:800; color:var(--gr)">%${toAr(pct)}</div>
+              </div>
+            </div>
+
+            <div style="background:var(--gold-lt); border:1px solid var(--gold); border-radius:12px; padding:10px; margin-bottom:14px">
+              <div style="font-size:0.8rem; color:var(--muted); font-weight:700">التقييم العام</div>
+              <div style="font-size:1.1rem; font-weight:800; color:var(--gold)">${grade}</div>
+            </div>
+
+            <div style="font-size:0.75rem; color:var(--muted); text-align:left; border-top:1px dashed var(--border); padding-top:8px; margin-top:8px">
+              التاريخ: ${today}
+            </div>
+          </div>
+
+          <div class="btn-row" style="justify-content:center; margin-top:18px">
+            <button class="btn btn-p" onclick="downloadReportImage()">📸 تحميل التقرير كصورة</button>
+            <button class="btn btn-o" id="${elId}-r">🔄 إعادة الاختبار</button>
+          </div>
+        </div>
+      `;
+      document.getElementById(elId+'-r').onclick = () => makeQuiz(elId, gen, count);
+      return;
+    }
+
+    const q = qs[i];
+    el.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+        <span style="font-weight:700; color:var(--p-dk)">السؤال ${toAr(i+1)} من ${toAr(qs.length)}</span>
+        <span class="score" style="padding:4px 12px; font-size:0.85rem">الدرجة: ${toAr(correct)}</span>
+      </div>
+      <div class="bar"><i style="width:${(i/qs.length)*100}%"></i></div>
+      <p style="font-size:1.15rem; font-weight:700; text-align:center; margin:16px 0">${q.q}</p>
+      <div class="opts" id="${elId}-o"></div>
+      <div class="fb" id="${elId}-f"></div>
+      <div class="btn-row" style="justify-content:flex-end">
+        <button class="btn btn-p" id="${elId}-nxt" style="display:none">التالي ➔</button>
+      </div>
+    `;
+
+    const opts = document.getElementById(`${elId}-o`);
+    const fb = document.getElementById(`${elId}-f`);
+    const nxtBtn = document.getElementById(`${elId}-nxt`);
+
+    shuffle(q.options).forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.innerHTML = o;
+      btn.onclick = () => {
+        if (opts.dataset.done) return;
+        opts.dataset.done = '1';
+        const isCorrect = o === q.answer;
+        if (isCorrect) {
+          correct++;
+          playCorrect();
+        } else {
+          playWrong();
+        }
+
+        [...opts.children].forEach(c => {
+          if (c.innerHTML === q.answer) c.classList.add('ok');
+          else if (c === btn) c.classList.add('no');
+        });
+
+        fb.className = 'fb ' + (isCorrect ? 'ok' : 'no');
+        fb.textContent = isCorrect ? '✅ إجابة صحيحة!' : `❌ الإجابة الصحيحة هي: ${q.answer}`;
+        nxtBtn.style.display = 'inline-block';
+      };
+      opts.appendChild(btn);
+    });
+
+    nxtBtn.onclick = () => { i++; render(); };
+  }
+  render();
+}
+
+// مولد الأسئلة
+function multQGen(){
+  const num = rnd(2,6);
+  const count = rnd(2,5);
+  const total = count * num;
+  const type = rnd(1,3);
+
+  if(type === 1){
+    let addStr = Array(count).fill(num).join(' + ');
+    let ans = `${count} × ${num}`;
+    let opts = [ans, `${num} × ${count+1}`, `${count+1} × ${num}`, `${count} × ${num+1}`];
+    return {
+      q: `ما هي جملة الضرب المناسبة للمسألة: <br><b>${addStr}</b>؟`,
+      answer: ans,
+      options: [...new Set(opts)].slice(0,4)
+    };
+  } else if(type === 2){
+    let ans = `${total}`;
+    let opts = [ans, `${total+2}`, `${total-1}`, `${total+count}`];
+    return {
+      q: `ما هو ناتج عملية الضرب التالية: <br><b>${count} × ${num}</b>؟`,
+      answer: ans,
+      options: [...new Set(opts)].slice(0,4)
+    };
+  } else {
+    let addStr = Array(count).fill(num).join(' + ');
+    let ans = `${addStr}`;
+    let wrong1 = Array(count+1).fill(num).join(' + ');
+    let wrong2 = Array(count).fill(num+1).join(' + ');
+    let opts = [ans, wrong1, wrong2];
+    return {
+      q: `أي من أشكال الجمع المتكرر التالية يكافئ: <br><b>${count} × ${num}</b>؟`,
+      answer: ans,
+      options: [...new Set(opts)].slice(0,4)
+    };
+  }
+}
+
+// التهيئة عند التحميل
+window.onload = function(){
+  newCmp();
+  
+  // إعداد الألعاب
+  memoryGame('g1', [
+    ['2 + 2 + 2', '3 × 2'],
+    ['4 + 4', '2 × 4'],
+    ['5 + 5 + 5', '3 × 5'],
+    ['3 + 3 + 3 + 3', '4 × 3'],
+    ['6 + 6', '2 × 6'],
+    ['1 + 1 + 1 + 1 + 1', '5 × 1']
+  ]);
+  
+  speedGame('g2', multQGen, 30);
+  tfGame('g3');
+  raceGame('g4');
+  cardBattleGame('g5');
+  fillBlanksGame('g6');
+  
+  // إعداد الاختبار الشامل
+  makeQuiz('q1', multQGen, 5);
+};
+</script>
+</body>
+</html>
