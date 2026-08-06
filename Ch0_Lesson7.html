@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خواص عملية الجمع</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- مكتبة تحويل العناصر إلى صور -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#7C3AED;--p-lt:#F5F3FF;--p-dk:#5B21B6;--pk:#EC4899;--pk-lt:#FDF2F8;--gold:#F59E0B;--gold-lt:#FFFBEA;--gr:#10B981;--gr-lt:#ECFDF5;--sky:#0EA5E9;--sky-lt:#F0F9FF;--red:#EF4444;--red-lt:#FEF2F2;--ink:#1E1B4B;--muted:#6B7280;--border:#E5E7EB;--bg:#FDF4FF;--surface:#fff;--radius:18px;--shadow:0 4px 28px rgba(124,58,237,.10)}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(135deg,#4C1D95,#7C3AED 45%,#EC4899);color:#fff;padding:22px 16px;text-align:center;border-radius:0 0 26px 26px;position:relative}
+header h1{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.6rem}
+header p{opacity:.9;font-size:.95rem;margin-top:4px}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.tab-btn{border:none;cursor:pointer;background:#fff;color:var(--p-dk);font-family:inherit;font-weight:700;font-size:.95rem;padding:10px 16px;border-radius:99px;box-shadow:var(--shadow)}
+.tab-btn.active{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.section{display:none}.section.active{display:block;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px;border:1px solid var(--border)}
+.card h2{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p-dk);font-size:1.3rem;margin-bottom:10px}
+.card h3{font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p);font-size:1.1rem;margin:12px 0 8px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:1rem;padding:10px 18px;border-radius:14px;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-p{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff}
+.btn-o{background:var(--p-lt);color:var(--p-dk);border:2px solid var(--p)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
+.opt{background:var(--sky-lt);border:2px solid var(--sky);border-radius:14px;padding:12px;font-size:1.1rem;font-weight:700;cursor:pointer;text-align:center;font-family:inherit}
+.opt.ok{background:var(--gr-lt);border-color:var(--gr);color:#065F46}
+.opt.no{background:var(--red-lt);border-color:var(--red);color:#7F1D1D}
+.big{font-size:2.2rem;font-weight:800;text-align:center;color:var(--p-dk);letter-spacing:1px;font-family:'Baloo Bhaijaan 2',sans-serif}
+.note{background:var(--gold-lt);border-right:6px solid var(--gold);padding:12px;border-radius:12px;margin:10px 0}
+.eqbox{background:var(--p-lt);border:2px dashed var(--p);border-radius:14px;padding:14px;margin:10px 0;text-align:center;font-size:1.3rem;font-weight:800;color:var(--p-dk);font-family:'Baloo Bhaijaan 2',sans-serif}
+.fb{margin-top:10px;font-weight:700;padding:10px;border-radius:12px;display:none}
+.fb.ok{display:block;background:var(--gr-lt);color:#065F46}
+.fb.no{display:block;background:var(--red-lt);color:#7F1D1D}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:1rem}
+th,td{border:1px solid var(--border);padding:8px;text-align:center}
+th{background:var(--p-lt);color:var(--p-dk)}
+input[type=text],input[type=number]{font-family:inherit;font-size:1.1rem;padding:10px;border:2px solid var(--p);border-radius:12px;width:100%;text-align:center}
+.chip{display:inline-block;background:var(--pk-lt);border:2px solid var(--pk);color:#9D174D;border-radius:99px;padding:6px 14px;margin:4px;font-weight:700;cursor:pointer}
+.chip.sel{background:var(--pk);color:#fff}
+.score{background:linear-gradient(135deg,var(--p),var(--pk));color:#fff;border-radius:14px;padding:10px 16px;text-align:center;font-weight:800}
+.bar{height:12px;background:var(--p-lt);border-radius:99px;overflow:hidden;margin:10px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--pk));width:0;transition:.3s}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mem .c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:12px;font-size:.95rem;font-weight:800;cursor:pointer;user-select:none;padding:4px;text-align:center}
+.mem .c.open{background:var(--gold-lt);color:var(--ink);border:2px solid var(--gold)}
+.mem .c.done{background:var(--gr-lt);color:#065F46;border:2px solid var(--gr);cursor:default}
+
+/* زر العودة للرئيسية زر الهيدر */
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,0.25);padding:8px 18px;border-radius:99px;backdrop-filter:blur(4px);transition:0.2s}
+.back:hover{background:rgba(255,255,255,0.4);transform:translateY(-1px)}
+
+footer{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+
+/* زر التحكم بالموسيقى */
+.music-btn{position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.25);color:#fff;border:none;padding:8px 14px;border-radius:99px;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.85rem;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px);transition:0.2s}
+.music-btn:hover{background:rgba(255,255,255,0.4)}
+
+/* Games Grid UI */
+.games-title-box{text-align:center;margin:10px 0 24px}
+.games-title-box h2{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.7rem;color:var(--ink)}
+.games-title-box p{color:var(--muted);font-size:0.95rem;font-weight:600;margin-top:4px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.game-card-select{background:#fff;border-radius:20px;padding:26px 20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.03);border:1px solid #EEF2F6;transition:all .2s ease;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.game-card-select:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(124,58,237,0.12);border-color:var(--p-lt)}
+.game-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:14px}
+.game-card-select h3{font-family:'Baloo Bhaijaan 2',sans-serif;font-size:1.25rem;color:var(--ink);margin:0 0 6px}
+.game-card-select p{font-size:0.9rem;color:var(--muted);line-height:1.5;margin-bottom:16px;flex-grow:1}
+.game-card-select .start-link{color:var(--p);font-weight:700;font-size:0.95rem;display:inline-flex;align-items:center;gap:4px}
+.game-card-select:hover .start-link{text-decoration:underline}
+.prop-card{border-radius:16px;padding:16px;margin-bottom:14px}
+
+/* رتّب الخطوات */
+.step-slot{background:var(--p-lt);border:2px dashed var(--p);border-radius:12px;padding:12px;margin-bottom:8px;font-weight:700;min-height:20px}
+.step-slot.filled{background:var(--gr-lt);border:2px solid var(--gr);color:#065F46}
+.step-pool{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.step-choice{background:#fff;border:2px solid var(--sky);color:var(--p-dk);border-radius:12px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center}
+.step-choice:hover{background:var(--sky-lt)}
+.step-choice[disabled]{opacity:.35;cursor:default}
+
+/* اصطد الخاصية */
+.catch-target{background:var(--pk-lt);border:2px solid var(--pk);border-radius:14px;padding:10px;text-align:center;font-weight:800;color:#9D174D;margin-bottom:10px}
+.catch-field{position:relative;height:280px;background:var(--sky-lt);border:2px solid var(--sky);border-radius:16px;overflow:hidden;margin-bottom:10px}
+.catch-chip{position:absolute;background:#fff;border:2px solid var(--p);color:var(--p-dk);border-radius:99px;padding:8px 14px;font-weight:800;font-size:.95rem;cursor:pointer;white-space:nowrap;top:-40px;transition:top linear}
+.catch-chip.hit{background:var(--gr-lt);border-color:var(--gr);color:#065F46}
+.catch-chip.miss-click{background:var(--red-lt);border-color:var(--red);color:#7F1D1D}
+
+/* بازل الخاصية */
+.puzzle-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.puzzle-col h4{text-align:center;font-family:'Baloo Bhaijaan 2',sans-serif;color:var(--p-dk);margin-bottom:8px}
+.puzzle-item{background:#fff;border:2px solid var(--border);border-radius:12px;padding:10px;margin-bottom:8px;font-weight:700;text-align:center;cursor:pointer}
+.puzzle-item.sel{border-color:var(--gold);background:var(--gold-lt)}
+.puzzle-item.done{border-color:var(--gr);background:var(--gr-lt);color:#065F46;cursor:default}
+.puzzle-item.wrong{border-color:var(--red);background:var(--red-lt)}
+
+/* املأ الجدول */
+.tbl-input{font-family:inherit;font-size:1rem;padding:6px;border:2px solid var(--p);border-radius:8px;width:90px;text-align:center}
+tr.row-ok td{background:var(--gr-lt)}
+tr.row-no td{background:var(--red-lt)}
+</style></head><body>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="Lesson_Music.mp3" type="audio/mpeg">
+  <source src="Lesson_Music.wav" type="audio/wav">
+  <source src="Lesson_Music.ogg" type="audio/ogg">
+</audio>
+
+<header>
+  <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 الموسيقى: تفعيل</button>
+  <h1>➕ خواص عملية الجمع</h1>
+  <p>الإبدال — التجميع — الحياد الجمعي</p>
+  <a class="back" href="https://math-quest-fourth-grade-ranz.vercel.app/">🏠 العودة للرئيسية</a>
+</header>
+
+<div class="wrap">
+<div class="tabs">
+<button class="tab-btn active" data-tab="learn" onclick="showTab('learn')">📘 المفهوم</button>
+<button class="tab-btn" data-tab="games" onclick="showTab('games')">🎮 الألعاب</button>
+<button class="tab-btn" data-tab="drill" onclick="showTab('drill')">📝 التمارين</button>
+</div>
+
+<div class="section active" id="sec-learn">
+  <div class="card">
+    <h2>➕ ما هي خواص الجمع؟</h2>
+    <p>لعملية الجمع خواص تساعدنا على الحساب بسهولة وسرعة، دون أن يتغيّر ناتج الجمع. سنتعرف على ثلاث خواص مهمة:</p>
+  </div>
+
+  <div class="card prop-card" style="background:var(--sky-lt);border:2px solid var(--sky)">
+    <h2 style="color:#0369A1">🔁 أولاً: خاصية الإبدال</h2>
+    <p>عند جمع عددين، يمكن تبديل مكانيهما دون أن يتغيّر الناتج.</p>
+    <div class="eqbox">أ + ب = ب + أ</div>
+    <div class="note">مثال: 5 + 3 = 8 &nbsp;&nbsp;وأيضاً&nbsp;&nbsp; 3 + 5 = 8</div>
+  </div>
+
+  <div class="card prop-card" style="background:var(--pk-lt);border:2px solid var(--pk)">
+    <h2 style="color:#9D174D">🧩 ثانياً: خاصية التجميع</h2>
+    <p>عند جمع ثلاثة أعداد أو أكثر، يمكن تجميعها بأي ترتيب (بالأقواس) دون أن يتغيّر الناتج.</p>
+    <div class="eqbox">(أ + ب) + جـ = أ + (ب + جـ)</div>
+    <div class="note">مثال: (2 + 3) + 4 = 5 + 4 = 9 &nbsp;&nbsp;وأيضاً&nbsp;&nbsp; 2 + (3 + 4) = 2 + 7 = 9</div>
+  </div>
+
+  <div class="card prop-card" style="background:var(--gr-lt);border:2px solid var(--gr)">
+    <h2 style="color:#065F46">0️⃣ ثالثاً: خاصية الحياد الجمعي</h2>
+    <p>إذا جمعنا الصفر إلى أي عدد، فإن العدد لا يتغيّر ويبقى كما هو. لذلك يُسمى الصفر "العنصر المحايد" في الجمع.</p>
+    <div class="eqbox">أ + 0 = أ</div>
+    <div class="note">مثال: 7 + 0 = 7 &nbsp;&nbsp;وأيضاً&nbsp;&nbsp; 0 + 12 = 12</div>
+  </div>
+
+  <div class="card">
+    <h3>✍️ جرّب بنفسك</h3>
+    <p id="fillTask" style="font-size:1.25rem;font-weight:800;text-align:center"></p>
+    <input type="text" id="fillIn" placeholder="اكتب الناتج هنا"><div class="fb" id="fillFb"></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="fillCheck()">✅ تحقق</button><button class="btn btn-o" onclick="newFill()">🔄 سؤال جديد</button></div>
+  </div>
+</div>
+
+<div class="section" id="sec-games">
+  <div id="games-hub">
+    <div class="games-title-box">
+      <h2>🎮 الألعاب التعليمية</h2>
+      <p>اختر لعبة وتعلّم وأنت تلعب!</p>
+    </div>
+    <div class="games-grid">
+      <div class="game-card-select" onclick="openGame('g1')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">🧠</div>
+        <h3>لعبة الذاكرة</h3>
+        <p>وصل بين المعادلة والمعادلة المكافئة لها بنفس الناتج</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g2')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">⚡</div>
+        <h3>لعبة السرعة</h3>
+        <p>حدد الخاصية الصحيحة قبل انتهاء الوقت</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g3')">
+        <div class="game-icon" style="background:var(--gr-lt);color:var(--gr)">✔️</div>
+        <h3>صح أم خطأ</h3>
+        <p>قارن المعادلات وحدد إن كانت صحيحة بسرعة</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g4')">
+        <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">🎯</div>
+        <h3>رتّب الخطوات</h3>
+        <p>رتّب خطوات حل المعادلة بالترتيب الصحيح</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g5')">
+        <div class="game-icon" style="background:var(--sky-lt);color:var(--sky)">🧮</div>
+        <h3>أكمل السلسلة</h3>
+        <p>أكمل كل معادلة عشان تفتح المعادلة اللي بعدها</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g6')">
+        <div class="game-icon" style="background:var(--pk-lt);color:var(--pk)">🎪</div>
+        <h3>اصطد الخاصية</h3>
+        <p>اضغط على المعادلات اللي تمثل الخاصية المطلوبة قبل ما تسقط</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g7')">
+        <div class="game-icon" style="background:var(--gr-lt);color:var(--gr)">🧩</div>
+        <h3>بازل الخاصية</h3>
+        <p>وصّل كل معادلة بالخاصية اللي تمثلها</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+      <div class="game-card-select" onclick="openGame('g8')">
+        <div class="game-icon" style="background:var(--gold-lt);color:var(--gold)">🔢</div>
+        <h3>املأ الجدول</h3>
+        <p>أكمل كل صف في الجدول ثم تحقق من إجاباتك مرة واحدة</p>
+        <span class="start-link">ابدأ اللعب ←</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-view" style="display:none">
+    <button class="btn btn-o" onclick="closeGame()" style="margin-bottom:14px">⬅️ قائمة الألعاب</button>
+    <div class="card" id="wrap-g1" style="display:none">
+      <h3>🧠 لعبة التوصيل بالذاكرة: معادلات متكافئة</h3>
+      <div id="g1"></div>
+    </div>
+    <div class="card" id="wrap-g2" style="display:none">
+      <h3>⚡ لعبة السرعة: أي خاصية؟</h3>
+      <div id="g2"></div>
+    </div>
+    <div class="card" id="wrap-g3" style="display:none">
+      <h3>✔️❌ لعبة صح أم خطأ السريعة</h3>
+      <div id="g3"></div>
+    </div>
+    <div class="card" id="wrap-g4" style="display:none">
+      <h3>🎯 رتّب خطوات الحل</h3>
+      <div id="g4"></div>
+    </div>
+    <div class="card" id="wrap-g5" style="display:none">
+      <h3>🧮 أكمل السلسلة</h3>
+      <div id="g5"></div>
+    </div>
+    <div class="card" id="wrap-g6" style="display:none">
+      <h3>🎪 اصطد الخاصية</h3>
+      <div id="g6"></div>
+    </div>
+    <div class="card" id="wrap-g7" style="display:none">
+      <h3>🧩 بازل الخاصية</h3>
+      <div id="g7"></div>
+    </div>
+    <div class="card" id="wrap-g8" style="display:none">
+      <h3>🔢 املأ الجدول</h3>
+      <div id="g8"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="sec-drill">
+  <div class="card">
+    <h2>📝 تمارين على خواص الجمع</h2>
+    <div id="q1"></div>
+  </div>
+</div>
+</div>
+<footer>رياضيات — الصف الرابع الابتدائي</footer>
+
+<script>
+// الموسيقى الخلفية
+const bgAudio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggleBtn');
+let isMusicPlaying = false;
+if(bgAudio) bgAudio.volume = 0.35;
+
+function startBgMusic() {
+  if (!isMusicPlaying && bgAudio) {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    }).catch(() => {
+      musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+    });
+  }
+}
+
+function toggleMusic() {
+  if (!bgAudio) return;
+  if (isMusicPlaying) {
+    bgAudio.pause();
+    isMusicPlaying = false;
+    musicBtn.textContent = '🔇 الموسيقى: متوقفة';
+  } else {
+    bgAudio.play().then(() => {
+      isMusicPlaying = true;
+      musicBtn.textContent = '🎵 الموسيقى: شغال';
+    });
+  }
+}
+
+window.addEventListener('load', startBgMusic);
+document.addEventListener('click', startBgMusic, { once: true });
+document.addEventListener('touchstart', startBgMusic, { once: true });
+
+// المؤثرات الصوتية
+let audioCtx;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playCorrectSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.setValueAtTime(659.25, now + 0.08);
+    osc.frequency.setValueAtTime(783.99, now + 0.16);
+    osc.frequency.setValueAtTime(1046.50, now + 0.24);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  } catch(e){}
+}
+
+function playWrongSound() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.setValueAtTime(110, now + 0.12);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch(e){}
+}
+
+const AR='٠١٢٣٤٥٦٧٨٩';
+function toAr(n){return String(n).split('').map(c=>/[0-9]/.test(c)?AR[+c]:c).join('')}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  if(id === 'games') closeGame();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const lazyGameStarters = {};
+function openGame(gameId) {
+  document.getElementById('games-hub').style.display = 'none';
+  document.getElementById('game-view').style.display = 'block';
+  ['wrap-g1', 'wrap-g2', 'wrap-g3', 'wrap-g4', 'wrap-g5', 'wrap-g6', 'wrap-g7', 'wrap-g8'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('wrap-' + gameId).style.display = 'block';
+  if(lazyGameStarters[gameId] && !lazyGameStarters[gameId].started){
+    lazyGameStarters[gameId].started = true;
+    lazyGameStarters[gameId].fn();
+  }
+}
+
+function closeGame() {
+  document.getElementById('game-view').style.display = 'none';
+  document.getElementById('games-hub').style.display = 'block';
+}
+
+function updateReportName(val) {
+  const target = document.getElementById('reportStudentName');
+  if (target) target.textContent = val.trim() || '....................';
+}
+
+function downloadReportImage() {
+  const reportEl = document.getElementById('reportCard');
+  if (!reportEl) return;
+
+  const studentInput = document.getElementById('studentNameInput');
+  const studentName = (studentInput && studentInput.value.trim()) ? studentInput.value.trim() : 'الطالب';
+
+  html2canvas(reportEl, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff'
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `تقرير_${studentName}_رياضيات.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+function makeQuiz(elId,gen,count){
+  const el=document.getElementById(elId);let i=0,correct=0,qs=[];
+  for(let k=0;k<count;k++)qs.push(gen());
+
+  function render(){
+    if(i>=qs.length){
+      const pct=Math.round(correct/qs.length*100);
+      const grade = pct >= 85 ? 'ممتاز 🌟' : pct >= 70 ? 'جيد جداً 👍' : pct >= 50 ? 'جيد 👌' : 'يحتاج إلى مراجعة 💪';
+      const today = new Date().toLocaleDateString('ar-EG');
+
+      el.innerHTML = `
+        <div style="text-align:center;">
+          <h3 style="font-size:1.4rem;color:var(--p-dk);margin-bottom:10px">🎉 اكتمل الاختبار بنجاح!</h3>
+          <p style="margin-bottom:12px;font-weight:600">اكتب اسمك أدناه لإنشاء تقرير النتيجة ومشاركته مع معلمك:</p>
+
+          <div style="max-width:320px;margin:0 auto 18px">
+            <input type="text" id="studentNameInput" placeholder="ادخل اسم الطالب هنا..." oninput="updateReportName(this.value)">
+          </div>
+
+          <div id="reportCard" style="background:#fff; border:3px solid var(--p); border-radius:20px; padding:25px; text-align:center; max-width:440px; margin:0 auto; box-shadow:0 10px 30px rgba(0,0,0,0.06); font-family:'Tajawal',sans-serif; color:var(--ink);">
+            <div style="font-size:2.2rem;margin-bottom:4px">📜</div>
+            <h2 style="font-family:'Baloo Bhaijaan 2',sans-serif; color:var(--p-dk); font-size:1.5rem; margin-bottom:2px">تقرير أداء الطالب</h2>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px">خواص عملية الجمع</p>
+
+            <div style="background:var(--p-lt); border-radius:12px; padding:10px 14px; margin-bottom:14px; border:1px solid var(--p)">
+              <span style="font-size:0.85rem; color:var(--p-dk); font-weight:700">اسم الطالب:</span>
+              <div id="reportStudentName" style="font-size:1.25rem; font-weight:800; color:var(--pk); margin-top:2px">....................</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px">
+              <div style="background:var(--sky-lt); padding:10px; border-radius:12px; border:1px solid var(--sky)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">الإجابات الصحيحة</div>
+                <div style="font-size:1.2rem; font-weight:800; color:var(--p-dk); margin-top:2px">${toAr(correct)} من ${toAr(qs.length)}</div>
+              </div>
+              <div style="background:var(--gr-lt); padding:10px; border-radius:12px; border:1px solid var(--gr)">
+                <div style="font-size:0.8rem; color:var(--muted); font-weight:700">النسبة المئوية</div>
+                <div style="font-size:1.2rem; font-weight:800; color:#065F46; margin-top:2px">${toAr(pct)}٪</div>
+              </div>
+            </div>
+
+            <div style="background:var(--gold-lt); border:1px solid var(--gold); padding:8px; border-radius:12px; font-size:1.05rem; font-weight:800; color:#B45309; margin-bottom:12px">
+              التقدير العام: ${grade}
+            </div>
+
+            <div style="font-size:0.75rem; color:var(--muted); border-top:1px dashed var(--border); padding-top:8px">
+              تاريخ الإنجاز: ${toAr(today)} | مادة الرياضيات — الصف الرابع
+            </div>
+          </div>
+
+          <div class="btn-row" style="justify-content:center; margin-top:20px">
+            <button class="btn btn-p" onclick="downloadReportImage()" style="background:linear-gradient(135deg,var(--gr),#059669)">📸 تحميل التقرير كصورة</button>
+            <button class="btn btn-o" id="rq">🔄 إعادة التمارين</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('rq').onclick=()=>{i=0;correct=0;qs=[];for(let k=0;k<count;k++)qs.push(gen());render()};
+      return;
+    }
+
+    const q=qs[i];
+    el.innerHTML='<div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div><p style="font-weight:700;font-size:1.1rem">سؤال '+toAr(i+1)+' من '+toAr(qs.length)+'</p><p style="margin:8px 0;font-size:1.15rem">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div><div class="fb" id="'+elId+'-f"></div>';
+    const box=document.getElementById(elId+'-o'),fb=document.getElementById(elId+'-f');
+    shuffle(q.options).forEach(o=>{
+      const b=document.createElement('button');b.className='opt';b.innerHTML=o;
+      b.onclick=()=>{
+        if(box.dataset.done)return;box.dataset.done='1';
+        const ok=o===q.answer;
+        [...box.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok');else if(c===b)c.classList.add('no')});
+        fb.className='fb '+(ok?'ok':'no');
+        fb.innerHTML=(ok?'✅ إجابة صحيحة! ':'❌ الإجابة الصحيحة: '+q.answer+'. ')+(q.hint||'');
+        if(ok){ correct++; playCorrectSound(); } else { playWrongSound(); }
+        setTimeout(()=>{i++;render()},1600);
+      };
+      box.appendChild(b);
+    });
+  }
+  render();
+}
+
+function memoryGame(elId,pairs){
+  const el=document.getElementById(elId);
+  let cards=[];pairs.forEach((p,i)=>{cards.push({k:i,t:p[0]});cards.push({k:i,t:p[1]})});
+  cards=shuffle(cards);let open=[],done=0,moves=0;
+  el.innerHTML='<div class="mem" id="'+elId+'-g"></div><p style="margin-top:8px" id="'+elId+'-s"></p><div class="btn-row"><button class="btn btn-o" id="'+elId+'-r">🔄 لعبة جديدة</button></div>';
+  const g=document.getElementById(elId+'-g'),s=document.getElementById(elId+'-s');
+  document.getElementById(elId+'-r').onclick=()=>memoryGame(elId,pairs);
+  cards.forEach((c,idx)=>{
+    const d=document.createElement('div');d.className='c';d.textContent='؟';
+    d.onclick=()=>{
+      if(d.classList.contains('done')||d.classList.contains('open')||open.length===2)return;
+      d.classList.add('open');d.textContent=c.t;open.push({d,c});
+      if(open.length===2){moves++;
+        if(open[0].c.k===open[1].c.k){
+          open.forEach(o=>{o.d.classList.remove('open');o.d.classList.add('done')});open=[];done++;
+          playCorrectSound();
+          if(done===pairs.length)s.innerHTML='🎉 أحسنت! أكملت اللعبة في '+toAr(moves)+' محاولة';
+        } else {
+          playWrongSound();
+          setTimeout(()=>{open.forEach(o=>{o.d.classList.remove('open');o.d.textContent='؟'});open=[]},900);
+        }
+      }
+      s.textContent||(s.textContent='المحاولات: '+toAr(moves));
+      if(done<pairs.length)s.textContent='المحاولات: '+toAr(moves)+' — أزواج صحيحة: '+toAr(done)+'/'+toAr(pairs.length);
+    };
+    g.appendChild(d);
+  });
+}
+
+function speedGame(elId,gen,seconds){
+  const el=document.getElementById(elId);let score=0,t=seconds,timer=null,q=null;
+  el.innerHTML='<div class="score" id="'+elId+'-h"></div><div id="'+elId+'-b" style="margin-top:10px"></div>';
+  const h=document.getElementById(elId+'-h'),b=document.getElementById(elId+'-b');
+  function next(){q=gen();
+    b.innerHTML='<p style="font-size:1.1rem;font-weight:700;text-align:center">'+q.q+'</p><div class="opts" id="'+elId+'-o"></div>';
+    const box=document.getElementById(elId+'-o');
+    shuffle(q.options).forEach(o=>{const x=document.createElement('button');x.className='opt';x.innerHTML=o;
+      x.onclick=()=>{
+        if(o===q.answer){score++;x.classList.add('ok');playCorrectSound();}
+        else{x.classList.add('no');[...box.children].forEach(c=>{if(c.innerHTML===q.answer)c.classList.add('ok')});playWrongSound();}
+        setTimeout(next,500)};box.appendChild(x)});
+  }
+  function tick(){h.innerHTML='⏱️ الوقت: '+toAr(t)+' ثانية — النقاط: '+toAr(score);
+    if(t<=0){clearInterval(timer);b.innerHTML='<div class="score">انتهى الوقت! نقاطك: '+toAr(score)+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>speedGame(elId,gen,seconds);return}
+    t--;}
+  tick();timer=setInterval(tick,1000);next();
+}
+
+function propTFGame(elId){
+  const el=document.getElementById(elId);
+  let score=0;
+  function next(){
+    const type=rnd(0,2);
+    const isTrue=Math.random()<.5;
+    let eqStr;
+    if(type===0){
+      const a=rnd(1,20), b=rnd(1,20);
+      const rhs = isTrue ? (b+' + '+a) : (b+' + '+(a+rnd(1,5)));
+      eqStr = a+' + '+b+' = '+rhs;
+    } else if(type===1){
+      const a=rnd(1,10), b=rnd(1,10), c=rnd(1,10);
+      const rhs = isTrue ? (a+' + ('+b+' + '+c+')') : (a+' + ('+b+' + '+(c+rnd(1,5))+')');
+      eqStr = '('+a+' + '+b+') + '+c+' = '+rhs;
+    } else {
+      const a=rnd(1,50);
+      const rhs = isTrue ? a : a+rnd(1,5);
+      eqStr = a+' + 0 = '+rhs;
+    }
+    el.innerHTML='<p style="font-size:1.15rem;font-weight:700;text-align:center">هل هذه المعادلة صحيحة؟</p>'+
+      '<div class="big" style="font-size:1.7rem;margin:12px 0">'+eqStr+'</div>'+
+      '<div class="btn-row" style="justify-content:center;gap:16px"><button class="btn btn-p" style="background:var(--gr);min-width:110px" id="tf-ok">✔️ صح</button><button class="btn btn-p" style="background:var(--red);min-width:110px" id="tf-no">❌ خطأ</button></div>'+
+      '<div class="fb" id="'+elId+'-f"></div>'+
+      '<p style="text-align:center;margin-top:12px;font-weight:700">النقاط: '+toAr(score)+'</p>';
+
+    const fb=document.getElementById(elId+'-f');
+    document.getElementById('tf-ok').onclick=()=>check(true);
+    document.getElementById('tf-no').onclick=()=>check(false);
+
+    function check(ans){
+      if(el.dataset.done) return;
+      el.dataset.done='1';
+      const ok = ans === isTrue;
+      fb.className='fb '+(ok?'ok':'no');
+      if(ok){
+        score++;
+        fb.textContent='✅ أحسنت! إجابة صحيحة';
+        playCorrectSound();
+      } else {
+        fb.textContent='❌ إجابة خاطئة! المعادلة '+(isTrue?'صحيحة':'خاطئة');
+        playWrongSound();
+      }
+      setTimeout(()=>{ delete el.dataset.done; next(); }, 1100);
+    }
+  }
+  next();
+}
+
+// ----- سؤال التعبئة في تبويب المفهوم -----
+let fillAns=0;
+function newFill(){
+  const type=rnd(0,2);
+  let q;
+  if(type===0){ const a=rnd(1,20), b=rnd(1,20); q=a+' + '+b+' = '+b+' + ___'; fillAns=a; }
+  else if(type===1){ const a=rnd(1,10), b=rnd(1,10); q='('+a+' + '+b+') + 5 = '+a+' + ('+b+' + ___)'; fillAns=5; }
+  else { const a=rnd(1,50); q=a+' + 0 = ___'; fillAns=a; }
+  document.getElementById('fillTask').textContent=q;
+  document.getElementById('fillIn').value='';
+  document.getElementById('fillFb').className='fb';
+}
+function fillCheck(){
+  const v=document.getElementById('fillIn').value.trim();
+  const f=document.getElementById('fillFb');
+  const ok=Number(v)===fillAns;
+  f.className='fb '+(ok?'ok':'no');
+  f.textContent=ok?'✅ ممتاز! إجابة صحيحة':'❌ الصحيح: '+fillAns;
+  if(ok) playCorrectSound(); else playWrongSound();
+}
+newFill();
+
+// ----- لعبة الذاكرة: معادلات متكافئة -----
+memoryGame('g1',[
+  ['4 + 7','7 + 4'],
+  ['9 + 0','9'],
+  ['(1 + 2) + 3','1 + (2 + 3)'],
+  ['6 + 2','2 + 6'],
+  ['0 + 15','15'],
+  ['(4 + 1) + 2','4 + (1 + 2)'],
+  ['8 + 5','5 + 8'],
+  ['0 + 30','30']
+]);
+
+// ----- لعبة السرعة ولعبة صح أم خطأ -----
+function propNameQ(){
+  const type=rnd(0,2);
+  let q,answer;
+  if(type===0){const a=rnd(1,20),b=rnd(1,20); q=a+' + '+b+' = '+b+' + '+a; answer='خاصية الإبدال';}
+  else if(type===1){const a=rnd(1,10),b=rnd(1,10),c=rnd(1,10); q='('+a+' + '+b+') + '+c+' = '+a+' + ('+b+' + '+c+')'; answer='خاصية التجميع';}
+  else {const a=rnd(1,50); q=a+' + 0 = '+a; answer='خاصية الحياد الجمعي';}
+  const opts=['خاصية الإبدال','خاصية التجميع','خاصية الحياد الجمعي'];
+  return {q:'أي خاصية تُوضّحها هذه المعادلة؟<br><span style="font-size:1.25rem;font-weight:800">'+q+'</span>', options:opts, answer:answer, hint:'الإبدال: تبديل الترتيب. التجميع: تغيير طريقة التجميع بالأقواس. الحياد الجمعي: الجمع مع الصفر.'};
+}
+speedGame('g2',propNameQ,45);
+propTFGame('g3');
+
+// ----- 🎯 لعبة رتّب الخطوات -----
+function stepsGame(elId){
+  const el=document.getElementById(elId);
+  let round=0;
+  function build(){
+    const a=rnd(2,9), b=rnd(2,9), c=rnd(2,9);
+    const s1=a+b;
+    const steps=[
+      { t:'المعادلة الأصلية: ('+a+' + '+b+') + '+c }, 
+      { t:'بخاصية التجميع أعيد كتابتها: '+a+' + ('+b+' + '+c+')' },
+      { t:'أحسب الجزء داخل القوس: '+b+' + '+c+' = '+(b+c) },
+      { t:'أجمع الناتج النهائي: '+a+' + '+(b+c)+' = '+(a+b+c) }
+    ];
+    let expected=0;
+    const pool=shuffle(steps.map((s,i)=>({...s,i})));
+    el.innerHTML='<p style="font-weight:700;margin-bottom:8px">رتّب خطوات حل المعادلة <b>('+a+' + '+b+') + '+c+'</b> بالترتيب الصحيح:</p>'+
+      '<div id="'+elId+'-slots"></div><div class="step-pool" id="'+elId+'-pool"></div>'+
+      '<p style="margin-top:10px;font-weight:700" id="'+elId+'-msg"></p>';
+    const slotsEl=document.getElementById(elId+'-slots'), poolEl=document.getElementById(elId+'-pool'), msg=document.getElementById(elId+'-msg');
+    for(let k=0;k<steps.length;k++){
+      const d=document.createElement('div');d.className='step-slot';d.id=elId+'-slot'+k;d.textContent='خطوة '+toAr(k+1)+' — ؟';
+      slotsEl.appendChild(d);
+    }
+    pool.forEach(s=>{
+      const btn=document.createElement('button');btn.className='step-choice';btn.textContent=s.t;
+      btn.onclick=()=>{
+        if(s.i===expected){
+          const slot=document.getElementById(elId+'-slot'+expected);
+          slot.textContent='خطوة '+toAr(expected+1)+' — '+s.t;slot.classList.add('filled');
+          btn.disabled=true;playCorrectSound();expected++;
+          if(expected===steps.length){
+            msg.style.color='#065F46';msg.textContent='🎉 أحسنت! رتّبت الخطوات صح.';
+            round++;
+            setTimeout(build,1500);
+          }
+        } else {
+          playWrongSound();msg.style.color='#7F1D1D';msg.textContent='❌ حاول تاني، مش الترتيب الصحيح.';
+        }
+      };
+      poolEl.appendChild(btn);
+    });
+  }
+  build();
+}
+
+// ----- 🧮 لعبة أكمل السلسلة -----
+function chainGame(elId){
+  const el=document.getElementById(elId);
+  function build(){
+    const items=[];
+    for(let k=0;k<5;k++){
+      const type=rnd(0,2);
+      let q,ans;
+      if(type===0){const a=rnd(1,20),b=rnd(1,20); q=a+' + '+b+' = '+b+' + ___'; ans=a;}
+      else if(type===1){const a=rnd(1,10),b=rnd(1,10),c=rnd(1,10); q='('+a+' + '+b+') + '+c+' = '+a+' + ('+b+' + ___)'; ans=c;}
+      else {const a=rnd(1,50); q=a+' + 0 = ___'; ans=a;}
+      items.push({q,ans});
+    }
+    let i=0,score=0;
+    function render(){
+      if(i>=items.length){
+        el.innerHTML='<div class="score">🎉 خلصت السلسلة! نقاطك: '+toAr(score)+' من '+toAr(items.length)+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 سلسلة جديدة</button></div>';
+        document.getElementById(elId+'-r').onclick=build;
+        return;
+      }
+      el.innerHTML='<div class="bar"><i style="width:'+(i/items.length*100)+'%"></i></div>'+
+        '<p style="font-weight:700">حلقة '+toAr(i+1)+' من '+toAr(items.length)+'</p>'+
+        '<p class="eqbox">'+items[i].q+'</p>'+
+        '<input type="text" id="'+elId+'-in" placeholder="اكتب الإجابة"><div class="fb" id="'+elId+'-f"></div>'+
+        '<div class="btn-row"><button class="btn btn-p" id="'+elId+'-c">✅ تحقق وتابع</button></div>';
+      document.getElementById(elId+'-c').onclick=()=>{
+        const v=document.getElementById(elId+'-in').value.trim();
+        const f=document.getElementById(elId+'-f');
+        const ok=Number(v)===items[i].ans;
+        f.className='fb '+(ok?'ok':'no');
+        f.textContent=ok?'✅ صحيح! السلسلة اتفتحت':'❌ الصحيح: '+items[i].ans;
+        if(ok){score++;playCorrectSound();}else{playWrongSound();}
+        setTimeout(()=>{i++;render();},1100);
+      };
+    }
+    render();
+  }
+  build();
+}
+
+// ----- 🎪 لعبة اصطد الخاصية -----
+function catchGame(elId,seconds){
+  const el=document.getElementById(elId);
+  const propList=[
+    {name:'خاصية الإبدال', gen:()=>{const a=rnd(1,20),b=rnd(1,20);return a+' + '+b+' = '+b+' + '+a;}},
+    {name:'خاصية التجميع', gen:()=>{const a=rnd(1,10),b=rnd(1,10),c=rnd(1,10);return '('+a+' + '+b+') + '+c+' = '+a+' + ('+b+' + '+c+')';}},
+    {name:'خاصية الحياد الجمعي', gen:()=>{const a=rnd(1,50);return a+' + 0 = '+a;}}
+  ];
+  let target=propList[rnd(0,2)], score=0, t=seconds, timer=null, spawner=null, active=true;
+  el.innerHTML='<div class="catch-target" id="'+elId+'-t">🎯 اضغط فقط على معادلات: <span id="'+elId+'-tn"></span></div>'+
+    '<div class="score" id="'+elId+'-h" style="margin-bottom:8px"></div>'+
+    '<div class="catch-field" id="'+elId+'-field"></div>';
+  document.getElementById(elId+'-tn').textContent=target.name;
+  const h=document.getElementById(elId+'-h'), field=document.getElementById(elId+'-field');
+
+  function spawn(){
+    if(!active) return;
+    const useTarget=Math.random()<.5;
+    const src = useTarget ? target : propList[rnd(0,2)];
+    const isMatch = src.name===target.name;
+    const chip=document.createElement('button');
+    chip.className='catch-chip';chip.textContent=src.gen();
+    const fw=field.clientWidth||300;
+    chip.style.left=rnd(5,Math.max(6,fw-140))+'px';
+    field.appendChild(chip);
+    requestAnimationFrame(()=>{
+      const dur=rnd(4,6);
+      chip.style.transitionDuration=dur+'s';
+      chip.style.top=(field.clientHeight-40)+'px';
+    });
+    let resolved=false;
+    chip.onclick=()=>{
+      if(resolved) return; resolved=true;
+      if(isMatch){score++;chip.classList.add('hit');playCorrectSound();}
+      else{score=Math.max(0,score-1);chip.classList.add('miss-click');playWrongSound();}
+      setTimeout(()=>chip.remove(),300);
+    };
+    chip.addEventListener('transitionend',()=>{
+      if(!resolved){resolved=true;chip.remove();}
+    });
+  }
+
+  function tick(){
+    h.innerHTML='⏱️ الوقت: '+toAr(t)+' ثانية — النقاط: '+toAr(score);
+    if(t<=0){
+      active=false;clearInterval(timer);clearInterval(spawner);
+      field.querySelectorAll('.catch-chip').forEach(c=>c.remove());
+      el.innerHTML='<div class="score">انتهى الوقت! نقاطك: '+toAr(score)+'</div><div class="btn-row"><button class="btn btn-p" id="'+elId+'-r">🔄 العب مرة أخرى</button></div>';
+      document.getElementById(elId+'-r').onclick=()=>catchGame(elId,seconds);
+      return;
+    }
+    t--;
+  }
+  tick();
+  timer=setInterval(tick,1000);
+  spawner=setInterval(spawn,1100);
+  spawn();
+}
+
+// ----- 🧩 لعبة بازل الخاصية -----
+function puzzleGame(elId){
+  const el=document.getElementById(elId);
+  function build(){
+    const propNames=['خاصية الإبدال','خاصية التجميع','خاصية الحياد الجمعي'];
+    const eqs=[];
+    for(let k=0;k<2;k++){
+      const a=rnd(1,20),b=rnd(1,20); eqs.push({eq:a+' + '+b+' = '+b+' + '+a, prop:'خاصية الإبدال'});
+      const x=rnd(1,10),y=rnd(1,10),z=rnd(1,10); eqs.push({eq:'('+x+' + '+y+') + '+z+' = '+x+' + ('+y+' + '+z+')', prop:'خاصية التجميع'});
+      const w=rnd(1,50); eqs.push({eq:w+' + 0 = '+w, prop:'خاصية الحياد الجمعي'});
+    }
+    const items=eqs.map((e,i)=>({...e,k:i}));
+    const leftItems=shuffle(items);
+    const rightItems=shuffle(items.map(it=>({prop:it.prop,k:it.k})));
+    let done=0, selL=null, selR=null;
+    el.innerHTML='<p style="font-weight:700;margin-bottom:6px">اضغط على معادلة من العمود الأول، ثم على الخاصية المطابقة لها في العمود الثاني:</p>'+
+      '<div class="puzzle-cols"><div class="puzzle-col"><h4>المعادلة</h4><div id="'+elId+'-L"></div></div>'+
+      '<div class="puzzle-col"><h4>الخاصية</h4><div id="'+elId+'-R"></div></div></div>'+
+      '<p style="margin-top:10px;font-weight:700;text-align:center" id="'+elId+'-s"></p>';
+    const L=document.getElementById(elId+'-L'), R=document.getElementById(elId+'-R'), s=document.getElementById(elId+'-s');
+    s.textContent='أزواج صحيحة: '+toAr(0)+'/'+toAr(items.length);
+
+    function mkItem(container, label, key, isLeft){
+      const d=document.createElement('div');d.className='puzzle-item';d.textContent=label;
+      d.onclick=()=>{
+        if(d.classList.contains('done'))return;
+        if(isLeft){
+          if(selL) selL.el.classList.remove('sel');
+          selL={el:d,key};d.classList.add('sel');
+        } else {
+          if(selR) selR.el.classList.remove('sel');
+          selR={el:d,key};d.classList.add('sel');
+        }
+        if(selL && selR){
+          if(selL.key===selR.key){
+            selL.el.classList.remove('sel');selR.el.classList.remove('sel');
+            selL.el.classList.add('done');selR.el.classList.add('done');
+            done++;playCorrectSound();
+            s.textContent='أزواج صحيحة: '+toAr(done)+'/'+toAr(items.length);
+            selL=null;selR=null;
+            if(done===items.length){
+              setTimeout(()=>{s.innerHTML='🎉 أحسنت! أكملت البازل. <button class="btn btn-o" id="'+elId+'-r">🔄 بازل جديد</button>';document.getElementById(elId+'-r').onclick=build;},400);
+            }
+          } else {
+            playWrongSound();
+            selL.el.classList.add('wrong');selR.el.classList.add('wrong');
+            setTimeout(()=>{
+              if(selL){selL.el.classList.remove('sel','wrong');}
+              if(selR){selR.el.classList.remove('sel','wrong');}
+              selL=null;selR=null;
+            },600);
+          }
+        }
+      };
+      container.appendChild(d);
+    }
+    leftItems.forEach(it=>mkItem(L,it.eq,it.k,true));
+    rightItems.forEach(it=>mkItem(R,it.prop,it.k,false));
+  }
+  build();
+}
+
+// ----- 🔢 لعبة املأ الجدول -----
+function tableGame(elId){
+  const el=document.getElementById(elId);
+  function build(){
+    const rows=[];
+    for(let i=0;i<6;i++){
+      const type=rnd(0,2);
+      let eq,prop,ans;
+      if(type===0){const a=rnd(1,20),b=rnd(1,20); eq=a+' + '+b+' = '+b+' + ___'; prop='الإبدال'; ans=a;}
+      else if(type===1){const a=rnd(1,10),b=rnd(1,10),c=rnd(1,10); eq='('+a+' + '+b+') + '+c+' = ___ + ('+b+' + '+c+')'; prop='التجميع'; ans=a;}
+      else {const a=rnd(1,50); eq=a+' + 0 = ___'; prop='الحياد الجمعي'; ans=a;}
+      rows.push({eq,prop,ans});
+    }
+    let html='<table><tr><th>#</th><th>المعادلة</th><th>الخاصية</th><th>أكمل الناتج</th></tr>';
+    rows.forEach((r,i)=>{
+      html+='<tr id="'+elId+'-row'+i+'"><td>'+toAr(i+1)+'</td><td>'+r.eq+'</td><td>'+r.prop+'</td><td><input class="tbl-input" type="text" id="'+elId+'-in'+i+'"></td></tr>';
+    });
+    html+='</table><div class="btn-row"><button class="btn btn-p" id="'+elId+'-chk">✅ تحقق من كل الإجابات</button><button class="btn btn-o" id="'+elId+'-nw">🔄 جدول جديد</button></div><p style="margin-top:10px;font-weight:700" id="'+elId+'-res"></p>';
+    el.innerHTML=html;
+    document.getElementById(elId+'-nw').onclick=build;
+    document.getElementById(elId+'-chk').onclick=()=>{
+      let correct=0;
+      rows.forEach((r,i)=>{
+        const inp=document.getElementById(elId+'-in'+i);
+        const row=document.getElementById(elId+'-row'+i);
+        const ok=Number(inp.value.trim())===r.ans;
+        row.classList.remove('row-ok','row-no');
+        row.classList.add(ok?'row-ok':'row-no');
+        if(ok)correct++;
+      });
+      const res=document.getElementById(elId+'-res');
+      res.textContent='النتيجة: '+toAr(correct)+' من '+toAr(rows.length)+' إجابات صحيحة';
+      if(correct===rows.length) playCorrectSound(); else playWrongSound();
+    };
+  }
+  build();
+}
+
+stepsGame('g4');
+chainGame('g5');
+catchGame('g6',40);
+puzzleGame('g7');
+tableGame('g8');
+
+// ----- تمارين التبويب الثالث -----
+function commQ(){
+  const a=rnd(1,20), b=rnd(1,20);
+  const opts=[String(a)];
+  while(opts.length<4){const x=rnd(1,20); if(!opts.includes(String(x)))opts.push(String(x))}
+  return{q:'أكمل باستخدام خاصية الإبدال: <b>'+a+' + '+b+' = '+b+' + ___</b>', options:opts, answer:String(a), hint:'خاصية الإبدال: تبديل مكان العددين لا يغيّر الناتج.'};
+}
+function assocQ(){
+  const a=rnd(1,10), b=rnd(1,10), c=rnd(1,10);
+  const opts=[String(a)];
+  while(opts.length<4){const x=rnd(1,10); if(!opts.includes(String(x)))opts.push(String(x))}
+  return{q:'أكمل باستخدام خاصية التجميع: <b>('+a+' + '+b+') + '+c+' = ___ + ('+b+' + '+c+')</b>', options:opts, answer:String(a), hint:'خاصية التجميع: يمكن تجميع الأعداد بأي ترتيب دون تغيير الناتج.'};
+}
+function identityQ(){
+  const a=rnd(1,50);
+  const opts=[String(a)];
+  while(opts.length<4){const x=rnd(1,50); if(!opts.includes(String(x)))opts.push(String(x))}
+  return{q:'أكمل: <b>'+a+' + 0 = ___</b>', options:opts, answer:String(a), hint:'خاصية الحياد الجمعي: جمع الصفر على أي عدد لا يغيّر قيمته.'};
+}
+function mixQ(){
+  const t=rnd(0,3);
+  if(t===0) return commQ();
+  if(t===1) return assocQ();
+  if(t===2) return identityQ();
+  return propNameQ();
+}
+makeQuiz('q1',mixQ,10);
+
+</script></body></html>
