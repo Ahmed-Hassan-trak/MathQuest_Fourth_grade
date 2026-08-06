@@ -1,0 +1,2352 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المراجعة الشاملة — رياضيات الصف الرابع</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a2e5a;
+    --accent: #f5a623;
+    --green: #27ae60;
+    --red: #e74c3c;
+    --blue: #2980b9;
+    --purple: #8e44ad;
+    --teal: #16a085;
+    --orange: #e67e22;
+    --light-bg: #f0f4ff;
+    --card-bg: #ffffff;
+    --text: #1a2e5a;
+    --shadow: 0 8px 32px rgba(26,46,90,0.13);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #e8f0fe 0%, #fef9e7 50%, #e8f8f5 100%);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #1a2e5a 0%, #2980b9 60%, #16a085 100%);
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(245,166,35,0.18);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 4.6vw, 2.7rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .hero .subtitle {
+    font-size: 1.15rem;
+    opacity: 0.88;
+    margin-top: 10px;
+    font-weight: 500;
+  }
+  .home-btn {
+    position: absolute;
+    top: 18px; right: 18px;
+    z-index: 5;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: #fff;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 700;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+  }
+  .home-btn:hover {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-2px);
+  }
+  .home-btn svg { width: 15px; height: 15px; }
+  @media (max-width: 520px) {
+    .home-btn { top: 10px; right: 10px; padding: 6px 12px; font-size: 12px; }
+  }
+  .hero .stars {
+    font-size: 2rem;
+    margin-bottom: 14px;
+    display: block;
+    animation: starSpin 3s linear infinite;
+  }
+  @keyframes starSpin {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  /* LESSONS NAV */
+  .lessons-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 980px;
+    margin: -30px auto 30px;
+    padding: 0 16px;
+    position: relative;
+    z-index: 10;
+  }
+  .lesson-tab {
+    background: #fff;
+    border: 2.5px solid #dde4f5;
+    border-radius: 50px;
+    padding: 9px 18px;
+    font-size: 0.88rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: var(--shadow);
+  }
+  .lesson-tab .icon { font-size: 1.1rem; }
+  .lesson-tab:hover, .lesson-tab.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 4px 14px rgba(26,46,90,0.2);
+  }
+  .lesson-tab .status-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #ccc;
+    display: inline-block;
+  }
+  .lesson-tab.done .status-dot { background: var(--green); }
+  .lesson-tab.active .status-dot { background: var(--accent); }
+
+  /* MAIN CONTENT */
+  .content-area {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* LESSON CARD */
+  .lesson-panel { display: none; }
+  .lesson-panel.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+  .lesson-header {
+    background: linear-gradient(135deg, var(--primary), var(--blue));
+    color: #fff;
+    border-radius: 20px 20px 0 0;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .lesson-icon { font-size: 2.2rem; }
+  .lesson-header h2 { font-size: 1.4rem; font-weight: 900; }
+  .lesson-header p { opacity: 0.85; font-size: 0.95rem; margin-top: 4px; }
+
+  /* INFO CARD */
+  .info-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border-right: 5px solid var(--accent);
+  }
+  .info-card h3 { color: var(--primary); font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
+  .info-card p { line-height: 1.8; font-size: 1rem; color: #444; }
+  .info-card ul, .info-card ol { padding-right: 20px; }
+  .info-card ul li, .info-card ol li { line-height: 2; font-size: 1rem; color: #444; }
+  .info-card table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
+  .info-card th, .info-card td { border: 1px solid #e0e7ff; padding: 8px; text-align: center; }
+  .info-card th { background: #f0f4ff; color: var(--primary); }
+  .info-card .note {
+    background: #fffbea;
+    border-right: 6px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-top: 12px;
+    font-size: 0.95rem;
+  }
+  .big-display {
+    font-size: 2rem;
+    font-weight: 900;
+    text-align: center;
+    color: var(--primary);
+    letter-spacing: 2px;
+    margin: 10px 0;
+  }
+
+  /* QUESTION CARD */
+  .q-section {
+    background: #fff;
+    border-radius: 0 0 20px 20px;
+    padding: 24px 28px 30px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+  }
+  .q-section h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed #e0e7ff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .question-block {
+    background: #f8faff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    border: 2px solid #e0e7ff;
+    transition: border 0.2s;
+  }
+  .question-block.correct { border-color: var(--green); background: #f0fff8; }
+  .question-block.wrong { border-color: var(--red); background: #fff5f5; }
+
+  .q-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+  .q-num {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-left: 8px;
+  }
+
+  /* OPTIONS */
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:500px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: #fff;
+    border: 2.5px solid #dde4f5;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 0.18s;
+    text-align: center;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--blue); background: #eef4fd; transform: translateY(-1px); }
+  .option-btn.selected-correct { background: var(--green); color: #fff; border-color: var(--green); }
+  .option-btn.selected-wrong { background: var(--red); color: #fff; border-color: var(--red); }
+  .option-btn.reveal-correct { background: #d5f5e3; border-color: var(--green); color: #1a5e38; }
+  .option-btn:disabled { cursor: default; }
+
+  /* INPUT QUESTION */
+  .input-answer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .input-answer input {
+    border: 2.5px solid #dde4f5;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 1.1rem;
+    font-family: 'Tajawal', sans-serif;
+    width: 160px;
+    text-align: center;
+    color: var(--primary);
+  }
+  .input-answer input:focus { outline: none; border-color: var(--accent); }
+  .btn-check {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-check:hover { background: var(--primary); }
+  .feedback {
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.ok { background: #d5f5e3; color: #1a5e38; display: inline-block; }
+  .feedback.err { background: #fde8e8; color: #a93226; display: inline-block; }
+
+  /* SUBMIT LESSON */
+  .btn-submit-lesson {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--green), #1e8449);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 1.2rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 24px;
+    box-shadow: 0 4px 18px rgba(39,174,96,0.3);
+    transition: all 0.2s;
+  }
+  .btn-submit-lesson:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.4); }
+
+  /* SCORE RESULT */
+  .lesson-result {
+    display: none;
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+  }
+  .lesson-result.show { display: block; }
+  .score-circle {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 0 auto 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+  }
+  .score-circle .pct { font-size: 1rem; font-weight: 600; }
+  .score-circle.excellent { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; }
+  .score-circle.good { background: linear-gradient(135deg, #2980b9, #1a5276); color: #fff; }
+  .score-circle.fair { background: linear-gradient(135deg, #e67e22, #ca6f1e); color: #fff; }
+  .score-circle.poor { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; }
+  .level-badge {
+    display: inline-block;
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 10px 0;
+  }
+  .level-badge.excellent { background: #d5f5e3; color: #1a5e38; }
+  .level-badge.good { background: #d6eaf8; color: #1a4f7e; }
+  .level-badge.fair { background: #fde8ce; color: #7e4c1a; }
+  .level-badge.poor { background: #fde8e8; color: #7e1a1a; }
+
+  /* FINAL REPORT */
+  .final-report {
+    display: none;
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 900px;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.5s ease;
+  }
+  .final-report.show { display: block; }
+  .final-report h2 {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+  @media(max-width:650px) { .report-grid { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:420px) { .report-grid { grid-template-columns: 1fr; } }
+  .report-card {
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    border: 2px solid #e0e7ff;
+  }
+  .report-card .r-icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .report-card .r-title { font-size: 0.8rem; font-weight: 700; color: #888; margin-bottom: 6px; }
+  .report-card .r-score { font-size: 1.4rem; font-weight: 900; }
+  .report-card .r-level { font-size: 0.8rem; font-weight: 700; margin-top: 4px; }
+  .report-card.excellent { background: #f0fff8; border-color: var(--green); }
+  .report-card.good { background: #eaf3fd; border-color: var(--blue); }
+  .report-card.fair { background: #fef9f0; border-color: var(--orange); }
+  .report-card.poor { background: #fff5f5; border-color: var(--red); }
+
+  .overall-score {
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary), var(--blue));
+    color: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .overall-score .big-num { font-size: 4rem; font-weight: 900; line-height: 1; }
+  .overall-score .label { font-size: 1.1rem; opacity: 0.85; margin-top: 6px; }
+
+  .btn-print {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 32px;
+    font-size: 1rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 0 6px;
+    transition: all 0.2s;
+  }
+  .btn-print:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-png {
+    background: linear-gradient(135deg, var(--green), var(--teal));
+    color: #fff; border: none; border-radius: 30px;
+    padding: 13px 30px; font-size: 1rem; font-weight: 800;
+    font-family: 'Tajawal', sans-serif; cursor: pointer;
+    margin: 6px; transition: all 0.2s;
+    box-shadow: 0 6px 18px rgba(39,174,96,0.28);
+  }
+  .btn-png:hover { opacity: 0.92; transform: translateY(-1px); }
+  .btn-png:disabled { opacity: 0.6; cursor: progress; }
+  .report-meta {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    align-items: center; margin-bottom: 18px;
+  }
+  .report-meta input {
+    padding: 10px 16px; border-radius: 12px; border: 2px solid #dde5f5;
+    font-family: 'Tajawal', sans-serif; font-size: 0.95rem; text-align: center;
+    color: var(--text); min-width: 200px;
+  }
+  .report-meta .stamp { font-size: 0.9rem; color: #777; font-weight: 700; }
+  .btn-restart {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 32px;
+    font-size: 1rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 0 6px;
+    transition: all 0.2s;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    background: #e0e7ff;
+    border-radius: 50px;
+    height: 8px;
+    margin: 10px 0 18px;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 50px;
+    height: 8px;
+    transition: width 0.5s ease;
+  }
+
+  .hidden { display: none !important; }
+  .text-center { text-align: center; }
+
+  /* Celebration */
+  .confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+
+  @media print {
+    .lessons-nav, .btn-submit-lesson, .btn-print, .btn-png, .btn-restart, .hero { display: none; }
+    .final-report { display: block !important; box-shadow: none; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <a class="home-btn" href="https://math-quest-fourth-grade-ranz.vercel.app/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
+    الرئيسية
+  </a>
+  <span class="stars">⭐ 🎓 ⭐</span>
+  <h1>المراجعة الشاملة</h1>
+  <div class="subtitle">رياضيات — الصف الرابع الابتدائي • مراجعة شاملة على كل الدروس</div>
+</div>
+
+<div id="mainApp">
+  <div class="lessons-nav" id="lessonsNav">
+    <button class="lesson-tab active" id="tab-0" onclick="showLesson(0)">
+      <span class="icon">🧭</span> اتجاه القراءة <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-1" onclick="showLesson(1)">
+      <span class="icon">📖</span> قراءة الأعداد <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-2" onclick="showLesson(2)">
+      <span class="icon">🔢</span> عربية وهندية <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-3" onclick="showLesson(3)">
+      <span class="icon">🏠</span> القيمة المكانية <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-4" onclick="showLesson(4)">
+      <span class="icon">➕</span> الضرب كجمع متكرر <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-5" onclick="showLesson(5)">
+      <span class="icon">⚙️</span> خواص الضرب <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-6" onclick="showLesson(6)">
+      <span class="icon">🖼️</span> صور العدد <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-7" onclick="showLesson(7)">
+      <span class="icon">⚖️</span> المقارنة والترتيب <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-8" onclick="showLesson(8)">
+      <span class="icon">➕</span> خواص الجمع <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-9" onclick="showLesson(9)">
+      <span class="icon">🔄</span> إعادة التسمية <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-10" onclick="showLesson(10)">
+      <span class="icon">🔷</span> الأشكال الهندسية <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-11" onclick="showLesson(11)">
+      <span class="icon">📐</span> محيط المربع <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-12" onclick="showLesson(12)">
+      <span class="icon">▭</span> محيط المستطيل <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-13" onclick="showLesson(13)">
+      <span class="icon">🟩</span> المساحة <span class="status-dot"></span>
+    </button>
+    <button class="lesson-tab" id="tab-14" onclick="showLesson(14)">
+      <span class="icon">📊</span> القوانين الأساسية <span class="status-dot"></span>
+    </button>
+  </div>
+
+  <div class="content-area">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="totalProgress" style="width:0%"></div>
+    </div>
+
+<div class="lesson-panel active" id="lesson-0">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#4C1D95,#7C3AED)">
+        <div class="lesson-icon">🧭</div>
+        <div>
+          <h2>اتجاه قراءة وكتابة الأعداد</h2>
+          <p>راجع من أين نبدأ القراءة والعدّ!</p>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p>الأرقام في العدد <b>تُكتب وتُقرأ من اليسار إلى اليمين</b>، لكن <b>ترقيم المنازل يبدأ من اليمين</b>: أول منزلة من اليمين هي الآحاد.</p>
+        <div class="note">مثال: في العدد 6294 نبدأ العدّ من اليمين: 4 آحاد، 9 عشرات، 2 مئات، 6 آلاف. وعند القراءة نقول: ستة آلاف ومئتان وأربعة وتسعون.</div>
+      </div>
+
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+
+        <div class="question-block" id="l0q1">
+          <div class="q-text"><span class="q-num">1</span> نبدأ ترقيم منازل العدد (آحاد، عشرات، مئات...) من:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l0q1','اليمين')">اليمين</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q1','اليسار')">اليسار</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q1','المنتصف')">المنتصف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q1','لا فرق')">لا فرق</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l0q2">
+          <div class="q-text"><span class="q-num">2</span> نقرأ ونكتب العدد بالكلمات من:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l0q2','اليسار إلى اليمين')">اليسار إلى اليمين</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q2','اليمين إلى اليسار')">اليمين إلى اليسار</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q2','المنتصف للخارج')">المنتصف للخارج</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q2','لا فرق')">لا فرق</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l0q3">
+          <div class="q-text"><span class="q-num">3</span> في العدد <span style="font-weight:900">6294</span> ما اسم منزلة الرقم <span style="font-weight:900">4</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l0q3','آحاد')">آحاد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q3','عشرات')">عشرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q3','مئات')">مئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q3','آلاف')">آلاف</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l0q4">
+          <div class="q-text"><span class="q-num">4</span> في العدد <span style="font-weight:900">6294</span> ما اسم منزلة الرقم <span style="font-weight:900">6</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l0q4','آلاف')">آلاف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q4','مئات')">مئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q4','عشرات')">عشرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q4','آحاد')">آحاد</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l0q5">
+          <div class="q-text"><span class="q-num">5</span> في العدد <span style="font-weight:900">3157</span> ما الرقم الموجود في منزلة العشرات؟</div>
+          <div class="input-answer">
+            <input type="number" id="l0q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l0q5','5')">تحقق ✓</button>
+            <span class="feedback" id="l0q5-fb"></span>
+          </div>
+        </div>
+
+        <div class="question-block" id="l0q6">
+          <div class="q-text"><span class="q-num">6</span> أول منزلة نبدأ العدّ منها (من اليمين) تسمى:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l0q6','آحاد')">آحاد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q6','عشرات')">عشرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q6','مئات')">مئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q6','آلاف')">آلاف</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l0q7">
+          <div class="q-text"><span class="q-num">7</span> العبارة: "نبدأ عدّ المنازل من اليسار" — هل هذا صحيح؟</div>
+          <div class="options" style="grid-template-columns:1fr 1fr">
+            <button class="option-btn" onclick="checkMCQ(this,'l0q7','خطأ')">خطأ</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l0q7','صواب')">صواب</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l0q8">
+          <div class="q-text"><span class="q-num">8</span> في العدد <span style="font-weight:900">8043</span> ما الرقم الموجود في منزلة المئات؟</div>
+          <div class="input-answer">
+            <input type="number" id="l0q8-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l0q8','0')">تحقق ✓</button>
+            <span class="feedback" id="l0q8-fb"></span>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(0)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-0"></div>
+    </div>
+<div class="lesson-panel" id="lesson-1">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">
+        <div class="lesson-icon">📖</div>
+        <div>
+          <h2>التعرّف على الأعداد وقراءتها</h2>
+          <p>راجع كيف نقرأ العدد ونكتبه بالكلمات!</p>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p>العدد يتكوّن من أرقام، وكل رقم له مكان. علشان نقرأ العدد صح بنقسّمه لمجموعات من اليمين: <b>آحاد – عشرات – مئات – آلاف</b>.</p>
+        <div class="note">مثال: العدد <b>4725</b> نقرأه: أربعة آلاف وسبعمائة وخمسة وعشرون.</div>
+      </div>
+
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+
+        <div class="question-block" id="l1q1">
+          <div class="q-text"><span class="q-num">1</span> كيف نقرأ العدد <span style="font-weight:900">4725</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l1q1','أربعة آلاف وسبعمائة وخمسة وعشرون')">أربعة آلاف وسبعمائة وخمسة وعشرون</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q1','أربعة آلاف وسبعمائة وعشرون وخمسة')">أربعة آلاف وسبعمائة وعشرون وخمسة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q1','سبعة آلاف وأربعمائة وخمسة وعشرون')">سبعة آلاف وأربعمائة وخمسة وعشرون</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q1','أربعمائة وسبعة وعشرون')">أربعمائة وسبعة وعشرون</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l1q2">
+          <div class="q-text"><span class="q-num">2</span> كيف نقرأ العدد <span style="font-weight:900">2918</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l1q2','ألفان وتسعمائة وثمانية عشر')">ألفان وتسعمائة وثمانية عشر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q2','ألفان وتسعمائة وثمانون')">ألفان وتسعمائة وثمانون</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q2','تسعة آلاف ومئتان وثمانية عشر')">تسعة آلاف ومئتان وثمانية عشر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q2','ألف وتسعمائة وثمانية عشر')">ألف وتسعمائة وثمانية عشر</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l1q3">
+          <div class="q-text"><span class="q-num">3</span> عند قراءة عدد كبير، نقول اسم كل مجموعة ونربط بينها بحرف:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l1q3','الواو')">الواو</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q3','الفاء')">الفاء</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q3','الباء')">الباء</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q3','لا نربط بينها')">لا نربط بينها</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l1q4">
+          <div class="q-text"><span class="q-num">4</span> العبارة "ثلاثة آلاف وستمائة واثنان وأربعون" تُكتب بالأرقام:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l1q4','3642')">3642</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q4','3624')">3624</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q4','3462')">3462</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q4','3264')">3264</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l1q5">
+          <div class="q-text"><span class="q-num">5</span> اكتب بالأرقام: "خمسة آلاف وأربعمائة وسبعة عشر"</div>
+          <div class="input-answer">
+            <input type="number" id="l1q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l1q5','5417')">تحقق ✓</button>
+            <span class="feedback" id="l1q5-fb"></span>
+          </div>
+        </div>
+
+        <div class="question-block" id="l1q6">
+          <div class="q-text"><span class="q-num">6</span> كيف نقرأ العدد <span style="font-weight:900">1050</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l1q6','ألف وخمسون')">ألف وخمسون</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q6','ألف وخمسمائة')">ألف وخمسمائة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q6','مائة وخمسون')">مائة وخمسون</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q6','ألف وخمسة')">ألف وخمسة</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l1q7">
+          <div class="q-text"><span class="q-num">7</span> لنقرأ عدداً بشكل صحيح، نقسّمه من اليمين إلى مجموعات هي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l1q7','آحاد – عشرات – مئات – آلاف')">آحاد – عشرات – مئات – آلاف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q7','آحاد – آلاف – عشرات – مئات')">آحاد – آلاف – عشرات – مئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q7','ترتيب عشوائي')">ترتيب عشوائي</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l1q7','لا نقسمه إطلاقاً')">لا نقسمه إطلاقاً</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l1q8">
+          <div class="q-text"><span class="q-num">8</span> اكتب بالأرقام: "تسعمائة وستة"</div>
+          <div class="input-answer">
+            <input type="number" id="l1q8-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l1q8','906')">تحقق ✓</button>
+            <span class="feedback" id="l1q8-fb"></span>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(1)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-1"></div>
+    </div>
+<div class="lesson-panel" id="lesson-2">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">
+        <div class="lesson-icon">🔢</div>
+        <div>
+          <h2>الأرقام العربية والأرقام الهندية</h2>
+          <p>راجع الفرق بين شكلي كتابة الأرقام!</p>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p>نستخدم شكلين لكتابة الأرقام: <b>الأرقام العربية</b> (0 1 2 3...) و<b>الأرقام الهندية</b> (٠ ١ ٢ ٣...). القيمة واحدة والشكل فقط هو المختلف.</p>
+        <table><tr><th>عربية</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+        <tr><th>هندية</th><td>٠</td><td>١</td><td>٢</td><td>٣</td><td>٤</td><td>٥</td><td>٦</td><td>٧</td><td>٨</td><td>٩</td></tr></table>
+        <div class="note">مثال: 4207 تُكتب بالأرقام الهندية ٤٢٠٧ وتُقرأ: أربعة آلاف ومائتان وسبعة.</div>
+      </div>
+
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+
+        <div class="question-block" id="l2q1">
+          <div class="q-text"><span class="q-num">1</span> ما هو الشكل الهندي للرقم <span style="font-weight:900">5</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l2q1','٥')">٥</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q1','٦')">٦</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q1','٤')">٤</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q1','٧')">٧</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l2q2">
+          <div class="q-text"><span class="q-num">2</span> ما هو الشكل العربي للرقم الهندي <span style="font-weight:900">٨</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l2q2','8')">8</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q2','7')">7</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q2','9')">9</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q2','6')">6</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l2q3">
+          <div class="q-text"><span class="q-num">3</span> اكتب العدد <span style="font-weight:900">42</span> بالأرقام الهندية:</div>
+          <div class="input-answer">
+            <input type="text" id="l2q3-inp" placeholder="٤٢" />
+            <button class="btn-check" onclick="checkInput('l2q3','٤٢')">تحقق ✓</button>
+            <span class="feedback" id="l2q3-fb"></span>
+          </div>
+        </div>
+
+        <div class="question-block" id="l2q4">
+          <div class="q-text"><span class="q-num">4</span> اكتب العدد <span style="font-weight:900">٣٦٩</span> بالأرقام العربية:</div>
+          <div class="input-answer">
+            <input type="text" id="l2q4-inp" placeholder="369" />
+            <button class="btn-check" onclick="checkInput('l2q4','369')">تحقق ✓</button>
+            <span class="feedback" id="l2q4-fb"></span>
+          </div>
+        </div>
+
+        <div class="question-block" id="l2q5">
+          <div class="q-text"><span class="q-num">5</span> أي زوج يمثل نفس القيمة بالشكلين العربي والهندي؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l2q5','8 = ٨')">8 = ٨</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q5','8 = ٦')">8 = ٦</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q5','3 = ٨')">3 = ٨</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q5','5 = ٩')">5 = ٩</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l2q6">
+          <div class="q-text"><span class="q-num">6</span> العدد الهندي <span style="font-weight:900">٩١٤</span> يساوي بالأرقام العربية:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l2q6','914')">914</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q6','941')">941</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q6','419')">419</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q6','194')">194</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l2q7">
+          <div class="q-text"><span class="q-num">7</span> العدد <span style="font-weight:900">128</span> بالأرقام الهندية هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l2q7','١٢٨')">١٢٨</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q7','١٨٢')">١٨٢</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q7','٢١٨')">٢١٨</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q7','٨٢١')">٨٢١</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l2q8">
+          <div class="q-text"><span class="q-num">8</span> القيمة العددية للرقمين 7 و ٧ هي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l2q8','نفس القيمة، فقط الشكل مختلف')">نفس القيمة، فقط الشكل مختلف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q8','قيمتان مختلفتان')">قيمتان مختلفتان</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q8','7 أكبر من ٧')">7 أكبر من ٧</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l2q8','٧ أكبر من 7')">٧ أكبر من 7</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(2)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-2"></div>
+    </div>
+<div class="lesson-panel" id="lesson-3">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">
+        <div class="lesson-icon">🏠</div>
+        <div>
+          <h2>القيمة المكانية وقيمة الرقم</h2>
+          <p>راجع الفرق بين اسم الخانة وقيمة الرقم بالأصفار!</p>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <table>
+          <tr><th>المفهوم</th><th>المعنى</th><th>مثال للرقم 3 في العدد 5,342</th></tr>
+          <tr><td><b>القيمة المكانية</b></td><td>اسم الخانة التي يسكن فيها الرقم</td><td><b>مئات</b></td></tr>
+          <tr><td><b>قيمة الرقم</b></td><td>قيمة الرقم بالحساب والأصفار</td><td><b>300</b></td></tr>
+        </table>
+        <div class="note">💡 قاعدة ذهبية: القيمة المكانية تُكتب بـ <b>الكلمات</b> (اسم الخانة)، أما قيمة الرقم تُكتب بـ <b>الأرقام والأصفار</b>!</div>
+      </div>
+
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+
+        <div class="question-block" id="l3q1">
+          <div class="q-text"><span class="q-num">1</span> ما القيمة المكانية للرقم <span style="font-weight:900">8</span> في العدد <span style="font-weight:900">4,829</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l3q1','مئات')">مئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q1','عشرات')">عشرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q1','آحاد')">آحاد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q1','ألوف')">ألوف</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l3q2">
+          <div class="q-text"><span class="q-num">2</span> ما قيمة الرقم <span style="font-weight:900">8</span> في العدد <span style="font-weight:900">4,829</span>؟</div>
+          <div class="input-answer">
+            <input type="number" id="l3q2-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l3q2','800')">تحقق ✓</button>
+            <span class="feedback" id="l3q2-fb"></span>
+          </div>
+        </div>
+
+        <div class="question-block" id="l3q3">
+          <div class="q-text"><span class="q-num">3</span> ما القيمة المكانية للرقم <span style="font-weight:900">3</span> في العدد <span style="font-weight:900">73,516</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l3q3','ألوف')">ألوف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q3','مئات')">مئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q3','عشرات ألوف')">عشرات ألوف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q3','آحاد')">آحاد</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l3q4">
+          <div class="q-text"><span class="q-num">4</span> ما قيمة الرقم <span style="font-weight:900">7</span> في العدد <span style="font-weight:900">73,516</span>؟</div>
+          <div class="input-answer">
+            <input type="number" id="l3q4-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l3q4','70000')">تحقق ✓</button>
+            <span class="feedback" id="l3q4-fb"></span>
+          </div>
+        </div>
+
+        <div class="question-block" id="l3q5">
+          <div class="q-text"><span class="q-num">5</span> ما القيمة المكانية للرقم <span style="font-weight:900">1</span> في العدد <span style="font-weight:900">249,158</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l3q5','مئات')">مئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q5','عشرات')">عشرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q5','ألوف')">ألوف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q5','عشرات ألوف')">عشرات ألوف</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l3q6">
+          <div class="q-text"><span class="q-num">6</span> ما قيمة الرقم <span style="font-weight:900">9</span> في العدد <span style="font-weight:900">249,158</span>؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l3q6','9000')">9000</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q6','900')">900</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q6','90')">90</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q6','90000')">90000</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l3q7">
+          <div class="q-text"><span class="q-num">7</span> القيمة المكانية تُكتب دائماً بـ:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l3q7','الكلمات (اسم الخانة)')">الكلمات (اسم الخانة)</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q7','الأرقام والأصفار')">الأرقام والأصفار</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q7','الرموز فقط')">الرموز فقط</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q7','لا شيء مما سبق')">لا شيء مما سبق</button>
+          </div>
+        </div>
+
+        <div class="question-block" id="l3q8">
+          <div class="q-text"><span class="q-num">8</span> أيّهما أكبر: قيمة الرقم 5 في العدد 5,000 أم قيمة الرقم 5 في العدد 500؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l3q8','قيمته في 5,000 أكبر')">قيمته في 5,000 أكبر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q8','قيمته في 500 أكبر')">قيمته في 500 أكبر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q8','القيمتان متساويتان')">القيمتان متساويتان</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l3q8','لا يمكن المقارنة')">لا يمكن المقارنة</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(3)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-3"></div>
+    </div>
+<div class="lesson-panel" id="lesson-4">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#4C1D95,#7C3AED)">
+        <div class="lesson-icon">➕</div>
+        <div>
+          <h2>مفهوم الضرب كجمع متكرر</h2>
+          <p>حوّل الجمع المتكرر إلى عملية ضرب!</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>الضرب</b> طريقة سريعة لجمع نفس العدد عدة مرات. مثال: 3 + 3 + 3 + 3 = 12، ونكتبها <b>4 × 3 = 12</b>.</p>
+        <div class="note">في جملة الضرب: العدد الأول = عدد المجموعات، والعدد الثاني = عدد العناصر في كل مجموعة.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l4q1">
+          <div class="q-text"><span class="q-num">1</span> الضرب هو طريقة مختصرة لـ:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l4q1','جمع نفس العدد عدة مرات')">جمع نفس العدد عدة مرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q1','طرح الأعداد')">طرح الأعداد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q1','قسمة الأعداد')">قسمة الأعداد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q1','ترتيب الأعداد')">ترتيب الأعداد</button>
+          </div>
+        </div>
+        <div class="question-block" id="l4q2">
+          <div class="q-text"><span class="q-num">2</span> جملة الضرب المكافئة لـ <b>3 + 3 + 3 + 3</b> هي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l4q2','4 × 3')">4 × 3</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q2','3 × 3')">3 × 3</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q2','4 + 3')">4 + 3</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q2','3 × 12')">3 × 12</button>
+          </div>
+        </div>
+        <div class="question-block" id="l4q3">
+          <div class="q-text"><span class="q-num">3</span> ناتج <b>5 × 4</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="number" id="l4q3-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l4q3','20')">تحقق ✓</button>
+            <span class="feedback" id="l4q3-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l4q4">
+          <div class="q-text"><span class="q-num">4</span> الجمع المتكرر المكافئ لجملة الضرب <b>3 × 2</b> هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l4q4','2 + 2 + 2')">2 + 2 + 2</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q4','3 + 3')">3 + 3</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q4','2 + 3')">2 + 3</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q4','3 + 2 + 1')">3 + 2 + 1</button>
+          </div>
+        </div>
+        <div class="question-block" id="l4q5">
+          <div class="q-text"><span class="q-num">5</span> عندنا <b>6 مجموعات</b> في كل مجموعة <b>3 تفاحات</b>. كم تفاحة في الكل؟</div>
+          <div class="input-answer">
+            <input type="number" id="l4q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l4q5','18')">تحقق ✓</button>
+            <span class="feedback" id="l4q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l4q6">
+          <div class="q-text"><span class="q-num">6</span> في جملة الضرب <b>4 × 5</b> العدد 4 يمثل:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l4q6','عدد المجموعات')">عدد المجموعات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q6','عدد العناصر في كل مجموعة')">عدد العناصر في كل مجموعة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q6','الناتج')">الناتج</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q6','لا شيء')">لا شيء</button>
+          </div>
+        </div>
+        <div class="question-block" id="l4q7">
+          <div class="q-text"><span class="q-num">7</span> ناتج <b>2 + 2 + 2 + 2 + 2</b> باستخدام الضرب = 5 × 2 = ؟</div>
+          <div class="input-answer">
+            <input type="number" id="l4q7-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l4q7','10')">تحقق ✓</button>
+            <span class="feedback" id="l4q7-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l4q8">
+          <div class="q-text"><span class="q-num">8</span> العبارة: "الضرب جمع متكرر لنفس العدد" — هل هي:</div>
+          <div class="options" style="grid-template-columns:1fr 1fr">
+            <button class="option-btn" onclick="checkMCQ(this,'l4q8','صواب')">صواب</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l4q8','خطأ')">خطأ</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(4)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-4"></div>
+    </div>
+<div class="lesson-panel" id="lesson-5">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">
+        <div class="lesson-icon">⚙️</div>
+        <div>
+          <h2>خواص عملية الضرب</h2>
+          <p>القواعد التي تسهّل الحساب دون تغيير الناتج</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>التبديل:</b> a × b = b × a — <b>التجميع:</b> (a × b) × c = a × (b × c) — <b>التوزيع:</b> a × (b + c) = a×b + a×c</p>
+        <div class="note"><b>العنصر المحايد:</b> a × 1 = a — <b>الصفر:</b> a × 0 = 0. هذه الخواص لا تغيّر الناتج أبداً.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l5q1">
+          <div class="q-text"><span class="q-num">1</span> الخاصية التي تقول <b>a × b = b × a</b> اسمها:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l5q1','التبديل')">التبديل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q1','التجميع')">التجميع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q1','التوزيع')">التوزيع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q1','الصفر')">الصفر</button>
+          </div>
+        </div>
+        <div class="question-block" id="l5q2">
+          <div class="q-text"><span class="q-num">2</span> <b>(2 × 3) × 4 = 2 × (3 × 4)</b> مثال على خاصية:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l5q2','التجميع')">التجميع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q2','التبديل')">التبديل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q2','التوزيع')">التوزيع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q2','العنصر المحايد')">العنصر المحايد</button>
+          </div>
+        </div>
+        <div class="question-block" id="l5q3">
+          <div class="q-text"><span class="q-num">3</span> <b>5 × (3 + 2) = (5×3) + (5×2)</b> مثال على خاصية:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l5q3','التوزيع')">التوزيع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q3','التبديل')">التبديل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q3','التجميع')">التجميع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q3','الصفر')">الصفر</button>
+          </div>
+        </div>
+        <div class="question-block" id="l5q4">
+          <div class="q-text"><span class="q-num">4</span> ناتج <b>9 × 1</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="number" id="l5q4-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l5q4','9')">تحقق ✓</button>
+            <span class="feedback" id="l5q4-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l5q5">
+          <div class="q-text"><span class="q-num">5</span> ناتج <b>12 × 0</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="number" id="l5q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l5q5','0')">تحقق ✓</button>
+            <span class="feedback" id="l5q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l5q6">
+          <div class="q-text"><span class="q-num">6</span> العدد <b>1</b> في عملية الضرب يسمى:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l5q6','العنصر المحايد')">العنصر المحايد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q6','العنصر الصفري')">العنصر الصفري</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q6','العنصر الموزّع')">العنصر الموزّع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q6','العنصر المبدّل')">العنصر المبدّل</button>
+          </div>
+        </div>
+        <div class="question-block" id="l5q7">
+          <div class="q-text"><span class="q-num">7</span> باستخدام خاصية التبديل: إذا كان 6 × 4 = 24 فإن 4 × 6 = ؟</div>
+          <div class="input-answer">
+            <input type="number" id="l5q7-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l5q7','24')">تحقق ✓</button>
+            <span class="feedback" id="l5q7-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l5q8">
+          <div class="q-text"><span class="q-num">8</span> خواص الضرب تُستخدم لكي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l5q8','تسهّل الحساب دون تغيير الناتج')">تسهّل الحساب دون تغيير الناتج</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q8','تغيّر الناتج')">تغيّر الناتج</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q8','تصعّب الحساب')">تصعّب الحساب</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l5q8','تُستخدم في الطرح فقط')">تُستخدم في الطرح فقط</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(5)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-5"></div>
+    </div>
+
+<div class="lesson-panel" id="lesson-6">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#0EA5E9,#16a085)">
+        <div class="lesson-icon">🖼️</div>
+        <div>
+          <h2>صور العدد</h2>
+          <p>القياسية والتحليلية واللفظية</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>القياسية:</b> أرقام فقط (3,426) — <b>التحليلية:</b> مجموع القيم المنزلية (3000 + 400 + 20 + 6) — <b>اللفظية:</b> بالكلمات (ثلاثة آلاف وأربعمائة وستة وعشرون)</p>
+        <div class="note">العدد الواحد له ثلاث صور مختلفة الشكل لكن <b>نفس القيمة</b>.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l6q1">
+          <div class="q-text"><span class="q-num">1</span> الصورة القياسية للعدد <b>(5000 + 300 + 20 + 8)</b> هي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l6q1','5328')">5328</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q1','5320')">5320</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q1','8235')">8235</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q1','5038')">5038</button>
+          </div>
+        </div>
+        <div class="question-block" id="l6q2">
+          <div class="q-text"><span class="q-num">2</span> كتابة العدد بالحروف والكلمات تسمى الصورة:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l6q2','اللفظية')">اللفظية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q2','القياسية')">القياسية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q2','التحليلية')">التحليلية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q2','المنزلية')">المنزلية</button>
+          </div>
+        </div>
+        <div class="question-block" id="l6q3">
+          <div class="q-text"><span class="q-num">3</span> <b>7000 + 500 + 40 + 1</b> تمثل الصورة:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l6q3','التحليلية')">التحليلية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q3','القياسية')">القياسية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q3','اللفظية')">اللفظية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q3','المكانية')">المكانية</button>
+          </div>
+        </div>
+        <div class="question-block" id="l6q4">
+          <div class="q-text"><span class="q-num">4</span> اكتب الصورة القياسية للعدد: <b>ثلاثة آلاف وأربعمائة وستة وعشرون</b></div>
+          <div class="input-answer">
+            <input type="text" id="l6q4-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l6q4','3426')">تحقق ✓</button>
+            <span class="feedback" id="l6q4-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l6q5">
+          <div class="q-text"><span class="q-num">5</span> القيمة المنزلية للرقم <b>8</b> في العدد <b>4,180</b> هي:</div>
+          <div class="input-answer">
+            <input type="text" id="l6q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l6q5','80')">تحقق ✓</button>
+            <span class="feedback" id="l6q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l6q6">
+          <div class="q-text"><span class="q-num">6</span> الصورة التحليلية للعدد <b>2,050</b> هي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l6q6','2000 + 50')">2000 + 50</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q6','2000 + 500')">2000 + 500</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q6','200 + 50')">200 + 50</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q6','2000 + 5')">2000 + 5</button>
+          </div>
+        </div>
+        <div class="question-block" id="l6q7">
+          <div class="q-text"><span class="q-num">7</span> الصورة القياسية للعدد <b>9000 + 900 + 9</b> هي:</div>
+          <div class="input-answer">
+            <input type="text" id="l6q7-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l6q7','9909')">تحقق ✓</button>
+            <span class="feedback" id="l6q7-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l6q8">
+          <div class="q-text"><span class="q-num">8</span> عدد الصور الرئيسية للعدد هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l6q8','ثلاث صور')">ثلاث صور</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q8','صورتان')">صورتان</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q8','أربع صور')">أربع صور</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l6q8','صورة واحدة')">صورة واحدة</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(6)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-6"></div>
+    </div>
+<div class="lesson-panel" id="lesson-7">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#e67e22,#e74c3c)">
+        <div class="lesson-icon">⚖️</div>
+        <div>
+          <h2>المقارنة والترتيب</h2>
+          <p>أكبر من، أصغر من، يساوي وترتيب الأعداد</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>أولاً:</b> العدد ذو عدد الأرقام الأكبر هو الأكبر. <b>ثانياً:</b> إذا تساوى عدد الأرقام نقارن من جهة اليسار منزلةً بمنزلة حتى أول اختلاف.</p>
+        <div class="note">العلامات: &gt; أكبر من — &lt; أصغر من — = يساوي.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l7q1">
+          <div class="q-text"><span class="q-num">1</span> عند اختلاف عدد أرقام العددين فإن الأكبر هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l7q1','العدد ذو الأرقام الأكثر')">العدد ذو الأرقام الأكثر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q1','العدد ذو الأرقام الأقل')">العدد ذو الأرقام الأقل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q1','العدد الذي يبدأ برقم أكبر')">العدد الذي يبدأ برقم أكبر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q1','لا يمكن المقارنة')">لا يمكن المقارنة</button>
+          </div>
+        </div>
+        <div class="question-block" id="l7q2">
+          <div class="q-text"><span class="q-num">2</span> <b>45,230 ⬜ 9,845</b> العلامة المناسبة:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l7q2','أكبر من')">أكبر من</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q2','أصغر من')">أصغر من</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q2','يساوي')">يساوي</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q2','لا شيء')">لا شيء</button>
+          </div>
+        </div>
+        <div class="question-block" id="l7q3">
+          <div class="q-text"><span class="q-num">3</span> <b>63,450 ⬜ 63,710</b> العلامة المناسبة:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l7q3','أصغر من')">أصغر من</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q3','أكبر من')">أكبر من</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q3','يساوي')">يساوي</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q3','لا شيء')">لا شيء</button>
+          </div>
+        </div>
+        <div class="question-block" id="l7q4">
+          <div class="q-text"><span class="q-num">4</span> إذا تساوى عدد الأرقام نبدأ المقارنة من:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l7q4','اليسار (أكبر منزلة)')">اليسار (أكبر منزلة)</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q4','اليمين (الآحاد)')">اليمين (الآحاد)</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q4','المنتصف')">المنتصف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q4','أي منزلة')">أي منزلة</button>
+          </div>
+        </div>
+        <div class="question-block" id="l7q5">
+          <div class="q-text"><span class="q-num">5</span> أكبر عدد مكوّن من <b>أربعة أرقام</b> هو:</div>
+          <div class="input-answer">
+            <input type="text" id="l7q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l7q5','9999')">تحقق ✓</button>
+            <span class="feedback" id="l7q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l7q6">
+          <div class="q-text"><span class="q-num">6</span> الترتيب التصاعدي للأعداد <b>512 ، 215 ، 125</b> هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l7q6','125 ، 215 ، 512')">125 ، 215 ، 512</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q6','512 ، 215 ، 125')">512 ، 215 ، 125</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q6','215 ، 125 ، 512')">215 ، 125 ، 512</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q6','125 ، 512 ، 215')">125 ، 512 ، 215</button>
+          </div>
+        </div>
+        <div class="question-block" id="l7q7">
+          <div class="q-text"><span class="q-num">7</span> <b>15,000 ⬜ 15,000</b> العلامة المناسبة:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l7q7','يساوي')">يساوي</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q7','أكبر من')">أكبر من</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q7','أصغر من')">أصغر من</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l7q7','لا شيء')">لا شيء</button>
+          </div>
+        </div>
+        <div class="question-block" id="l7q8">
+          <div class="q-text"><span class="q-num">8</span> أصغر عدد مكوّن من <b>ثلاثة أرقام</b> هو:</div>
+          <div class="input-answer">
+            <input type="text" id="l7q8-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l7q8','100')">تحقق ✓</button>
+            <span class="feedback" id="l7q8-fb"></span>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(7)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-7"></div>
+    </div>
+<div class="lesson-panel" id="lesson-8">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#7C3AED,#0EA5E9)">
+        <div class="lesson-icon">➕</div>
+        <div>
+          <h2>خواص عملية الجمع</h2>
+          <p>الإبدال والتجميع والحياد الجمعي</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>الإبدال:</b> أ + ب = ب + أ — <b>التجميع:</b> (أ + ب) + جـ = أ + (ب + جـ) — <b>الحياد الجمعي:</b> أ + 0 = أ</p>
+        <div class="note">هذه الخواص تسهّل الحساب <b>دون أن يتغيّر الناتج</b>.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l8q1">
+          <div class="q-text"><span class="q-num">1</span> الخاصية <b>أ + ب = ب + أ</b> تسمى:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l8q1','الإبدال')">الإبدال</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q1','التجميع')">التجميع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q1','الحياد الجمعي')">الحياد الجمعي</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q1','التوزيع')">التوزيع</button>
+          </div>
+        </div>
+        <div class="question-block" id="l8q2">
+          <div class="q-text"><span class="q-num">2</span> <b>(أ + ب) + جـ = أ + (ب + جـ)</b> تسمى خاصية:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l8q2','التجميع')">التجميع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q2','الإبدال')">الإبدال</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q2','الحياد الجمعي')">الحياد الجمعي</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q2','التوزيع')">التوزيع</button>
+          </div>
+        </div>
+        <div class="question-block" id="l8q3">
+          <div class="q-text"><span class="q-num">3</span> <b>أ + 0 = أ</b> تسمى خاصية:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l8q3','الحياد الجمعي')">الحياد الجمعي</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q3','الإبدال')">الإبدال</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q3','التجميع')">التجميع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q3','التوزيع')">التوزيع</button>
+          </div>
+        </div>
+        <div class="question-block" id="l8q4">
+          <div class="q-text"><span class="q-num">4</span> ناتج <b>7 + 0</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="text" id="l8q4-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l8q4','7')">تحقق ✓</button>
+            <span class="feedback" id="l8q4-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l8q5">
+          <div class="q-text"><span class="q-num">5</span> إذا كان <b>5 + 3 = 8</b> فإن <b>3 + 5</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="text" id="l8q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l8q5','8')">تحقق ✓</button>
+            <span class="feedback" id="l8q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l8q6">
+          <div class="q-text"><span class="q-num">6</span> ناتج <b>2 + (3 + 4)</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="text" id="l8q6-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l8q6','9')">تحقق ✓</button>
+            <span class="feedback" id="l8q6-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l8q7">
+          <div class="q-text"><span class="q-num">7</span> العنصر المحايد في عملية الجمع هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l8q7','الصفر')">الصفر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q7','الواحد')">الواحد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q7','العشرة')">العشرة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q7','أي عدد')">أي عدد</button>
+          </div>
+        </div>
+        <div class="question-block" id="l8q8">
+          <div class="q-text"><span class="q-num">8</span> خواص الجمع:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l8q8','لا تغيّر الناتج')">لا تغيّر الناتج</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q8','تغيّر الناتج')">تغيّر الناتج</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q8','تُستخدم في الطرح فقط')">تُستخدم في الطرح فقط</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l8q8','تصعّب الحساب')">تصعّب الحساب</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(8)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-8"></div>
+    </div>
+<div class="lesson-panel" id="lesson-9">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#16a085,#27ae60)">
+        <div class="lesson-icon">🔄</div>
+        <div>
+          <h2>الجمع والطرح مع إعادة التسمية</h2>
+          <p>الجمع مع الحمل والطرح مع الاستلاف</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>الجمع:</b> إذا كان ناتج الخانة 10 أو أكثر نكتب رقم الآحاد ونحمل 1 للخانة التالية على الشمال. <b>الطرح:</b> إذا كان الرقم العلوي أصغر نستلف 1 من الخانة التي على الشمال فيصبح 10 تُضاف للرقم.</p>
+        <div class="note">نبدأ دائماً من خانة <b>الآحاد</b> (أقصى اليمين).</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l9q1">
+          <div class="q-text"><span class="q-num">1</span> نبدأ الجمع والطرح من خانة:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l9q1','الآحاد')">الآحاد</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q1','الآلاف')">الآلاف</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q1','المئات')">المئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q1','العشرات')">العشرات</button>
+          </div>
+        </div>
+        <div class="question-block" id="l9q2">
+          <div class="q-text"><span class="q-num">2</span> ناتج <b>48 + 37</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="text" id="l9q2-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l9q2','85')">تحقق ✓</button>
+            <span class="feedback" id="l9q2-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l9q3">
+          <div class="q-text"><span class="q-num">3</span> ناتج <b>52 − 27</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="text" id="l9q3-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l9q3','25')">تحقق ✓</button>
+            <span class="feedback" id="l9q3-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l9q4">
+          <div class="q-text"><span class="q-num">4</span> في الجمع إذا كان ناتج خانة الآحاد <b>15</b> نكتب 5 ونحمل:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l9q4','1 للعشرات')">1 للعشرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q4','5 للعشرات')">5 للعشرات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q4','1 للمئات')">1 للمئات</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q4','لا نحمل شيئاً')">لا نحمل شيئاً</button>
+          </div>
+        </div>
+        <div class="question-block" id="l9q5">
+          <div class="q-text"><span class="q-num">5</span> في الطرح إذا كان الرقم العلوي أصغر من السفلي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l9q5','نستلف 1 من الخانة التي على الشمال')">نستلف 1 من الخانة التي على الشمال</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q5','نطرح الأصغر من الأكبر')">نطرح الأصغر من الأكبر</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q5','نتركه صفراً')">نتركه صفراً</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q5','نحمل 1')">نحمل 1</button>
+          </div>
+        </div>
+        <div class="question-block" id="l9q6">
+          <div class="q-text"><span class="q-num">6</span> ناتج <b>236 + 195</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="text" id="l9q6-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l9q6','431')">تحقق ✓</button>
+            <span class="feedback" id="l9q6-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l9q7">
+          <div class="q-text"><span class="q-num">7</span> ناتج <b>400 − 168</b> يساوي:</div>
+          <div class="input-answer">
+            <input type="text" id="l9q7-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l9q7','232')">تحقق ✓</button>
+            <span class="feedback" id="l9q7-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l9q8">
+          <div class="q-text"><span class="q-num">8</span> أي مسألة تحتاج إلى إعادة تسمية (حمل)؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l9q8','26 + 35')">26 + 35</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q8','23 + 41')">23 + 41</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q8','12 + 34')">12 + 34</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l9q8','51 + 8')">51 + 8</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(9)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-9"></div>
+    </div>
+
+<div class="lesson-panel" id="lesson-10">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">
+        <div class="lesson-icon">🔷</div>
+        <div>
+          <h2>الأشكال الهندسية ثنائية الأبعاد</h2>
+          <p>المربع، المستطيل، المثلث، الدائرة وخصائصها</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>المربع:</b> 4 أضلاع متساوية و4 رؤوس. <b>المستطيل:</b> 4 أضلاع كل ضلعين متقابلين متساويان. <b>المثلث:</b> 3 أضلاع و3 رؤوس. <b>الدائرة:</b> منحنى مغلق بلا أضلاع ولا رؤوس.</p>
+        <div class="note">عدد الرؤوس في أي شكل مضلع = عدد أضلاعه.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l10q1">
+          <div class="q-text"><span class="q-num">1</span> الشكل الهندسي الذي يتكون من 3 أضلاع يسمى:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l10q1','المثلث')">المثلث</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q1','المربع')">المربع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q1','الدائرة')">الدائرة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q1','المستطيل')">المستطيل</button>
+          </div>
+        </div>
+        <div class="question-block" id="l10q2">
+          <div class="q-text"><span class="q-num">2</span> الشكل الذي ليس له أضلاع ولا رؤوس هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l10q2','الدائرة')">الدائرة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q2','المربع')">المربع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q2','المثلث')">المثلث</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q2','المستطيل')">المستطيل</button>
+          </div>
+        </div>
+        <div class="question-block" id="l10q3">
+          <div class="q-text"><span class="q-num">3</span> أضلاع المربع الأربعة تكون دائماً:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l10q3','متساوية في الطول')">متساوية في الطول</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q3','مختلفة في الطول')">مختلفة في الطول</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q3','منحنية')">منحنية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q3','غير منتظمة')">غير منتظمة</button>
+          </div>
+        </div>
+        <div class="question-block" id="l10q4">
+          <div class="q-text"><span class="q-num">4</span> شكل هندسي له 5 أضلاع يسمى:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l10q4','خماسي الأضلاع')">خماسي الأضلاع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q4','رباعي الأضلاع')">رباعي الأضلاع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q4','مربع')">مربع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q4','مثلث')">مثلث</button>
+          </div>
+        </div>
+        <div class="question-block" id="l10q5">
+          <div class="q-text"><span class="q-num">5</span> عدد رؤوس المستطيل هو:</div>
+          <div class="input-answer">
+            <input type="text" id="l10q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l10q5','4')">تحقق ✓</button>
+            <span class="feedback" id="l10q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l10q6">
+          <div class="q-text"><span class="q-num">6</span> عدد أضلاع الشكل السداسي هو:</div>
+          <div class="input-answer">
+            <input type="text" id="l10q6-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l10q6','6')">تحقق ✓</button>
+            <span class="feedback" id="l10q6-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l10q7">
+          <div class="q-text"><span class="q-num">7</span> الشكل الهندسي الأقرب لشاشة التلفاز 📺 هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l10q7','المستطيل')">المستطيل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q7','المربع')">المربع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q7','الدائرة')">الدائرة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q7','المثلث')">المثلث</button>
+          </div>
+        </div>
+        <div class="question-block" id="l10q8">
+          <div class="q-text"><span class="q-num">8</span> لدي 4 أضلاع، كل ضلعين متقابلين متساويان، فمن أنا؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l10q8','المستطيل')">المستطيل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q8','المربع')">المربع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q8','المثلث')">المثلث</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l10q8','الدائرة')">الدائرة</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(10)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-10"></div>
+    </div>
+
+<div class="lesson-panel" id="lesson-11">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#1D4ED8,#0EA5E9)">
+        <div class="lesson-icon">📐</div>
+        <div>
+          <h2>محيط المربع</h2>
+          <p>المحيط = طول الضلع × 4</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>المحيط</b> هو طول السور الخارجي الذي يحيط بالشكل. <b>محيط المربع = طول الضلع × 4</b>، و<b>طول الضلع = المحيط ÷ 4</b>.</p>
+        <div class="note">مثال: مربع طول ضلعه 5 سم → المحيط = 5 × 4 = 20 سم.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l11q1">
+          <div class="q-text"><span class="q-num">1</span> قانون محيط المربع هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l11q1','طول الضلع × 4')">طول الضلع × 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q1','طول الضلع × نفسه')">طول الضلع × نفسه</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q1','الطول + العرض')">الطول + العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q1','طول الضلع ÷ 4')">طول الضلع ÷ 4</button>
+          </div>
+        </div>
+        <div class="question-block" id="l11q2">
+          <div class="q-text"><span class="q-num">2</span> مربع طول ضلعه 7 سم، محيطه (بالسنتيمتر) =</div>
+          <div class="input-answer">
+            <input type="text" id="l11q2-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l11q2','28')">تحقق ✓</button>
+            <span class="feedback" id="l11q2-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l11q3">
+          <div class="q-text"><span class="q-num">3</span> مربع محيطه 36 سم، طول ضلعه (بالسنتيمتر) =</div>
+          <div class="input-answer">
+            <input type="text" id="l11q3-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l11q3','9')">تحقق ✓</button>
+            <span class="feedback" id="l11q3-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l11q4">
+          <div class="q-text"><span class="q-num">4</span> لإيجاد طول ضلع المربع من المحيط نقوم بـ:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l11q4','المحيط ÷ 4')">المحيط ÷ 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q4','المحيط × 4')">المحيط × 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q4','المحيط ÷ 2')">المحيط ÷ 2</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q4','المحيط + 4')">المحيط + 4</button>
+          </div>
+        </div>
+        <div class="question-block" id="l11q5">
+          <div class="q-text"><span class="q-num">5</span> مربع طول ضلعه 12 سم، محيطه =</div>
+          <div class="input-answer">
+            <input type="text" id="l11q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l11q5','48')">تحقق ✓</button>
+            <span class="feedback" id="l11q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l11q6">
+          <div class="q-text"><span class="q-num">6</span> مربع محيطه 100 سم، طول ضلعه =</div>
+          <div class="input-answer">
+            <input type="text" id="l11q6-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l11q6','25')">تحقق ✓</button>
+            <span class="feedback" id="l11q6-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l11q7">
+          <div class="q-text"><span class="q-num">7</span> المحيط يعني:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l11q7','طول السور الخارجي المحيط بالشكل')">طول السور الخارجي المحيط بالشكل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q7','المنطقة الداخلية للشكل')">المنطقة الداخلية للشكل</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q7','عدد الأضلاع')">عدد الأضلاع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l11q7','عدد الرؤوس')">عدد الرؤوس</button>
+          </div>
+        </div>
+        <div class="question-block" id="l11q8">
+          <div class="q-text"><span class="q-num">8</span> مربع طول ضلعه 15 سم، محيطه =</div>
+          <div class="input-answer">
+            <input type="text" id="l11q8-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l11q8','60')">تحقق ✓</button>
+            <span class="feedback" id="l11q8-fb"></span>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(11)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-11"></div>
+    </div>
+
+<div class="lesson-panel" id="lesson-12">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#1E3A8A,#2563EB)">
+        <div class="lesson-icon">▭</div>
+        <div>
+          <h2>محيط المستطيل</h2>
+          <p>المحيط = (الطول + العرض) × 2</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>محيط المستطيل = (الطول + العرض) × 2</b>، و<b>نصف المحيط = الطول + العرض = المحيط ÷ 2</b>، و<b>الطول = (المحيط ÷ 2) − العرض</b>.</p>
+        <div class="note">مثال: مستطيل طوله 8 سم وعرضه 4 سم → المحيط = (8 + 4) × 2 = 24 سم.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l12q1">
+          <div class="q-text"><span class="q-num">1</span> قانون محيط المستطيل هو:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l12q1','(الطول + العرض) × 2')">(الطول + العرض) × 2</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q1','الطول × العرض')">الطول × العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q1','الطول + العرض')">الطول + العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q1','الطول × 4')">الطول × 4</button>
+          </div>
+        </div>
+        <div class="question-block" id="l12q2">
+          <div class="q-text"><span class="q-num">2</span> مستطيل طوله 8 سم وعرضه 5 سم، محيطه =</div>
+          <div class="input-answer">
+            <input type="text" id="l12q2-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l12q2','26')">تحقق ✓</button>
+            <span class="feedback" id="l12q2-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l12q3">
+          <div class="q-text"><span class="q-num">3</span> مستطيل محيطه 30 سم وطوله 9 سم، عرضه =</div>
+          <div class="input-answer">
+            <input type="text" id="l12q3-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l12q3','6')">تحقق ✓</button>
+            <span class="feedback" id="l12q3-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l12q4">
+          <div class="q-text"><span class="q-num">4</span> نصف محيط المستطيل يساوي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l12q4','الطول + العرض')">الطول + العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q4','الطول × العرض')">الطول × العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q4','الطول − العرض')">الطول − العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q4','الطول × 2')">الطول × 2</button>
+          </div>
+        </div>
+        <div class="question-block" id="l12q5">
+          <div class="q-text"><span class="q-num">5</span> مستطيل طوله 12 سم وعرضه 7 سم، محيطه =</div>
+          <div class="input-answer">
+            <input type="text" id="l12q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l12q5','38')">تحقق ✓</button>
+            <span class="feedback" id="l12q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l12q6">
+          <div class="q-text"><span class="q-num">6</span> مستطيل محيطه 40 سم وعرضه 8 سم، طوله =</div>
+          <div class="input-answer">
+            <input type="text" id="l12q6-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l12q6','12')">تحقق ✓</button>
+            <span class="feedback" id="l12q6-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l12q7">
+          <div class="q-text"><span class="q-num">7</span> في المستطيل كل ضلعين متقابلين:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l12q7','متساويان في الطول')">متساويان في الطول</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q7','مختلفان في الطول')">مختلفان في الطول</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q7','منحنيان')">منحنيان</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l12q7','غير متوازيين')">غير متوازيين</button>
+          </div>
+        </div>
+        <div class="question-block" id="l12q8">
+          <div class="q-text"><span class="q-num">8</span> مستطيل طوله 10 سم وعرضه 10 سم، محيطه =</div>
+          <div class="input-answer">
+            <input type="text" id="l12q8-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l12q8','40')">تحقق ✓</button>
+            <span class="feedback" id="l12q8-fb"></span>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(12)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-12"></div>
+    </div>
+
+<div class="lesson-panel" id="lesson-13">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#047857,#0284C7)">
+        <div class="lesson-icon">🟩</div>
+        <div>
+          <h2>مساحة المربع والمستطيل</h2>
+          <p>المساحة تُقاس بالوحدات المربعة</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>المساحة</b> هي قياس المنطقة المحصورة داخل الشكل وتُقاس بالوحدات المربعة. <b>مساحة المربع = طول الضلع × نفسه</b>، <b>مساحة المستطيل = الطول × العرض</b>.</p>
+        <div class="note">مثال: مربع ضلعه 5 سم → المساحة = 25 سم مربع. مستطيل 6 × 4 → المساحة = 24 سم مربع.</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l13q1">
+          <div class="q-text"><span class="q-num">1</span> مساحة المربع تساوي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l13q1','طول الضلع × نفسه')">طول الضلع × نفسه</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q1','طول الضلع × 4')">طول الضلع × 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q1','الطول + العرض')">الطول + العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q1','الضلع ÷ 4')">الضلع ÷ 4</button>
+          </div>
+        </div>
+        <div class="question-block" id="l13q2">
+          <div class="q-text"><span class="q-num">2</span> مساحة المستطيل تساوي:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l13q2','الطول × العرض')">الطول × العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q2','(الطول + العرض) × 2')">(الطول + العرض) × 2</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q2','الطول + العرض')">الطول + العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q2','الطول ÷ العرض')">الطول ÷ العرض</button>
+          </div>
+        </div>
+        <div class="question-block" id="l13q3">
+          <div class="q-text"><span class="q-num">3</span> مربع طول ضلعه 6 سم، مساحته =</div>
+          <div class="input-answer">
+            <input type="text" id="l13q3-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l13q3','36')">تحقق ✓</button>
+            <span class="feedback" id="l13q3-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l13q4">
+          <div class="q-text"><span class="q-num">4</span> مستطيل طوله 7 سم وعرضه 5 سم، مساحته =</div>
+          <div class="input-answer">
+            <input type="text" id="l13q4-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l13q4','35')">تحقق ✓</button>
+            <span class="feedback" id="l13q4-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l13q5">
+          <div class="q-text"><span class="q-num">5</span> تُقاس المساحة بـ:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l13q5','الوحدات المربعة')">الوحدات المربعة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q5','الوحدات الطولية')">الوحدات الطولية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q5','عدد الأضلاع')">عدد الأضلاع</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q5','عدد الرؤوس')">عدد الرؤوس</button>
+          </div>
+        </div>
+        <div class="question-block" id="l13q6">
+          <div class="q-text"><span class="q-num">6</span> مربع مساحته 49 سم مربع، طول ضلعه =</div>
+          <div class="input-answer">
+            <input type="text" id="l13q6-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l13q6','7')">تحقق ✓</button>
+            <span class="feedback" id="l13q6-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l13q7">
+          <div class="q-text"><span class="q-num">7</span> مستطيل مساحته 48 سم مربع وطوله 8 سم، عرضه =</div>
+          <div class="input-answer">
+            <input type="text" id="l13q7-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l13q7','6')">تحقق ✓</button>
+            <span class="feedback" id="l13q7-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l13q8">
+          <div class="q-text"><span class="q-num">8</span> أيهما أكبر مساحة؟</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l13q8','مربع طول ضلعه 5 سم')">مربع طول ضلعه 5 سم</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q8','مستطيل 6 × 4 سم')">مستطيل 6 × 4 سم</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q8','متساويان')">متساويان</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l13q8','لا يمكن المقارنة')">لا يمكن المقارنة</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(13)">✅ إنهاء الدرس والانتقال للتالي</button>
+      </div>
+      <div class="lesson-result" id="result-13"></div>
+    </div>
+
+<div class="lesson-panel" id="lesson-14">
+      <div class="lesson-header" style="background:linear-gradient(135deg,#0369A1,#059669)">
+        <div class="lesson-icon">📊</div>
+        <div>
+          <h2>القوانين الأساسية للأشكال ثنائية الأبعاد</h2>
+          <p>مراجعة شاملة على المحيط والمساحة</p>
+        </div>
+      </div>
+      <div class="info-card" style="margin-top:0;border-radius:0;">
+        <h3>📘 تذكّر</h3>
+        <p><b>محيط المربع</b> = الضلع × 4 &nbsp;|&nbsp; <b>مساحة المربع</b> = الضلع × نفسه &nbsp;|&nbsp; <b>محيط المستطيل</b> = (الطول + العرض) × 2 &nbsp;|&nbsp; <b>مساحة المستطيل</b> = الطول × العرض.</p>
+        <div class="note">المحيط يُقاس بالوحدات الطولية (سم)، والمساحة بالوحدات المربعة (سم مربع).</div>
+      </div>
+      <div class="q-section">
+        <h3>✏️ التدريبات والأسئلة</h3>
+        <div class="question-block" id="l14q1">
+          <div class="q-text"><span class="q-num">1</span> محيط المربع =</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l14q1','الضلع × 4')">الضلع × 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q1','الضلع × نفسه')">الضلع × نفسه</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q1','الضلع ÷ 4')">الضلع ÷ 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q1','الضلع + 4')">الضلع + 4</button>
+          </div>
+        </div>
+        <div class="question-block" id="l14q2">
+          <div class="q-text"><span class="q-num">2</span> مساحة المستطيل =</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l14q2','الطول × العرض')">الطول × العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q2','(الطول + العرض) × 2')">(الطول + العرض) × 2</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q2','الطول + العرض')">الطول + العرض</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q2','الطول ÷ العرض')">الطول ÷ العرض</button>
+          </div>
+        </div>
+        <div class="question-block" id="l14q3">
+          <div class="q-text"><span class="q-num">3</span> مربع طول ضلعه 9 سم: محيطه =</div>
+          <div class="input-answer">
+            <input type="text" id="l14q3-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l14q3','36')">تحقق ✓</button>
+            <span class="feedback" id="l14q3-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l14q4">
+          <div class="q-text"><span class="q-num">4</span> المربع السابق (ضلعه 9 سم): مساحته =</div>
+          <div class="input-answer">
+            <input type="text" id="l14q4-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l14q4','81')">تحقق ✓</button>
+            <span class="feedback" id="l14q4-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l14q5">
+          <div class="q-text"><span class="q-num">5</span> مستطيل طوله 10 سم وعرضه 4 سم: محيطه =</div>
+          <div class="input-answer">
+            <input type="text" id="l14q5-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l14q5','28')">تحقق ✓</button>
+            <span class="feedback" id="l14q5-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l14q6">
+          <div class="q-text"><span class="q-num">6</span> المستطيل السابق (10 × 4): مساحته =</div>
+          <div class="input-answer">
+            <input type="text" id="l14q6-inp" placeholder="؟" />
+            <button class="btn-check" onclick="checkInput('l14q6','40')">تحقق ✓</button>
+            <span class="feedback" id="l14q6-fb"></span>
+          </div>
+        </div>
+        <div class="question-block" id="l14q7">
+          <div class="q-text"><span class="q-num">7</span> المحيط يُقاس بالوحدات الطولية، أما المساحة فتُقاس بالوحدات:</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l14q7','المربعة')">المربعة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q7','الطولية')">الطولية</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q7','المكعبة')">المكعبة</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q7','الدائرية')">الدائرية</button>
+          </div>
+        </div>
+        <div class="question-block" id="l14q8">
+          <div class="q-text"><span class="q-num">8</span> طول ضلع المربع =</div>
+          <div class="options">
+            <button class="option-btn" onclick="checkMCQ(this,'l14q8','المحيط ÷ 4')">المحيط ÷ 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q8','المحيط × 4')">المحيط × 4</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q8','المحيط ÷ 2')">المحيط ÷ 2</button>
+            <button class="option-btn" onclick="checkMCQ(this,'l14q8','المساحة ÷ 4')">المساحة ÷ 4</button>
+          </div>
+        </div>
+
+        <button class="btn-submit-lesson" onclick="submitLesson(14)">✅ إنهاء المراجعة وعرض التقرير</button>
+      </div>
+      <div class="lesson-result" id="result-14"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="final-report" id="finalReport">
+  <div id="reportCapture" style="background:#fff;padding:6px 4px 10px;border-radius:16px;">
+  <h2>🏆 تقرير الأداء النهائي</h2>
+  <div class="report-meta">
+    <input type="text" id="studentName" placeholder="اسم الطالب (اختياري)" />
+    <span class="stamp" id="reportDate"></span>
+  </div>
+  <div class="overall-score" id="overallScoreDiv"></div>
+  <div class="report-grid" id="reportGrid"></div>
+  <div id="recommendations" style="background:#f8faff;border-radius:14px;padding:18px 20px;margin-bottom:20px;">
+    <h3 style="color:var(--primary);font-weight:800;margin-bottom:12px;">💡 التوصيات</h3>
+    <div id="recList"></div>
+  </div>
+  </div>
+  <div class="text-center">
+    <button class="btn-png" id="btnPng" onclick="downloadReportPNG()">🖼️ تحميل التقرير كصورة PNG</button>
+    <button class="btn-print" onclick="window.print()">🖨️ طباعة التقرير</button>
+    <button class="btn-restart" onclick="restartQuiz()">🔄 إعادة المراجعة</button>
+  </div>
+</div>
+
+<script>
+  const CORRECT_ANSWERS = {
+    l0q1: 'اليمين',
+    l0q2: 'اليسار إلى اليمين',
+    l0q3: 'آحاد',
+    l0q4: 'آلاف',
+    l0q5: '5',
+    l0q6: 'آحاد',
+    l0q7: 'خطأ',
+    l0q8: '0',
+    l1q1: 'أربعة آلاف وسبعمائة وخمسة وعشرون',
+    l1q2: 'ألفان وتسعمائة وثمانية عشر',
+    l1q3: 'الواو',
+    l1q4: '3642',
+    l1q5: '5417',
+    l1q6: 'ألف وخمسون',
+    l1q7: 'آحاد – عشرات – مئات – آلاف',
+    l1q8: '906',
+    l2q1: '٥',
+    l2q2: '8',
+    l2q3: '٤٢',
+    l2q4: '369',
+    l2q5: '8 = ٨',
+    l2q6: '914',
+    l2q7: '١٢٨',
+    l2q8: 'نفس القيمة، فقط الشكل مختلف',
+    l3q1: 'مئات',
+    l3q2: '800',
+    l3q3: 'ألوف',
+    l3q4: '70000',
+    l3q5: 'مئات',
+    l3q6: '9000',
+    l3q7: 'الكلمات (اسم الخانة)',
+    l3q8: 'قيمته في 5,000 أكبر',
+    l4q1: 'جمع نفس العدد عدة مرات',
+    l4q2: '4 × 3',
+    l4q3: '20',
+    l4q4: '2 + 2 + 2',
+    l4q5: '18',
+    l4q6: 'عدد المجموعات',
+    l4q7: '10',
+    l4q8: 'صواب',
+    l5q1: 'التبديل',
+    l5q2: 'التجميع',
+    l5q3: 'التوزيع',
+    l5q4: '9',
+    l5q5: '0',
+    l5q6: 'العنصر المحايد',
+    l5q7: '24',
+    l5q8: 'تسهّل الحساب دون تغيير الناتج',
+    l6q1: '5328',
+    l6q2: 'اللفظية',
+    l6q3: 'التحليلية',
+    l6q4: '3426',
+    l6q5: '80',
+    l6q6: '2000 + 50',
+    l6q7: '9909',
+    l6q8: 'ثلاث صور',
+    l7q1: 'العدد ذو الأرقام الأكثر',
+    l7q2: 'أكبر من',
+    l7q3: 'أصغر من',
+    l7q4: 'اليسار (أكبر منزلة)',
+    l7q5: '9999',
+    l7q6: '125 ، 215 ، 512',
+    l7q7: 'يساوي',
+    l7q8: '100',
+    l8q1: 'الإبدال',
+    l8q2: 'التجميع',
+    l8q3: 'الحياد الجمعي',
+    l8q4: '7',
+    l8q5: '8',
+    l8q6: '9',
+    l8q7: 'الصفر',
+    l8q8: 'لا تغيّر الناتج',
+    l9q1: 'الآحاد',
+    l9q2: '85',
+    l9q3: '25',
+    l9q4: '1 للعشرات',
+    l9q5: 'نستلف 1 من الخانة التي على الشمال',
+    l9q6: '431',
+    l9q7: '232',
+    l9q8: '26 + 35',
+    l10q1: 'المثلث',
+    l10q2: 'الدائرة',
+    l10q3: 'متساوية في الطول',
+    l10q4: 'خماسي الأضلاع',
+    l10q5: '4',
+    l10q6: '6',
+    l10q7: 'المستطيل',
+    l10q8: 'المستطيل',
+    l11q1: 'طول الضلع × 4',
+    l11q2: '28',
+    l11q3: '9',
+    l11q4: 'المحيط ÷ 4',
+    l11q5: '48',
+    l11q6: '25',
+    l11q7: 'طول السور الخارجي المحيط بالشكل',
+    l11q8: '60',
+    l12q1: '(الطول + العرض) × 2',
+    l12q2: '26',
+    l12q3: '6',
+    l12q4: 'الطول + العرض',
+    l12q5: '38',
+    l12q6: '12',
+    l12q7: 'متساويان في الطول',
+    l12q8: '40',
+    l13q1: 'طول الضلع × نفسه',
+    l13q2: 'الطول × العرض',
+    l13q3: '36',
+    l13q4: '35',
+    l13q5: 'الوحدات المربعة',
+    l13q6: '7',
+    l13q7: '6',
+    l13q8: 'مربع طول ضلعه 5 سم',
+    l14q1: 'الضلع × 4',
+    l14q2: 'الطول × العرض',
+    l14q3: '36',
+    l14q4: '81',
+    l14q5: '28',
+    l14q6: '40',
+    l14q7: 'المربعة',
+    l14q8: 'المحيط ÷ 4',
+  };
+
+  const lessonNames = ['اتجاه قراءة وكتابة الأعداد', 'التعرّف على الأعداد وقراءتها', 'الأرقام العربية والهندية', 'القيمة المكانية وقيمة الرقم', 'مفهوم الضرب كجمع متكرر', 'خواص عملية الضرب', 'صور العدد', 'المقارنة والترتيب', 'خواص عملية الجمع', 'الجمع والطرح مع إعادة التسمية', 'الأشكال الهندسية ثنائية الأبعاد', 'محيط المربع', 'محيط المستطيل', 'مساحة المربع والمستطيل', 'القوانين الأساسية للأشكال'];
+  const lessonIcons = ['🧭', '📖', '🔢', '🏠', '➕', '⚙️', '🖼️', '⚖️', '➕', '🔄', '🔷', '📐', '▭', '🟩', '📊'];
+  const lessonQs = [
+    ['l0q1','l0q2','l0q3','l0q4','l0q5','l0q6','l0q7','l0q8'],
+    ['l1q1','l1q2','l1q3','l1q4','l1q5','l1q6','l1q7','l1q8'],
+    ['l2q1','l2q2','l2q3','l2q4','l2q5','l2q6','l2q7','l2q8'],
+    ['l3q1','l3q2','l3q3','l3q4','l3q5','l3q6','l3q7','l3q8'],
+    ['l4q1','l4q2','l4q3','l4q4','l4q5','l4q6','l4q7','l4q8'],
+    ['l5q1','l5q2','l5q3','l5q4','l5q5','l5q6','l5q7','l5q8'],
+    ['l6q1','l6q2','l6q3','l6q4','l6q5','l6q6','l6q7','l6q8'],
+    ['l7q1','l7q2','l7q3','l7q4','l7q5','l7q6','l7q7','l7q8'],
+    ['l8q1','l8q2','l8q3','l8q4','l8q5','l8q6','l8q7','l8q8'],
+    ['l9q1','l9q2','l9q3','l9q4','l9q5','l9q6','l9q7','l9q8'],
+    ['l10q1','l10q2','l10q3','l10q4','l10q5','l10q6','l10q7','l10q8'],
+    ['l11q1','l11q2','l11q3','l11q4','l11q5','l11q6','l11q7','l11q8'],
+    ['l12q1','l12q2','l12q3','l12q4','l12q5','l12q6','l12q7','l12q8'],
+    ['l13q1','l13q2','l13q3','l13q4','l13q5','l13q6','l13q7','l13q8'],
+    ['l14q1','l14q2','l14q3','l14q4','l14q5','l14q6','l14q7','l14q8'],
+  ];
+
+  let answers = {};
+  let lessonDone = lessonQs.map(() => false);
+  let currentLesson = 0;
+
+  // ============ NAVIGATION ============
+  function showLesson(idx) {
+    document.querySelectorAll('.lesson-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.lesson-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('lesson-'+idx).classList.add('active');
+    document.getElementById('tab-'+idx).classList.add('active');
+    currentLesson = idx;
+  }
+
+  // ============ MCQ ============
+  function checkMCQ(btn, qid, answer) {
+    const block = document.getElementById(qid);
+    const btns = block.querySelectorAll('.option-btn');
+    btns.forEach(b => b.disabled = true);
+    const correct = CORRECT_ANSWERS[qid];
+    if (answer === correct) {
+      btn.classList.add('selected-correct');
+      answers[qid] = true;
+      block.classList.add('correct');
+    } else {
+      btn.classList.add('selected-wrong');
+      answers[qid] = false;
+      block.classList.add('wrong');
+      btns.forEach(b => {
+        if (b.textContent.trim() === correct) {
+          b.classList.add('reveal-correct');
+        }
+      });
+    }
+  }
+
+  // ============ INPUT ============
+  function checkInput(qid, correctVal) {
+    const inp = document.getElementById(qid+'-inp');
+    const fb = document.getElementById(qid+'-fb');
+    const block = document.getElementById(qid);
+    const val = inp.value.trim();
+    inp.disabled = true;
+    if (val === String(correctVal)) {
+      fb.textContent = '✅ أحسنت!';
+      fb.className = 'feedback ok';
+      answers[qid] = true;
+      block.classList.add('correct');
+    } else {
+      fb.textContent = `❌ الإجابة الصحيحة: ${correctVal}`;
+      fb.className = 'feedback err';
+      answers[qid] = false;
+      block.classList.add('wrong');
+    }
+  }
+
+  // ============ SUBMIT LESSON ============
+  function getLevel(pct) {
+    if (pct >= 88) return { label: 'ممتاز 🌟', cls: 'excellent', emoji: '🌟' };
+    if (pct >= 70) return { label: 'جيد جداً 👍', cls: 'good', emoji: '👍' };
+    if (pct >= 50) return { label: 'جيد 🙂', cls: 'fair', emoji: '🙂' };
+    return { label: 'يحتاج مراجعة 📖', cls: 'poor', emoji: '📖' };
+  }
+
+  function submitLesson(lessonIdx) {
+    const qs = lessonQs[lessonIdx];
+    let correct = 0;
+    qs.forEach(qid => {
+      if (answers[qid] === undefined) answers[qid] = false;
+    });
+    qs.forEach(qid => { if (answers[qid]) correct++; });
+    const total = qs.length;
+    const pct = Math.round((correct/total)*100);
+    const lvl = getLevel(pct);
+
+    lessonDone[lessonIdx] = true;
+    document.getElementById('tab-'+lessonIdx).classList.add('done');
+
+    const resultDiv = document.getElementById('result-'+lessonIdx);
+    resultDiv.classList.add('show');
+    const isLast = lessonIdx === lessonQs.length - 1;
+    resultDiv.innerHTML = `
+      <div class="score-circle ${lvl.cls}">${correct}/${total}<div class="pct">${pct}%</div></div>
+      <div class="level-badge ${lvl.cls}">${lvl.label}</div>
+      <p style="color:#666;margin-top:10px;font-size:1rem;">أجبت بشكل صحيح على <strong>${correct}</strong> من أصل <strong>${total}</strong> سؤالاً في درس <strong>${lessonNames[lessonIdx]}</strong></p>
+      ${!isLast ? `<button class="btn-start" style="margin-top:16px;background:linear-gradient(135deg,var(--accent),#e67e22);color:#fff;border:none;border-radius:14px;padding:14px 40px;font-size:1.1rem;font-family:'Tajawal',sans-serif;font-weight:800;cursor:pointer;" onclick="showLesson(${lessonIdx+1})">الدرس التالي: ${lessonNames[lessonIdx+1]} ${lessonIcons[lessonIdx+1]} ←</button>` : `<button class="btn-start" style="margin-top:16px;background:linear-gradient(135deg,#8e44ad,#2980b9);color:#fff;border:none;border-radius:14px;padding:14px 40px;font-size:1.1rem;font-family:'Tajawal',sans-serif;font-weight:800;cursor:pointer;" onclick="showFinalReport()">📋 عرض التقرير النهائي</button>`}
+    `;
+
+    const doneCount = lessonDone.filter(Boolean).length;
+    document.getElementById('totalProgress').style.width = (doneCount/lessonQs.length*100) + '%';
+
+    setTimeout(() => resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
+  }
+
+  // ============ FINAL REPORT ============
+  function showFinalReport() {
+    document.getElementById('mainApp').classList.add('hidden');
+    const report = document.getElementById('finalReport');
+    report.classList.add('show');
+
+    let totalCorrect = 0, totalQs = 0;
+
+    const grid = document.getElementById('reportGrid');
+    grid.innerHTML = '';
+
+    lessonQs.forEach((qs, i) => {
+      let c = 0;
+      qs.forEach(qid => { if (answers[qid]) c++; });
+      totalCorrect += c;
+      totalQs += qs.length;
+      const pct = Math.round((c/qs.length)*100);
+      const lvl = getLevel(pct);
+      grid.innerHTML += `
+        <div class="report-card ${lvl.cls}">
+          <div class="r-icon">${lessonIcons[i]}</div>
+          <div class="r-title">${lessonNames[i]}</div>
+          <div class="r-score" style="color:var(--${lvl.cls === 'excellent' ? 'green' : lvl.cls === 'good' ? 'blue' : lvl.cls === 'fair' ? 'orange' : 'red'})">${c}/${qs.length}</div>
+          <div class="r-level">${lvl.label}</div>
+          <div style="font-size:1.3rem;margin-top:4px;">${pct}%</div>
+        </div>
+      `;
+    });
+
+    const overallPct = Math.round((totalCorrect/totalQs)*100);
+    const overallLvl = getLevel(overallPct);
+    document.getElementById('overallScoreDiv').innerHTML = `
+      <div class="big-num">${overallPct}%</div>
+      <div class="label">النتيجة الإجمالية: ${totalCorrect} / ${totalQs} — ${overallLvl.label}</div>
+    `;
+
+    const recList = document.getElementById('recList');
+    recList.innerHTML = '';
+    lessonQs.forEach((qs, i) => {
+      let c = 0;
+      qs.forEach(qid => { if (answers[qid]) c++; });
+      const pct = Math.round((c/qs.length)*100);
+      const lvl = getLevel(pct);
+      let rec = '';
+      if (lvl.cls === 'excellent') rec = `رائع! أنت متميز في درس ${lessonNames[i]}.`;
+      else if (lvl.cls === 'good') rec = `جيد جداً في ${lessonNames[i]}. راجع بعض المفاهيم لتصل للامتياز.`;
+      else if (lvl.cls === 'fair') rec = `درس ${lessonNames[i]} يحتاج مزيداً من التدريب والمراجعة.`;
+      else rec = `⚠️ درس ${lessonNames[i]} يحتاج مراجعة شاملة مع المعلم.`;
+      recList.innerHTML += `<div style="padding:8px 12px;margin-bottom:8px;border-radius:10px;background:#fff;border-right:4px solid var(--${lvl.cls === 'excellent' ? 'green' : lvl.cls === 'good' ? 'blue' : lvl.cls === 'fair' ? 'orange' : 'red'});font-size:0.95rem;color:#444;"><strong>${lessonIcons[i]} ${lessonNames[i]}:</strong> ${rec}</div>`;
+    });
+
+    const d = new Date();
+    document.getElementById('reportDate').textContent = '📅 ' + d.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+
+    if (overallPct >= 80) celebrate();
+    report.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ============ DOWNLOAD PNG ============
+  async function downloadReportPNG() {
+    const btn = document.getElementById('btnPng');
+    const node = document.getElementById('reportCapture');
+    const nameInp = document.getElementById('studentName');
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '⏳ جارٍ إنشاء الصورة...';
+
+    // an <input> value does not render inside html2canvas — swap it for text
+    const nameText = document.createElement('div');
+    nameText.style.cssText = "font-size:1.05rem;font-weight:800;color:#1a2e5a;padding:10px 16px;";
+    nameText.textContent = (nameInp.value.trim() ? '👤 الطالب: ' + nameInp.value.trim() : '👤 الطالب: ..................');
+    nameInp.style.display = 'none';
+    nameInp.parentNode.insertBefore(nameText, nameInp);
+
+    try {
+      const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+      const link = document.createElement('a');
+      const safe = nameInp.value.trim() ? nameInp.value.trim().replace(/\s+/g, '-') : 'الطالب';
+      link.download = `تقرير-المراجعة-الشاملة-${safe}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (e) {
+      alert('تعذّر إنشاء الصورة. تأكد من الاتصال بالإنترنت ثم حاول مرة أخرى.');
+    } finally {
+      nameText.remove();
+      nameInp.style.display = '';
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  }
+
+  // ============ CELEBRATE ============
+  function celebrate() {
+    const emojis = ['⭐','🎉','🏆','🌟','✨','🎊','🎈'];
+    const canvas = document.createElement('div');
+    canvas.className = 'confetti';
+    document.body.appendChild(canvas);
+    for (let i = 0; i < 40; i++) {
+      const el = document.createElement('div');
+      el.style.cssText = `
+        position:absolute;top:-30px;
+        left:${Math.random()*100}vw;
+        font-size:${1.2+Math.random()*1.5}rem;
+        animation:fall ${2+Math.random()*3}s linear forwards;
+        animation-delay:${Math.random()*2}s;
+      `;
+      el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      canvas.appendChild(el);
+    }
+    const style = document.createElement('style');
+    style.textContent = `@keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity:0; } }`;
+    document.head.appendChild(style);
+    setTimeout(() => canvas.remove(), 6000);
+  }
+
+  // ============ RESTART ============
+  function restartQuiz() {
+    answers = {};
+    lessonDone = lessonQs.map(() => false);
+    document.getElementById('finalReport').classList.remove('show');
+    document.getElementById('mainApp').classList.remove('hidden');
+    document.getElementById('totalProgress').style.width = '0%';
+    document.querySelectorAll('.lesson-tab').forEach(t => { t.classList.remove('done','active'); });
+    document.querySelectorAll('.lesson-result').forEach(r => { r.classList.remove('show'); r.innerHTML = ''; });
+    document.querySelectorAll('.question-block').forEach(b => { b.classList.remove('correct','wrong'); });
+    document.querySelectorAll('.option-btn').forEach(b => { b.classList.remove('selected-correct','selected-wrong','reveal-correct'); b.disabled = false; });
+    document.querySelectorAll('input[type=number], input[type=text]').forEach(i => { i.value=''; i.disabled=false; });
+    document.querySelectorAll('.feedback').forEach(f => { f.className='feedback'; f.textContent=''; });
+    showLesson(0);
+    document.getElementById('tab-0').classList.add('active');
+  }
+</script>
+</body>
+</html>
